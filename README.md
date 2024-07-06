@@ -17,7 +17,7 @@ The system enables government agencies to monitor market dynamics ,detect market
 ``` puml
 @startuml
 rectangle "AMIS Use Case Overvew Diagram" #fafafa;text:007377;line:007377{
-left to right direction
+    left to right direction
     rectangle "Clients" #e2efff;text:green{
         actor "Consumer" as cus #blue
         actor "Farmer" as frm #green
@@ -50,6 +50,47 @@ left to right direction
     :Admin:<<system>>#line:green 
     Admin -up-> (UC0) #red: Monitor all\n operations
 }
+    
 @enduml
+
+```
+
+``` puml
+@startuml
+rectangle "AMIS Use Case Individual Diagrams" #fafafa;text:007377;line:007377{
+    rectangle Farmer #line:green;line.bold;text:green[
+        =Farmer 
+        ----
+        ""- View Market Prices""
+        ""- Track Crop Yields ""
+        ""- Analyze Demand Trends ""
+        ""- Access Transportation ""
+    ]
+    rectangle Buyers #line:blue;line.bold;text:blue[
+        =Buyers
+        ----
+        ""- Search for Crops""
+        ""- View Market Trends""
+        ""- Manage Orders   ""
+        ""- Negotiate Contracts""
+    ]
+    rectangle Government #line:indigo;line.bold;text:indigo[
+        =Government Agencies
+        ----
+        ""- Market Monitoring""
+        ""- Data Collection""
+        ""- Regulatory Compliance ""
+    ]
+    rectangle Analyst #line:fb8500;line.bold;text:fb8500[
+        =Marketing Professionals
+        ----
+        ""- Market Analysis   ""
+        ""- Manage Sales    ""
+        ""- Customer Engagement  ""
+        ""- Regulatory Compliance  ""
+    ]
+}    
+@enduml
+
 
 ```
