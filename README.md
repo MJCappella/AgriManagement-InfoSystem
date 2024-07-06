@@ -12,6 +12,8 @@ AMIS provides traders and agribusinesses with valuable market intelligence, enab
 The system enables government agencies to monitor market dynamics ,detect market distortions and enforce regulations related to fair trade practices ,consumer protection and food safety.
 ## Design
 ### Use Case UML diagram
+![AMIS-Use Case Diagram](https://github.com/essyngero/amis-project-/assets/167772798/f8d53c68-5777-42ae-82b9-0e8fa674c50e)
+
 ``` puml
 @startuml
 rectangle "AMIS Use Case Overvew Diagram" #fafafa;text:007377;line:007377{
