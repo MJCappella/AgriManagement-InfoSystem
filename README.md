@@ -54,6 +54,7 @@ rectangle "AMIS Use Case Overvew Diagram" #fafafa;text:007377;line:007377{
 @enduml
 
 ```
+![use case diagram](https://github.com/essyngero/amis-project-/assets/167772798/79376918-468d-47d2-b8b0-5417a2385c38)
 
 ``` puml
 @startuml
