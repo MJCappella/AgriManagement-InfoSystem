@@ -1,6 +1,6 @@
 ``` puml
 @startuml
-rectangle "AMIS Use Case Overvew Diagram" #fafafa;text:007377;line:007377{
+rectangle "AMIS Use Case Overview Diagram" #fafafa;text:007377;line:007377{
     left to right direction
     rectangle "Clients" #e2efff;text:green{
         actor "Consumer" as cus #blue
