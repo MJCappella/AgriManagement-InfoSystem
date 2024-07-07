@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forex Rates and Chart</title>
+    <title>Forex Cards and Product Prices Chart</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
@@ -14,37 +14,35 @@
             padding: 20px;
         }
         .card {
-            width: 200px;
-            height: 120px;
+            width: 250px;
+            /* height: 150px; */
             margin: 15px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             padding: 15px;
             text-align: center;
             position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
         }
         .card .value {
-            font-size: 1.5em;
+            font-size: 2em;
             margin-bottom: 10px;
         }
         .card .progress-bar {
             position: absolute;
-            bottom: 15px;
-            left: 15px;
-            width: calc(100% - 30px);
-            height: 8px;
+            left: 0px;
+            width: 100%;
+            height: 4px;
             background-color: #e0e0e0;
             border-radius: 5px;
             overflow: hidden;
+            bottom: 0px;
         }
         .card .progress-bar .fill {
             height: 100%;
             width: 0;
             background-color: #76c7c0;
             transition: width 2s ease-in-out;
+            
         }
         .card.red .fill {
             background-color: #ff6f61;
@@ -55,29 +53,28 @@
         .card.green .fill {
             background-color: #50e3c2;
         }
-        .card .label {
-            font-size: 1em;
+        .card::before {
+            content: attr(data-currency);
+            font-size: 1.2em;
+            color: #555;
+            display: block;
             margin-bottom: 5px;
         }
     </style>
 </head>
 <body>
-    <div class="card red" id="usdCard">
-        <div class="label">USD/KES</div>
+    <div class="card red" id="usdCard" data-currency="USD/KES">
         <div class="value" id="usdValue">0</div>
         <div class="progress-bar"><div class="fill" id="usdProgress"></div></div>
     </div>
-    <div class="card blue" id="gbpCard">
-        <div class="label">GBP/KES</div>
+    <div class="card blue" id="gbpCard" data-currency="GBP/KES">
         <div class="value" id="gbpValue">0</div>
         <div class="progress-bar"><div class="fill" id="gbpProgress"></div></div>
     </div>
-    <div class="card green" id="cadCard">
-        <div class="label">CAD/KES</div>
+    <div class="card green" id="cadCard" data-currency="CAD/KES">
         <div class="value" id="cadValue">0</div>
         <div class="progress-bar"><div class="fill" id="cadProgress"></div></div>
     </div>
-    
     <!-- Product Prices Chart -->
     <div style="width: 100%; height: 600px;">
         <canvas id="myChart"></canvas>
