@@ -420,55 +420,67 @@ INSERT INTO sub_counties (name, county_id) VALUES ('Malindi', 3);
 INSERT INTO sub_counties (name, county_id) VALUES ('Magarini', 3);
 INSERT INTO sub_counties (name, county_id) VALUES ('Rabai', 3);
 
--- For Kirinyaga (county_id = 12)
-INSERT INTO sub_counties (name, county_id) VALUES ('Gichugu', 12);
-INSERT INTO sub_counties (name, county_id) VALUES ('Kirinyaga central', 12);
-INSERT INTO sub_counties (name, county_id) VALUES ('Kirinyaga east', 12);
-INSERT INTO sub_counties (name, county_id) VALUES ('Kirinyaga west', 12);
-INSERT INTO sub_counties (name, county_id) VALUES ('Mwea', 12);
+-- For Kirinyaga (county_id = 20)
+INSERT INTO sub_counties (name, county_id) VALUES ('Gichugu', 20);
+INSERT INTO sub_counties (name, county_id) VALUES ('Kirinyaga central', 20);
+INSERT INTO sub_counties (name, county_id) VALUES ('Kirinyaga east', 20);
+INSERT INTO sub_counties (name, county_id) VALUES ('Kirinyaga west', 20);
+INSERT INTO sub_counties (name, county_id) VALUES ('Mwea', 20);
 
--- For Kitui (county_id = 19)
-INSERT INTO sub_counties (name, county_id) VALUES ('Kitui central', 19);
-INSERT INTO sub_counties (name, county_id) VALUES ('Kitui east', 19);
-INSERT INTO sub_counties (name, county_id) VALUES ('Kitui north', 19);
-INSERT INTO sub_counties (name, county_id) VALUES ('Kitui south', 19);
-INSERT INTO sub_counties (name, county_id) VALUES ('Kitui west', 19);
-INSERT INTO sub_counties (name, county_id) VALUES ('Mwingi central', 19);
-INSERT INTO sub_counties (name, county_id) VALUES ('Mwingi north', 19);
-INSERT INTO sub_counties (name, county_id) VALUES ('Mwingi west', 19);
+-- For Kisumu (county_id = 42)
+INSERT INTO sub_counties (name, county_id) VALUES ('Kisumu central', 42);
+INSERT INTO sub_counties (name, county_id) VALUES ('Kisumu east', 42);
+INSERT INTO sub_counties (name, county_id) VALUES ('Kisumu west', 42);
+INSERT INTO sub_counties (name, county_id) VALUES ('Mohoroni', 42);
+INSERT INTO sub_counties (name, county_id) VALUES ('Nyakach', 42);
+INSERT INTO sub_counties (name, county_id) VALUES ('Nyando', 42);
+INSERT INTO sub_counties (name, county_id) VALUES ('Seme', 42);
 
--- For Kwale (county_id = 5)
-INSERT INTO sub_counties (name, county_id) VALUES ('Kangema', 5);
-INSERT INTO sub_counties (name, county_id) VALUES ('Kinango', 5);
-INSERT INTO sub_counties (name, county_id) VALUES ('Kwale', 5);
-INSERT INTO sub_counties (name, county_id) VALUES ('Lunga Lunga', 5);
-INSERT INTO sub_counties (name, county_id) VALUES ('Msambweni', 5);
 
--- For Laikipia (county_id = 27)
-INSERT INTO sub_counties (name, county_id) VALUES ('Laikipia East', 27);
-INSERT INTO sub_counties (name, county_id) VALUES ('Laikipia North', 27);
-INSERT INTO sub_counties (name, county_id) VALUES ('Laikipia South', 27);
-INSERT INTO sub_counties (name, county_id) VALUES ('Laikipia West', 27);
+-- For Kitui (county_id = 15)
+INSERT INTO sub_counties (name, county_id) VALUES ('Kitui central', 15);
+INSERT INTO sub_counties (name, county_id) VALUES ('Kitui east', 15);
+INSERT INTO sub_counties (name, county_id) VALUES ('Kitui north', 15);
+INSERT INTO sub_counties (name, county_id) VALUES ('Kitui south', 15);
+INSERT INTO sub_counties (name, county_id) VALUES ('Kitui west', 15);
+INSERT INTO sub_counties (name, county_id) VALUES ('Mwingi central', 15);
+INSERT INTO sub_counties (name, county_id) VALUES ('Mwingi north', 15);
+INSERT INTO sub_counties (name, county_id) VALUES ('Mwingi west', 15);
 
--- For Lamu (county_id = 8)
-INSERT INTO sub_counties (name, county_id) VALUES ('Lamu east', 8);
-INSERT INTO sub_counties (name, county_id) VALUES ('Lamu west', 8);
+-- For Kwale (county_id = 2)
+INSERT INTO sub_counties (name, county_id) VALUES ('Mutuga', 2);
+INSERT INTO sub_counties (name, county_id) VALUES ('Kinango', 2);
+INSERT INTO sub_counties (name, county_id) VALUES ('Kwale', 2);
+INSERT INTO sub_counties (name, county_id) VALUES ('Lunga Lunga', 2);
+INSERT INTO sub_counties (name, county_id) VALUES ('Msambweni', 2);
 
--- For Machakos (county_id = 32)
-INSERT INTO sub_counties (name, county_id) VALUES ('Machakos town', 32);
-INSERT INTO sub_counties (name, county_id) VALUES ('Masinga', 32);
-INSERT INTO sub_counties (name, county_id) VALUES ('Matungulu', 32);
-INSERT INTO sub_counties (name, county_id) VALUES ('Mwala', 32);
-INSERT INTO sub_counties (name, county_id) VALUES ('Mavoko', 32);
-INSERT INTO sub_counties (name, county_id) VALUES ('Kangundo', 32);
-INSERT INTO sub_counties (name, county_id) VALUES ('Yatta', 32);
+-- For Laikipia (county_id = 31)
+INSERT INTO sub_counties (name, county_id) VALUES ('Laikipia central', 31);
+INSERT INTO sub_counties (name, county_id) VALUES ('Laikipia east', 31);
+INSERT INTO sub_counties (name, county_id) VALUES ('Laikipia north', 31);
+INSERT INTO sub_counties (name, county_id) VALUES ('Laikipia west', 31);
+INSERT INTO sub_counties (name, county_id) VALUES ('Nyahururu', 31);
 
--- For Makueni (county_id = 20)
-INSERT INTO sub_counties (name, county_id) VALUES ('Makueni', 20);
-INSERT INTO sub_counties (name, county_id) VALUES ('Mbooni', 20);
-INSERT INTO sub_counties (name, county_id) VALUES ('Kilome', 20);
-INSERT INTO sub_counties (name, county_id) VALUES ('Kangundo', 20);
-INSERT INTO sub_counties (name, county_id) VALUES ('Yatta', 20);
+-- For Lamu (county_id = 5)
+INSERT INTO sub_counties (name, county_id) VALUES ('Lamu East', 5);
+INSERT INTO sub_counties (name, county_id) VALUES ('Lamu West', 5);
+
+-- For Machakos (county_id = 16)
+INSERT INTO sub_counties (name, county_id) VALUES ('Kathiani', 16);
+INSERT INTO sub_counties (name, county_id) VALUES ('Machakos town', 16);
+INSERT INTO sub_counties (name, county_id) VALUES ('Masinga', 16);
+INSERT INTO sub_counties (name, county_id) VALUES ('Matungulu', 16);
+INSERT INTO sub_counties (name, county_id) VALUES ('Mavoko', 16);
+INSERT INTO sub_counties (name, county_id) VALUES ('Mwala', 16);
+INSERT INTO sub_counties (name, county_id) VALUES ('Yatta', 16);
+
+-- For Makueni (county_id = 17)
+INSERT INTO sub_counties (name, county_id) VALUES ('Kaiti', 17);
+INSERT INTO sub_counties (name, county_id) VALUES ('Kibwei west', 17);
+INSERT INTO sub_counties (name, county_id) VALUES ('Kibwezi east', 17);
+INSERT INTO sub_counties (name, county_id) VALUES ('Kilome', 17);
+INSERT INTO sub_counties (name, county_id) VALUES ('Makueni', 17);
+INSERT INTO sub_counties (name, county_id) VALUES ('Mbooni', 17);
 
 -- For Mandera (county_id = 6)
 INSERT INTO sub_counties (name, county_id) VALUES ('Mandera central', 6);
@@ -477,14 +489,11 @@ INSERT INTO sub_counties (name, county_id) VALUES ('Mandera north', 6);
 INSERT INTO sub_counties (name, county_id) VALUES ('Mandera south', 6);
 INSERT INTO sub_counties (name, county_id) VALUES ('Mandera west', 6);
 
--- For Marsabit (county_id = 4)
-INSERT INTO sub_counties (name, county_id) VALUES ('Chalbi', 4);
-INSERT INTO sub_counties (name, county_id) VALUES ('Marsabit central', 4);
-INSERT INTO sub_counties (name, county_id) VALUES ('Marsabit north', 4);
-INSERT INTO sub_counties (name, county_id) VALUES ('Marsabit south', 4);
-INSERT INTO sub_counties (name, county_id) VALUES ('Marsabit west', 4);
-INSERT INTO sub_counties (name, county_id) VALUES ('Saku', 4);
-INSERT INTO sub_counties (name, county_id) VALUES ('Laisamis', 4);
+-- For Marsabit (county_id = 10)
+INSERT INTO sub_counties (name, county_id) VALUES ('Laisamis', 10);
+INSERT INTO sub_counties (name, county_id) VALUES ('Moyale', 10);
+INSERT INTO sub_counties (name, county_id) VALUES ('North Hor', 10);
+INSERT INTO sub_counties (name, county_id) VALUES ('Saku', 10);
 
 -- For Meru (county_id = 15)
 INSERT INTO sub_counties (name, county_id) VALUES ('Buuri', 15);
@@ -495,6 +504,28 @@ INSERT INTO sub_counties (name, county_id) VALUES ('Meru', 15);
 INSERT INTO sub_counties (name, county_id) VALUES ('Tigania east', 15);
 INSERT INTO sub_counties (name, county_id) VALUES ('Tigania west', 15);
 INSERT INTO sub_counties (name, county_id) VALUES ('Tharaka', 15);
+
+-- For Migori (county_id = 44)
+INSERT INTO sub_counties (name, county_id) VALUES ('Awendo', 44);
+INSERT INTO sub_counties (name, county_id) VALUES ('Kuria east', 44);
+INSERT INTO sub_counties (name, county_id) VALUES ('Kuria west', 44);
+INSERT INTO sub_counties (name, county_id) VALUES ('Mabera', 44);
+INSERT INTO sub_counties (name, county_id) VALUES ('Ntimaru', 44);
+INSERT INTO sub_counties (name, county_id) VALUES ('Rongo', 44);
+INSERT INTO sub_counties (name, county_id) VALUES ('Suna east', 44);
+INSERT INTO sub_counties (name, county_id) VALUES ('Suna west', 44);
+INSERT INTO sub_counties (name, county_id) VALUES ('Uriri', 44);
+
+-- For Muranga (county_id = 21)
+INSERT INTO sub_counties (name, county_id) VALUES ('Gatanga', 21);
+INSERT INTO sub_counties (name, county_id) VALUES ('Kahuro', 21);
+INSERT INTO sub_counties (name, county_id) VALUES ('Kandara', 21);
+INSERT INTO sub_counties (name, county_id) VALUES ('Kangema', 21);
+INSERT INTO sub_counties (name, county_id) VALUES ('Kigumo', 21);
+INSERT INTO sub_counties (name, county_id) VALUES ('Kiharu', 21);
+INSERT INTO sub_counties (name, county_id) VALUES ('Mathioya', 21);
+INSERT INTO sub_counties (name, county_id) VALUES ("Murang'a south", 21);
+
 
 -- For Migori (county_id = 42)
 INSERT INTO sub_counties (name, county_id) VALUES ('Awendo', 42);
@@ -510,72 +541,162 @@ INSERT INTO sub_counties (name, county_id) VALUES ('Kisauni', 1);
 INSERT INTO sub_counties (name, county_id) VALUES ('Mvita', 1);
 INSERT INTO sub_counties (name, county_id) VALUES ('Nyali', 1);
 
--- For Nairobi (county_id = 48)
-INSERT INTO sub_counties (name, county_id) VALUES ('Kamukunji', 48);
-INSERT INTO sub_counties (name, county_id) VALUES ('Lang’ata', 48);
-INSERT INTO sub_counties (name, county_id) VALUES ('Makadara', 48);
-INSERT INTO sub_counties (name, county_id) VALUES ('Nairobi Central', 48);
-INSERT INTO sub_counties (name, county_id) VALUES ('Nairobi West', 48);
-INSERT INTO sub_counties (name, county_id) VALUES ('Ruaraka', 48);
-INSERT INTO sub_counties (name, county_id) VALUES ('Starehe', 48);
-INSERT INTO sub_counties (name, county_id) VALUES ('Westlands', 48);
+-- For Nairobi (county_id = 47)
+INSERT INTO sub_counties (name, county_id) VALUES ('Dagoretti North Sub County', 47);
+INSERT INTO sub_counties (name, county_id) VALUES ('Dagoretti South Sub County', 47);
+INSERT INTO sub_counties (name, county_id) VALUES ('Embakasi Central Sub County', 47);
+INSERT INTO sub_counties (name, county_id) VALUES ('Embakasi East Sub County', 47);
+INSERT INTO sub_counties (name, county_id) VALUES ('Embakasi North Sub County', 47);
+INSERT INTO sub_counties (name, county_id) VALUES ('Embakasi South Sub County', 47);
+INSERT INTO sub_counties (name, county_id) VALUES ('Embakasi West Sub County', 47);
+INSERT INTO sub_counties (name, county_id) VALUES ('Kamukunji Sub County', 47);
+INSERT INTO sub_counties (name, county_id) VALUES ('Kasarani Sub County', 47);
+INSERT INTO sub_counties (name, county_id) VALUES ('Kibra Sub County', 47);
+INSERT INTO sub_counties (name, county_id) VALUES ("Lang'ata Sub County", 47);
+INSERT INTO sub_counties (name, county_id) VALUES ('Makadara Sub County', 47);
+INSERT INTO sub_counties (name, county_id) VALUES ('Mathare Sub County', 47);
+INSERT INTO sub_counties (name, county_id) VALUES ('Roysambu Sub County', 47);
+INSERT INTO sub_counties (name, county_id) VALUES ('Ruaraka Sub County', 47);
+INSERT INTO sub_counties (name, county_id) VALUES ('Starehe Sub County', 47);
+INSERT INTO sub_counties (name, county_id) VALUES ('Westlands Sub County', 47);
 
--- For Nakuru (county_id = 31)
-INSERT INTO sub_counties (name, county_id) VALUES ('Gilgil', 31);
-INSERT INTO sub_counties (name, county_id) VALUES ('Kuresoi North', 31);
-INSERT INTO sub_counties (name, county_id) VALUES ('Kuresoi South', 31);
-INSERT INTO sub_counties (name, county_id) VALUES ('Molo', 31);
-INSERT INTO sub_counties (name, county_id) VALUES ('Nakuru Town East', 31);
-INSERT INTO sub_counties (name, county_id) VALUES ('Nakuru Town West', 31);
-INSERT INTO sub_counties (name, county_id) VALUES ('Njoro', 31);
-INSERT INTO sub_counties (name, county_id) VALUES ('Rongai', 31;
-INSERT INTO sub_counties (name, county_id) VALUES ('Subukia', 31);
 
--- For Nandi (county_id = 33)
-INSERT INTO sub_counties (name, county_id) VALUES ('Aldai', 33);
-INSERT INTO sub_counties (name, county_id) VALUES ('Chesumei', 33);
-INSERT INTO sub_counties (name, county_id) VALUES ('Nandi Hills', 33);
-INSERT INTO sub_counties (name, county_id) VALUES ('Tinderet', 33);
+-- For Nakuru (county_id = 32)
+INSERT INTO sub_counties (name, county_id) VALUES ('Bahati', 32);
+INSERT INTO sub_counties (name, county_id) VALUES ('Gilgil', 32);
+INSERT INTO sub_counties (name, county_id) VALUES ('Kuresoi north', 32);
+INSERT INTO sub_counties (name, county_id) VALUES ('Kuresoi south', 32);
+INSERT INTO sub_counties (name, county_id) VALUES ('Molo', 32);
+INSERT INTO sub_counties (name, county_id) VALUES ('Naivasha', 32);
+INSERT INTO sub_counties (name, county_id) VALUES ('Nakuru town east', 32);
+INSERT INTO sub_counties (name, county_id) VALUES ('Nakuru town west', 32);
+INSERT INTO sub_counties (name, county_id) VALUES ('Njoro', 32);
+INSERT INTO sub_counties (name, county_id) VALUES ('Rongai', 32);
+INSERT INTO sub_counties (name, county_id) VALUES ('Subukia', 32);
 
--- For Narok (county_id = 21)
-INSERT INTO sub_counties (name, county_id) VALUES ('Emurua Dikirr', 21);
-INSERT INTO sub_counties (name, county_id) VALUES ('Kajiado Central', 21);
-INSERT INTO sub_counties (name, county_id) VALUES ('Kajiado East', 21);
-INSERT INTO sub_counties (name, county_id) VALUES ('Kajiado North', 21);
-INSERT INTO sub_counties (name, county_id) VALUES ('Kajiado South', 21);
-INSERT INTO sub_counties (name, county_id) VALUES ('Kajiado West', 21);
-INSERT INTO sub_counties (name, county_id) VALUES ('Narok East', 21);
-INSERT INTO sub_counties (name, county_id) VALUES ('Narok North', 21);
-INSERT INTO sub_counties (name, county_id) VALUES ('Narok South', 21);
-INSERT INTO sub_counties (name, county_id) VALUES ('Narok West', 21);
 
--- For Nyamira (county_id = 37)
-INSERT INTO sub_counties (name, county_id) VALUES ('Boke', 37);
-INSERT INTO sub_counties (name, county_id) VALUES ('Borabu', 37);
-INSERT INTO sub_counties (name, county_id) VALUES ('Manga', 37);
-INSERT INTO sub_counties (name, county_id) VALUES ('Masaba North', 37);
-INSERT INTO sub_counties (name, county_id) VALUES ('Masaba South', 37);
+-- For Nandi (county_id = 29)
+INSERT INTO sub_counties (name, county_id) VALUES ('Aldai', 29);
+INSERT INTO sub_counties (name, county_id) VALUES ('Chesumei', 29);
+INSERT INTO sub_counties (name, county_id) VALUES ('Emgwen', 29);
+INSERT INTO sub_counties (name, county_id) VALUES ('Mosop', 29);
+INSERT INTO sub_counties (name, county_id) VALUES ('Namdi hills', 29);
+INSERT INTO sub_counties (name, county_id) VALUES ('Tindiret', 29);
 
--- For Nyandarua (county_id = 36)
-INSERT INTO sub_counties (name, county_id) VALUES ('Gatimu', 36);
-INSERT INTO sub_counties (name, county_id) VALUES ('Kangema', 36);
-INSERT INTO sub_counties (name, county_id) VALUES ('Karatina', 36);
-INSERT INTO sub_counties (name, county_id) VALUES ('Ol Kalou', 36);
-INSERT INTO sub_counties (name, county_id) VALUES ('Rurii', 36);
 
--- For Nyeri (county_id = 7)
-INSERT INTO sub_counties (name, county_id) VALUES ('Gikondi', 7);
-INSERT INTO sub_counties (name, county_id) VALUES ('Kieni East', 7);
-INSERT INTO sub_counties (name, county_id) VALUES ('Kieni West', 7);
-INSERT INTO sub_counties (name, county_id) VALUES ('Mathira East', 7);
-INSERT INTO sub_counties (name, county_id) VALUES ('Mathira West', 7);
-INSERT INTO sub_counties (name, county_id) VALUES ('Othaya', 7);
+-- For Narok (county_id = 33)
+INSERT INTO sub_counties (name, county_id) VALUES ('Narok east', 33);
+INSERT INTO sub_counties (name, county_id) VALUES ('Narok north', 33);
+INSERT INTO sub_counties (name, county_id) VALUES ('Narok south', 33);
+INSERT INTO sub_counties (name, county_id) VALUES ('Narok west', 33);
+INSERT INTO sub_counties (name, county_id) VALUES ('Transmara east', 33);
+INSERT INTO sub_counties (name, county_id) VALUES ('Transmara west', 33);
+
+
+-- For Nyamira (county_id = 46)
+INSERT INTO sub_counties (name, county_id) VALUES ('Borabu', 46);
+INSERT INTO sub_counties (name, county_id) VALUES ('Manga', 46);
+INSERT INTO sub_counties (name, county_id) VALUES ('Masaba north', 46);
+INSERT INTO sub_counties (name, county_id) VALUES ('Nyamira north', 46);
+INSERT INTO sub_counties (name, county_id) VALUES ('Nyamira south', 46);
+
+
+-- For Nyandarua (county_id = 18)
+INSERT INTO sub_counties (name, county_id) VALUES ('Kinangop', 18);
+INSERT INTO sub_counties (name, county_id) VALUES ('Kipipiri', 18);
+INSERT INTO sub_counties (name, county_id) VALUES ('Ndaragwa', 18);
+INSERT INTO sub_counties (name, county_id) VALUES ('Ol Kalou', 18);
+INSERT INTO sub_counties (name, county_id) VALUES ('Ol joro orok', 18);
+
+
+-- For Nyeri (county_id = 19)
+INSERT INTO sub_counties (name, county_id) VALUES ('Kieni east', 19);
+INSERT INTO sub_counties (name, county_id) VALUES ('Kieni west', 19);
+INSERT INTO sub_counties (name, county_id) VALUES ('Mathira east', 19);
+INSERT INTO sub_counties (name, county_id) VALUES ('Mathira west', 19);
+INSERT INTO sub_counties (name, county_id) VALUES ('Mkurweni', 19);
+INSERT INTO sub_counties (name, county_id) VALUES ('Nyeri town', 19);
+INSERT INTO sub_counties (name, county_id) VALUES ('Othaya', 19);
+INSERT INTO sub_counties (name, county_id) VALUES ('Tetu', 19);
+
+
+-- For Siaya (county_id = 41)
+INSERT INTO sub_counties (name, county_id) VALUES ('Alego usonga', 41);
+INSERT INTO sub_counties (name, county_id) VALUES ('Bondo', 41);
+INSERT INTO sub_counties (name, county_id) VALUES ('Gem', 41);
+INSERT INTO sub_counties (name, county_id) VALUES ('Rarieda', 41);
+INSERT INTO sub_counties (name, county_id) VALUES ('Ugenya', 41);
+INSERT INTO sub_counties (name, county_id) VALUES ('Unguja', 41);
+
 
 -- For Samburu (county_id = 25)
-INSERT INTO sub_counties (name, county_id) VALUES ('Samburu East', 25);
-INSERT INTO sub_counties (name, county_id) VALUES ('Samburu North', 25);
-INSERT INTO sub_counties (name, county_id) VALUES ('Samburu South', 25);
-INSERT INTO sub_counties (name, county_id) VALUES ('Samburu West', 25);
+INSERT INTO sub_counties (name, county_id) VALUES ('Samburu east', 25);
+INSERT INTO sub_counties (name, county_id) VALUES ('Samburu north', 25);
+INSERT INTO sub_counties (name, county_id) VALUES ('Samburu west', 25);
+
+
+-- For Taita-Taveta (county_id = 29)
+INSERT INTO sub_counties (name, county_id) VALUES ('Mwatate', 6);
+INSERT INTO sub_counties (name, county_id) VALUES ('Taveta', 6);
+INSERT INTO sub_counties (name, county_id) VALUES ('Voi', 6);
+INSERT INTO sub_counties (name, county_id) VALUES ('Wundanyi', 6);
+
+-- Insert Sub-Counties for Tana River
+INSERT INTO sub_counties (name, county_id) VALUES ('Bura', 4);
+INSERT INTO sub_counties (name, county_id) VALUES ('Galole', 4);
+INSERT INTO sub_counties (name, county_id) VALUES ('Garsen', 4);
+
+-- Insert Sub-Counties for Tharaka-Nithi
+INSERT INTO sub_counties (name, county_id) VALUES ('Chuka', 13);
+INSERT INTO sub_counties (name, county_id) VALUES ('Igambangobe', 13);
+INSERT INTO sub_counties (name, county_id) VALUES ('Maara', 13);
+INSERT INTO sub_counties (name, county_id) VALUES ('Muthambi', 13);
+INSERT INTO sub_counties (name, county_id) VALUES ('Tharaka north', 13);
+INSERT INTO sub_counties (name, county_id) VALUES ('Tharaka south', 13);
+
+-- Insert Sub-Counties for Trans-Nzoia
+INSERT INTO sub_counties (name, county_id) VALUES ('Cherangany', 26);
+INSERT INTO sub_counties (name, county_id) VALUES ('Endebess', 26);
+INSERT INTO sub_counties (name, county_id) VALUES ('Kiminini', 26);
+INSERT INTO sub_counties (name, county_id) VALUES ('Kwanza', 26);
+INSERT INTO sub_counties (name, county_id) VALUES ('Saboti', 26);
+
+-- Insert Sub-Counties for Turkana
+INSERT INTO sub_counties (name, county_id) VALUES ('Loima', 23);
+INSERT INTO sub_counties (name, county_id) VALUES ('Turkana central', 23);
+INSERT INTO sub_counties (name, county_id) VALUES ('Turkana east', 23);
+INSERT INTO sub_counties (name, county_id) VALUES ('Turkana north', 23);
+INSERT INTO sub_counties (name, county_id) VALUES ('Turkana south', 23);
+
+-- Insert Sub-Counties for Uasin Gishu
+INSERT INTO sub_counties (name, county_id) VALUES ('Ainabkoi', 27);
+INSERT INTO sub_counties (name, county_id) VALUES ('Kapseret', 27);
+INSERT INTO sub_counties (name, county_id) VALUES ('Kesses', 27);
+INSERT INTO sub_counties (name, county_id) VALUES ('Moiben', 27);
+INSERT INTO sub_counties (name, county_id) VALUES ('Soy', 27);
+INSERT INTO sub_counties (name, county_id) VALUES ('Turbo', 27);
+
+-- Insert Sub-Counties for Vihiga
+INSERT INTO sub_counties (name, county_id) VALUES ('Emuhaya', 38);
+INSERT INTO sub_counties (name, county_id) VALUES ('Hamisi', 38);
+INSERT INTO sub_counties (name, county_id) VALUES ('Luanda', 38);
+INSERT INTO sub_counties (name, county_id) VALUES ('Sabatia', 38);
+INSERT INTO sub_counties (name, county_id) VALUES ('Vihiga', 38);
+
+-- Insert Sub-Counties for Wajir
+INSERT INTO sub_counties (name, county_id) VALUES ('Eldas', 8);
+INSERT INTO sub_counties (name, county_id) VALUES ('Tarbaj', 8);
+INSERT INTO sub_counties (name, county_id) VALUES ('Wajir East', 8);
+INSERT INTO sub_counties (name, county_id) VALUES ('Wajir North', 8);
+INSERT INTO sub_counties (name, county_id) VALUES ('Wajir South', 8);
+INSERT INTO sub_counties (name, county_id) VALUES ('Wajir West', 8);
+
+-- Insert Sub-Counties for West Pokot
+INSERT INTO sub_counties (name, county_id) VALUES ('Central Pokot', 24);
+INSERT INTO sub_counties (name, county_id) VALUES ('North Pokot', 24);
+INSERT INTO sub_counties (name, county_id) VALUES ('Pokot South', 24);
+INSERT INTO sub_counties (name, county_id) VALUES ('West Pokot', 24);
+
 
 -- For Kericho (county_id = 29)
 INSERT INTO sub_counties (name, county_id) VALUES ('Ainabkoi', 29);
@@ -592,15 +713,16 @@ INSERT INTO sub_counties (name, county_id) VALUES ('Kirinyaga east', 12);
 INSERT INTO sub_counties (name, county_id) VALUES ('Kirinyaga west', 12);
 INSERT INTO sub_counties (name, county_id) VALUES ('Mwea', 12);
 
--- For Kisii (county_id = 40)
-INSERT INTO sub_counties (name, county_id) VALUES ('Bomachoge', 40);
-INSERT INTO sub_counties (name, county_id) VALUES ('Bomachoge Borabu', 40);
-INSERT INTO sub_counties (name, county_id) VALUES ('Bobasi', 40);
-INSERT INTO sub_counties (name, county_id) VALUES ('Nyaribari Chache', 40);
-INSERT INTO sub_counties (name, county_id) VALUES ('Nyaribari Masaba', 40);
-INSERT INTO sub_counties (name, county_id) VALUES ('Kitutu Chache', 40);
-INSERT INTO sub_counties (name, county_id) VALUES ('Kitutu Chache North', 40);
-INSERT INTO sub_counties (name, county_id) VALUES ('Kitutu Chache South', 40);
+-- For Kisii (county_id = 45)
+INSERT INTO sub_counties (name, county_id) VALUES ('Bomachoge', 45);
+INSERT INTO sub_counties (name, county_id) VALUES ('Bomachoge Borabu', 45);
+INSERT INTO sub_counties (name, county_id) VALUES ('South Mugirango', 45);
+INSERT INTO sub_counties (name, county_id) VALUES ('Bobasi', 45);
+INSERT INTO sub_counties (name, county_id) VALUES ('Nyaribari Chache', 45);
+INSERT INTO sub_counties (name, county_id) VALUES ('Nyaribari Masaba', 45);
+INSERT INTO sub_counties (name, county_id) VALUES ('Kitutu Chache', 45);
+INSERT INTO sub_counties (name, county_id) VALUES ('Kitutu Chache North', 45);
+INSERT INTO sub_counties (name, county_id) VALUES ('Kitutu Chache South', 45);
 
 -- For Kitale (county_id = 11)
 INSERT INTO sub_counties (name, county_id) VALUES ('Endebess', 11);
