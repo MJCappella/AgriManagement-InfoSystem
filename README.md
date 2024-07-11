@@ -1,7 +1,7 @@
 # Agriculture MIS (AMIS Project)
 The following is the progress::
 - [x] UML Use Case UML design
-- [ ] Database design
+- [x] Database design
 - [ ] Backend development
 - [ ] Frontend development
 - [ ] Integration and testing
