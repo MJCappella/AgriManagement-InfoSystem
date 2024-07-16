@@ -1,7 +1,8 @@
+DROP DATABASE IF EXISTS amis_db;
 CREATE DATABASE amis_db;
 USE amis_db;
 
-CREATE TABLE user_type (
+CREATE TABLE user_type_tbl (
     user_type_id INT AUTO_INCREMENT PRIMARY KEY,
     user_type ENUM('farmer', 'buyer', 'government', 'transporter', 'marketing', 'admin') NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -10,14 +11,17 @@ CREATE TABLE user_type (
     updated_by INT
 );
 
-CREATE TABLE admins (
+
+CREATE TABLE admin (
     admin_id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100),
+    user_type_id INT,
+    username VARCHAR(100),
     email VARCHAR(100) UNIQUE,
     id_number INT(9) NOT NULL,
     password VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_type_id) REFERENCES user_type_tbl(user_type_id)
 );
 
 CREATE TABLE two_factor_auth (
@@ -28,12 +32,12 @@ CREATE TABLE two_factor_auth (
     status ENUM('pending', 'verified', 'expired', 'rejected') NOT NULL,
     sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     verified_at TIMESTAMP,
-    FOREIGN KEY (user_type_id) REFERENCES user_type(user_type_id)
+    FOREIGN KEY (user_type_id) REFERENCES user_type_tbl(user_type_id)
 );
 
 CREATE TABLE farmer (
     farmer_id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100),
+    username VARCHAR(100),
     email VARCHAR(100) UNIQUE,
     password VARCHAR(255),
     location VARCHAR(100),
@@ -47,7 +51,7 @@ CREATE TABLE farmer (
 
 CREATE TABLE buyer (
     buyer_id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100),
+    username VARCHAR(100),
     email VARCHAR(100) UNIQUE,
     password VARCHAR(255),
     phone VARCHAR(20),
@@ -59,8 +63,9 @@ CREATE TABLE buyer (
 
 CREATE TABLE transporter (
     transport_id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100),
+    username VARCHAR(100),
     email VARCHAR(100) UNIQUE,
+    password VARCHAR(255),
     phone VARCHAR(20),
     description TEXT,
     price DECIMAL(10, 2),
@@ -71,23 +76,23 @@ CREATE TABLE transporter (
     updated_by INT
 );
 
-CREATE TABLE government_agency (
+CREATE TABLE government (
     agency_id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100),
+    username VARCHAR(100),
     email VARCHAR(100) UNIQUE,
     password VARCHAR(255),
     location VARCHAR(100),
     phone VARCHAR(20),
-    nrb_info VARCHAR(255), -- National Registration Bureau (NRB) handles identification and registration.
+    status ENUM('pending', 'approved', 'rejected') NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     created_by INT,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     updated_by INT
 );
 
-CREATE TABLE marketing_professional (
+CREATE TABLE marketing (
     professional_id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100),
+    username VARCHAR(100),
     email VARCHAR(100) UNIQUE,
     password VARCHAR(255),
     company VARCHAR(100),
@@ -100,7 +105,7 @@ CREATE TABLE marketing_professional (
 
 CREATE TABLE crops (
     crop_id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100),
+    cropname VARCHAR(100),
     description TEXT,
     price DECIMAL(10, 2),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -121,7 +126,8 @@ CREATE TABLE orders (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     updated_by INT,
     FOREIGN KEY (farmer_id) REFERENCES farmer(farmer_id),
-    FOREIGN KEY (buyer_id) REFERENCES buyer(buyer_id)
+    FOREIGN KEY (buyer_id) REFERENCES buyer(buyer_id),
+    FOREIGN KEY (crop_id) REFERENCES crops(crop_id)
 );
 
 CREATE TABLE compliance_certificates (
@@ -130,7 +136,7 @@ CREATE TABLE compliance_certificates (
     status ENUM('pending', 'approved', 'rejected') NOT NULL,
     approved_by INT,
     FOREIGN KEY (farmer_id) REFERENCES farmer(farmer_id),
-    FOREIGN KEY (approved_by) REFERENCES admins(admin_id),
+    FOREIGN KEY (approved_by) REFERENCES admin(admin_id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     created_by INT,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -209,7 +215,7 @@ CREATE TABLE customer_feedback (
     farmer_id INT NOT NULL,
     feedback TEXT,
     date DATE NOT NULL,
-    FOREIGN KEY (user_type_id) REFERENCES user_type(user_type_id),
+    FOREIGN KEY (user_type_id) REFERENCES user_type_tbl(user_type_id),
     FOREIGN KEY (buyer_id) REFERENCES buyer(buyer_id),
     FOREIGN KEY (farmer_id) REFERENCES farmer(farmer_id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -244,6 +250,15 @@ CREATE TABLE sub_counties (
     county_id INT NOT NULL,
     FOREIGN KEY (county_id) REFERENCES counties(county_id)
 );
+
+
+
+INSERT INTO user_type_tbl (user_type)
+VALUES ('farmer'), ('buyer'), ('government'), ('transporter'), ('marketing'), ('admin');
+
+
+INSERT INTO admin(user_type_id, username, email, id_number, password) VALUES(6,"John Smith","johnsmith@yahoo.com",23423231,"d0d8bda2ec288938dbed16522a638011"); 
+
 
 INSERT INTO counties (name, code) VALUES ('Baringo', 30);
 INSERT INTO counties (name, code) VALUES ('Bomet', 36);
