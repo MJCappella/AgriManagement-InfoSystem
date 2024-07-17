@@ -22,7 +22,9 @@ if ($result->num_rows > 0) {
 $conn->close();
 ?>
 
-<form action="/amis-project-/pages/routes.php" method="post" class="needs-validation" novalidate>
+<div id="alert-placeholder"></div>
+
+<form id="login-form" role="form" class="needs-validation" novalidate>
     <input type="hidden" name="action" value="login">
     <div class="form-group mb-3">
         <label for="user_type">User Type:</label>
@@ -54,16 +56,12 @@ $conn->close();
                     <i class="fa fa-eye" onclick="togglePwd()" id="togglePassword"></i>
                 </span>
             </div>
-        </div>
-        <div class="invalid-feedback">
-            Please enter your password.
+            <div class="invalid-feedback">
+                Please enter your password.
+            </div>
         </div>
     </div>
-
-    <div class="invalid-feedback">
-        Please enter your password.
-    </div>
-    <button type="submit" class="btn btn-primary">Login</button>
+    <button type="button" class="btn btn-primary" onclick="submitLoginForm()">Login</button>
     <button class="btn btn-success" type="button" onclick="window.location.href='register.php'" id="register">I don't have an account</button>
 </form>
 
@@ -96,6 +94,44 @@ $conn->close();
             });
         }, false);
     })();
+
+    // AJAX form submission
+    function submitLoginForm() {
+        var myForm = document.getElementById('login-form');
+
+        if (myForm.checkValidity() === false) {
+            myForm.classList.add('was-validated');
+            return;
+        }
+
+        myForm.classList.remove('was-validated');
+
+        var formData = $(myForm).serialize();
+
+        $.ajax({
+            url: '/amis-project-/pages/routes.php',
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                var data = JSON.parse(response);
+                var loginSuccessful = data.success;
+                var alertPlaceholder = $('#alert-placeholder');
+
+                if (loginSuccessful) {
+                    alertPlaceholder.html('<div class="alert alert-success" role="alert">Login successful! Redirecting...</div>');
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.php';
+                    }, 1200);
+                } else {
+                    alertPlaceholder.html('<div class="alert alert-danger" role="alert">' + data.message + '</div>');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Login error:', error);
+                $('#alert-placeholder').html('<div class="alert alert-danger" role="alert">An error occurred during login. Please try again.</div>');
+            }
+        });
+    }
 </script>
 
 <?php

@@ -30,7 +30,8 @@ if ($location_result->num_rows > 0) {
 $conn->close();
 ?>
 
-<form action="/amis-project-/pages/routes.php" method="post" class="needs-validation" novalidate>
+<div id="alert-placeholder"></div>
+<form id="registration-form" role="form" class="needs-validation" novalidate>
     <input type="hidden" name="action" value="register">
     <div class="form-group mb-2">
         <label for="user_type">User Type:</label>
@@ -69,13 +70,13 @@ $conn->close();
                     <i class="fa fa-eye" onclick="togglePwd()" id="togglePassword"></i>
                 </span>
             </div>
-        </div>
-        <div class="invalid-feedback">
-            Please enter your password.
+            <div class="invalid-feedback">
+                Please enter your password.
+            </div>
         </div>
     </div>
     <div id="additional-fields" class="form-group"></div><br>
-    <button type="submit" class="btn btn-primary">Register</button>
+    <button type="button" class="btn btn-primary" onclick="submitRegForm()">Register</button>
     <button class="btn btn-success" type="button" onclick="window.location.href='login.php'" id="register">I already have an account</button>
 
 </form>
@@ -92,6 +93,44 @@ $conn->close();
             $('#togglePassword').addClass('fa-eye');
         }
     }
+
+    function submitRegForm(){
+        var myForm = document.getElementById('registration-form');
+
+        if (myForm.checkValidity() === false) {
+            myForm.classList.add('was-validated');
+            return;
+        }
+
+        myForm.classList.remove('was-validated');
+
+        var formData = $(myForm).serialize();
+
+        $.ajax({
+            url: '/amis-project-/pages/routes.php',
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                var data = JSON.parse(response);
+                var registrationSuccessful = data.success;
+                var alertPlaceholder = $('#alert-placeholder');
+                console.log(data);
+                if (registrationSuccessful) {
+                    alertPlaceholder.html('<div class="alert alert-success" role="alert">'+ data.message +' Redirecting...</div>');
+                    setTimeout(() => {
+                        window.location.href = 'login.php';
+                    }, 1000);
+                } else {
+                    alertPlaceholder.html('<div class="alert alert-danger" role="alert">' + data.message + '</div>');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Registration error:', error);
+                $('#alert-placeholder').html('<div class="alert alert-danger" role="alert">An error occurred during registration. Please try again.</div>');
+            }
+        });
+    }
+
     // Fetch locations from PHP to JavaScript
     var locations = <?php echo json_encode($locations); ?>;
 

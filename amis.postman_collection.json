@@ -1,0 +1,134 @@
+{
+	"info": {
+		"_postman_id": "f835bea6-fcc8-4a61-88b5-ce9b252aad1c",
+		"name": "amis",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30445116"
+	},
+	"item": [
+		{
+			"name": "LOGOUT",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "LOGIN",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "DASHBOARD",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "ADD CROP",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "action",
+							"value": "add-crop",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/amis-project-/pages/routes.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"amis-project-",
+						"pages",
+						"routes.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE CROP",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "action",
+							"value": "delete-crop",
+							"type": "text"
+						},
+						{
+							"key": "cropname",
+							"value": "Tomato",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/amis-project-/pages/routes.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"amis-project-",
+						"pages",
+						"routes.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE CROP",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "action",
+							"value": "delete-crop",
+							"type": "text"
+						},
+						{
+							"key": "cropname",
+							"value": "Tomato",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/amis-project-/pages/routes.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"amis-project-",
+						"pages",
+						"routes.php"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
