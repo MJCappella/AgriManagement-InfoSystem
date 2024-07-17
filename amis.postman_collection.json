@@ -31,6 +31,36 @@
 			"response": []
 		},
 		{
+			"name": "GET CROPS",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "action",
+							"value": "add-crop",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/amis-project-/pages/routes.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"amis-project-",
+						"pages",
+						"routes.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "ADD CROP",
 			"request": {
 				"method": "POST",
