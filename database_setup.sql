@@ -199,7 +199,6 @@ CREATE TABLE yields (
     crop_id INT,
     quantity INT,
     harvest_date DATE,
-    transaction_code VARCHAR(100),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     created_by INT,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -227,10 +226,10 @@ CREATE TABLE customer_feedback (
 CREATE TABLE forex (
     forex_id INT PRIMARY KEY AUTO_INCREMENT,
     date DATE NOT NULL,
-    usd DECIMAL(10, 4),
-    gbp DECIMAL(10, 4),
-    eur DECIMAL(10, 4),
-    cad DECIMAL(10, 4),
+    usd DECIMAL(10, 2),
+    gbp DECIMAL(10, 2),
+    eur DECIMAL(10, 2),
+    cad DECIMAL(10, 2),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     created_by INT,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -259,6 +258,7 @@ VALUES ('farmer'), ('buyer'), ('government'), ('transporter'), ('marketing'), ('
 
 INSERT INTO admin(user_type_id, username, email, id_number, password) VALUES(6,"John Smith","johnsmith@yahoo.com",23423231,"d0d8bda2ec288938dbed16522a638011"); 
 
+INSERT INTO farmer(username, email, password, location, phone) VALUES("John Doe","johndoe@gmail.com","d0d8bda2ec288938dbed16522a638011","Embu",720121232); 
 
 INSERT INTO counties (name, code) VALUES ('Baringo', 30);
 INSERT INTO counties (name, code) VALUES ('Bomet', 36);

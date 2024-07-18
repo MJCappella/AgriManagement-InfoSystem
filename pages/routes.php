@@ -1,4 +1,5 @@
 <?php
+include_once("../config/config.php");
 include('../includes/db_connect.php');
 include('../includes/auth.php');
 
@@ -29,6 +30,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             break;
         case 'get-crop':
             isLoggedIn() ? getCrops() : '';
+            echo isLoggedIn() ? '' : $m;
+            break;
+        case 'update-forex':
+            isLoggedIn() ? updateForex() : '';
+            echo isLoggedIn() ? '' : $m;
+            break;
+        case 'fetch-forex':
+            isLoggedIn() ? fetchForex() : '';
             echo isLoggedIn() ? '' : $m;
             break;
     }
@@ -119,9 +128,9 @@ function handleRegister()
             break;
         case 'admin':
             $id_number = $_POST['id_number'];
-            $query = "INSERT INTO admins (username, email, password, id_number) VALUES (?, ?, ?, ?)";
+            $query = "INSERT INTO admin (username, email, password, id_number) VALUES (?, ?, ?, ?)";
             $stmt = $conn->prepare($query);
-            $stmt->bind_param('sssi', $username, $email, $password, $id_number);
+            $stmt->bind_param('ssss', $username, $email, $password, $id_number);
             break;
         default:
             echo '{"success":false, "message":"Invalid user type"}';
@@ -268,6 +277,83 @@ function getCrops()
 
     $stmt->close();
 }
+function updateForex()
+{
+    global $conn;
 
+    $apiUrl = FOREX_2_BASE_URL;
+    $ch = curl_init($apiUrl);
 
-?>
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 10); // Set a timeout (in seconds)
+    $response = curl_exec($ch);
+
+    // Check for errors
+    if (curl_errno($ch)) {
+        echo json_encode(['success' => false, 'message' => 'Error fetching exchange rates. ' . curl_error($ch)]);
+    } else {
+        $data = json_decode($response, true);
+
+        if (isset($data['results'])) {
+            $date = $data['updated'];
+            $usd = 1 / $data['results']['USD'];
+            $gbp = 1 / $data['results']['GBP'];
+            $eur = 1 / $data['results']['EUR'];
+            $cad = 1 / $data['results']['CAD'];
+
+            $query = "INSERT INTO forex (date, usd, gbp, eur, cad) VALUES (?, ?, ?, ?, ?)";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param('sdddd', $date, $usd, $gbp, $eur, $cad);
+
+            if ($stmt && $stmt->execute()) {
+                echo json_encode(['success' => true, 'message' => 'Forex update successful!']);
+            } else {
+                echo json_encode(['success' => false, 'message' => $stmt->error]);
+            }
+            $stmt->close();
+        } else if (isset($data['error'])) {
+            echo json_encode(['success' => false, 'message' => $data['error']]);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Error fetching exchange rates']);
+        }
+    }
+    curl_close($ch);
+}
+
+function fetchForex()
+{
+    global $conn;
+
+    $query = "SELECT * FROM forex ORDER BY date DESC LIMIT 1";
+    $stmt = $conn->prepare($query);
+
+    if ($stmt && $stmt->execute()) {
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $forex = $result->fetch_assoc();
+            $filteredForex = [
+                'date' => $forex['date'],
+                'usd' => $forex['usd'],
+                'gbp' => $forex['gbp'],
+                'eur' => $forex['eur'],
+                'cad' => $forex['cad']
+            ];
+            echo json_encode(['success' => true, 'forex' => $filteredForex]);
+        } else {
+            // Return default values if no records found
+            $defaultForex = [
+                'date' => date('Y-m-d'),
+                'usd' => 1.00,
+                'gbp' => 1.00,
+                'eur' => 1.00,
+                'cad' => 1.00
+            ];
+            echo json_encode(['success' => true, 'forex' => $defaultForex]);
+        }
+    } else {
+        echo json_encode(['success' => false, 'message' => $stmt->error]);
+    }
+
+    $stmt->close();
+}
