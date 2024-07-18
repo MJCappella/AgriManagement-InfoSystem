@@ -18,6 +18,10 @@ ensureLoggedIn();
         <div class="value" id="gbpValue">0</div>
         <div class="progress-bar"><div class="fill" id="gbpProgress"></div></div>
     </div>
+    <div class="col-md-4 card cyan" id="eurCard" data-currency="EUR/KES">
+        <div class="value" id="eurValue">0</div>
+        <div class="progress-bar"><div class="fill" id="eurProgress"></div></div>
+    </div>
     <div class="col-md-4 card green" id="cadCard" data-currency="CAD/KES">
         <div class="value" id="cadValue">0</div>
         <div class="progress-bar"><div class="fill" id="cadProgress"></div></div>
@@ -33,6 +37,7 @@ ensureLoggedIn();
     <input type="hidden" name="action" value="logout">
     <button type="submit" class="btn btn-danger">Logout</button>
 </form><br/>
+<script src="../assets/js/jquery.min.js"></script>
 <script src="../lib/graphs/chart.min.js"></script>
 <script src="../lib/graphs/v2/chart.js"></script>
 <?php include('../includes/footer.php'); ?>

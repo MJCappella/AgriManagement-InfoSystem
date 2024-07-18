@@ -277,7 +277,7 @@ function getCrops()
 
     $stmt->close();
 }
-function updateForex()
+function updateForex(bool $display_logs = true)
 {
     global $conn;
 
@@ -289,7 +289,7 @@ function updateForex()
     $response = curl_exec($ch);
 
     // Check for errors
-    if (curl_errno($ch)) {
+    if (curl_errno($ch)&&$display_logs) {
         echo json_encode(['success' => false, 'message' => 'Error fetching exchange rates. ' . curl_error($ch)]);
     } else {
         $data = json_decode($response, true);
@@ -305,15 +305,17 @@ function updateForex()
             $stmt = $conn->prepare($query);
             $stmt->bind_param('sdddd', $date, $usd, $gbp, $eur, $cad);
 
-            if ($stmt && $stmt->execute()) {
+            if ($stmt && $stmt->execute()&&$display_logs) {
                 echo json_encode(['success' => true, 'message' => 'Forex update successful!']);
             } else {
+                if ($display_logs) 
                 echo json_encode(['success' => false, 'message' => $stmt->error]);
             }
             $stmt->close();
-        } else if (isset($data['error'])) {
+        } else if (isset($data['error'])&&$display_logs) {
             echo json_encode(['success' => false, 'message' => $data['error']]);
         } else {
+            if ($display_logs) 
             echo json_encode(['success' => false, 'message' => 'Error fetching exchange rates']);
         }
     }
@@ -322,9 +324,10 @@ function updateForex()
 
 function fetchForex()
 {
+    updateForex(false);
     global $conn;
 
-    $query = "SELECT * FROM forex ORDER BY date DESC LIMIT 1";
+    $query = "SELECT * FROM forex ORDER BY forex_id DESC LIMIT 1";
     $stmt = $conn->prepare($query);
 
     if ($stmt && $stmt->execute()) {
@@ -344,10 +347,10 @@ function fetchForex()
             // Return default values if no records found
             $defaultForex = [
                 'date' => date('Y-m-d'),
-                'usd' => 1.00,
-                'gbp' => 1.00,
-                'eur' => 1.00,
-                'cad' => 1.00
+                'usd' => 100,
+                'gbp' => 100,
+                'eur' => 100,
+                'cad' => 100
             ];
             echo json_encode(['success' => true, 'forex' => $defaultForex]);
         }
