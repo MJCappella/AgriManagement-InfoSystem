@@ -44,6 +44,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             isLoggedIn() ? getYields() : '';
             echo isLoggedIn() ? '' : $m;
             break;
+        case 'get-yield':
+            isLoggedIn() ? getYield() : '';
+            echo isLoggedIn() ? '' : $m;
+            break;
         case 'add-yield':
             isLoggedIn() ? addYield() : '';
             echo isLoggedIn() ? '' : $m;
@@ -392,13 +396,30 @@ function getYields() {
         echo json_encode(['success' => false, 'message' => 'No yields found']);
     }
 }
+function getYield() {
+    global $conn;
+    $farmer_id=$_POST['farmer_id'];
+    $query = "SELECT y.yield_id, c.cropname, y.quantity, y.harvest_date FROM yields as y JOIN crops as c ON y.crop_id = c.crop_id WHERE y.farmer_id = $farmer_id";
+    $result = $conn->query($query);
+
+    if ($result->num_rows > 0) {
+        $yields = [];
+        while ($row = $result->fetch_assoc()) {
+            $yields[] = $row;
+        }
+        echo json_encode(['success' => true, 'yields' => $yields]);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'No yields found']);
+    }
+}
 
 function deleteYield() {
     global $conn;
     $yield_id=$_POST['yield_id'];
-    $query = "DELETE FROM yields WHERE yield_id = ?";
+    $farmer_id=$_POST['farmer_id'];
+    $query = "DELETE FROM yields WHERE yield_id = ? AND farmer_id = ?";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param('i', $yield_id);
+    $stmt->bind_param('ii', $yield_id, $farmer_id);
 
     if ($stmt->execute()) {
         echo json_encode(['success' => true, 'message' => 'Yield deleted successfully']);
@@ -415,9 +436,9 @@ function updateYield() {
     $crop_id = $_POST['crop_id'];
     $quantity = $_POST['quantity'];
     $harvest_date = $_POST['harvest_date'];
-    $query = "UPDATE yields SET farmer_id = ?, crop_id = ?, quantity = ?, harvest_date = ? WHERE yield_id = ?";
+    $query = "UPDATE yields SET crop_id = ?, quantity = ?, harvest_date = ? WHERE yield_id = ? AND farmer_id = ?";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param('iiisi', $farmer_id, $crop_id, $quantity, $harvest_date, $yield_id);
+    $stmt->bind_param('iisii', $crop_id, $quantity, $harvest_date, $yield_id, $farmer_id);
 
     if ($stmt->execute()) {
         echo json_encode(['success' => true, 'message' => 'Yield updated successfully']);
