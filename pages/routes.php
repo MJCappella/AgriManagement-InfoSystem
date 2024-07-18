@@ -40,6 +40,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             isLoggedIn() ? fetchForex() : '';
             echo isLoggedIn() ? '' : $m;
             break;
+        case 'get-yields':
+            isLoggedIn() ? getYields() : '';
+            echo isLoggedIn() ? '' : $m;
+            break;
+        case 'add-yield':
+            isLoggedIn() ? addYield() : '';
+            echo isLoggedIn() ? '' : $m;
+            break;
+        case 'update-yield':
+            isLoggedIn() ? updateYield() : '';
+            echo isLoggedIn() ? '' : $m;
+            break;
+        case 'delete-yield':
+            isLoggedIn() ? deleteYield() : '';
+            echo isLoggedIn() ? '' : $m;
+            break;
     }
 }
 
@@ -324,7 +340,7 @@ function updateForex(bool $display_logs = true)
 
 function fetchForex()
 {
-    updateForex(false);
+    //updateForex(false);
     global $conn;
 
     $query = "SELECT * FROM forex ORDER BY forex_id DESC LIMIT 1";
@@ -358,5 +374,73 @@ function fetchForex()
         echo json_encode(['success' => false, 'message' => $stmt->error]);
     }
 
+    $stmt->close();
+}
+
+function getYields() {
+    global $conn;
+    $query = "SELECT y.yield_id, f.username, c.cropname, y.quantity, y.harvest_date FROM yields as y JOIN farmer as f ON y.farmer_id=f.farmer_id JOIN crops as c ON y.crop_id = c.crop_id";
+    $result = $conn->query($query);
+
+    if ($result->num_rows > 0) {
+        $yields = [];
+        while ($row = $result->fetch_assoc()) {
+            $yields[] = $row;
+        }
+        echo json_encode(['success' => true, 'yields' => $yields]);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'No yields found']);
+    }
+}
+
+function deleteYield() {
+    global $conn;
+    $yield_id=$_POST['yield_id'];
+    $query = "DELETE FROM yields WHERE yield_id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param('i', $yield_id);
+
+    if ($stmt->execute()) {
+        echo json_encode(['success' => true, 'message' => 'Yield deleted successfully']);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Error deleting yield: ' . $stmt->error]);
+    }
+    $stmt->close();
+}
+
+function updateYield() {
+    global $conn;
+    $yield_id = $_POST['yield_id'];
+    $farmer_id = $_POST['farmer_id'];
+    $crop_id = $_POST['crop_id'];
+    $quantity = $_POST['quantity'];
+    $harvest_date = $_POST['harvest_date'];
+    $query = "UPDATE yields SET farmer_id = ?, crop_id = ?, quantity = ?, harvest_date = ? WHERE yield_id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param('iiisi', $farmer_id, $crop_id, $quantity, $harvest_date, $yield_id);
+
+    if ($stmt->execute()) {
+        echo json_encode(['success' => true, 'message' => 'Yield updated successfully']);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Error updating yield: ' . $stmt->error]);
+    }
+    $stmt->close();
+}
+
+function addYield() {
+    global $conn;
+    $farmer_id = $_POST['farmer_id'];
+    $crop_id = $_POST['crop_id'];
+    $quantity = $_POST['quantity'];
+    $harvest_date = $_POST['harvest_date'];
+    $query = "INSERT INTO yields (farmer_id, crop_id, quantity, harvest_date) VALUES (?, ?, ?, ?)";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param('iiis', $farmer_id, $crop_id, $quantity, $harvest_date);
+
+    if ($stmt->execute()) {
+        echo json_encode(['success' => true, 'message' => 'Yield added successfully']);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Error adding yield: ' . $stmt->error]);
+    }
     $stmt->close();
 }
