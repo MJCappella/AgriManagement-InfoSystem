@@ -216,6 +216,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
+function getUserTypeId($user_type)
+{
+    switch ($user_type) {
+        case 'farmer':
+            return 1;
+        case 'buyer':
+            return 2;
+        case 'government':
+            return 3;
+        case 'transporter':
+            return 4;
+        case 'marketing':
+            return 5;
+        case 'admin':
+            return 6;
+        default:
+            return 0; // Or throw an exception or return null
+    }
+}
 function handleLogin()
 {
     global $conn;
@@ -225,7 +244,7 @@ function handleLogin()
     $user_type = $_POST['user_type'];
 
     $user_type = stripslashes($user_type);
-    $sql = "SELECT * FROM $user_type WHERE username = ?";
+    $sql = "SELECT * FROM $user_type WHERE username = ? AND account_status='active'";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param('s', $username);
     $stmt->execute();
@@ -256,67 +275,93 @@ function handleRegister()
     $username = $_POST['username'];
     $email = $_POST['email'];
     $password = md5($_POST['password']); // MD5 hash
-
-    $query = "";
+    $enable_2fa = isset($_POST['enable_2fa']) && $_POST['enable_2fa'] === 'true';
+    $account_status = 'suspended';
     $stmt = null;
+    // Check if 2FA is enabled and set
+    if ($enable_2fa) {
+        // Generate a random 6-digit code
+        $code = rand(100000, 999999);
 
-    $user_type = stripslashes($user_type);
+        // Insert code into two_factor_auth table
+        $insertQuery = "INSERT INTO two_factor_auth (user_email, user_type_id, code, status) VALUES (?, ?, ?, 'pending')";
+        $insertStmt = $conn->prepare($insertQuery);
+        $user_type_id = getUserTypeId($user_type);
+        $insertStmt->bind_param('sis', $email, $user_type_id, $code);
 
+        // Execute the 2FA insert query
+        if ($insertStmt->execute()) {
+            // Send email or notification with the code
+            sendMessage($email, $code); // Example function to send email
+
+            echo json_encode(['success' => true, 'message' => 'A code sent to your email for verification. The code expires after 5 minutes']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Error inserting 2FA code: ' . $insertStmt->error]);
+            exit();
+        }
+
+        $insertStmt->close();
+    }
+    // Proceed with normal registration
+    $account_status = $enable_2fa ? 'suspended' : 'active';
     switch ($user_type) {
         case 'farmer':
             $location = $_POST['location'];
             $phone = $_POST['phone'];
-            $query = "INSERT INTO farmer (username, email, password, location, phone) VALUES (?, ?, ?, ?, ?)";
+            $query = "INSERT INTO farmer (username, email, password, location, phone, account_status) VALUES (?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($query);
-            $stmt->bind_param('sssss', $username, $email, $password, $location, $phone);
+            $stmt->bind_param('sssss', $username, $email, $password, $location, $phone, $account_status);
             break;
         case 'buyer':
             $phone = $_POST['phone'];
-            $query = "INSERT INTO buyer (username, email, password, phone) VALUES (?, ?, ?, ?)";
+            $query = "INSERT INTO buyer (username, email, password, phone, account_status) VALUES (?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($query);
-            $stmt->bind_param('ssss', $username, $email, $password, $phone);
+            $stmt->bind_param('ssss', $username, $email, $password, $phone, $account_status);
             break;
         case 'government':
             $location = $_POST['location'];
             $phone = $_POST['phone'];
-            $query = "INSERT INTO government (username, email, password, location, phone) VALUES (?, ?, ?, ?, ?)";
+            $query = "INSERT INTO government (username, email, password, location, phone, account_status) VALUES (?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($query);
-            $stmt->bind_param('sssss', $username, $email, $password, $location, $phone);
+            $stmt->bind_param('sssss', $username, $email, $password, $location, $phone, $account_status);
             break;
         case 'transporter':
             $phone = $_POST['phone'];
             $description = $_POST['description'];
             $price = $_POST['price'];
             $availability = $_POST['availability'];
-            $query = "INSERT INTO transporter (username, email, password, phone, description, price, availability) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $query = "INSERT INTO transporter (username, email, password, phone, description, price, availability, account_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($query);
-            $stmt->bind_param('sssssss', $username, $email, $password, $phone, $description, $price, $availability);
+            $stmt->bind_param('sssssss', $username, $email, $password, $phone, $description, $price, $availability, $account_status);
             break;
         case 'marketing':
             $company = $_POST['company'];
             $phone = $_POST['phone'];
-            $query = "INSERT INTO marketing (username, email, password, company, phone) VALUES (?, ?, ?, ?, ?)";
+            $query = "INSERT INTO marketing (username, email, password, company, phone, account_status) VALUES (?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($query);
-            $stmt->bind_param('sssss', $username, $email, $password, $company, $phone);
+            $stmt->bind_param('sssss', $username, $email, $password, $company, $phone, $account_status);
             break;
         case 'admin':
             $id_number = $_POST['id_number'];
-            $query = "INSERT INTO admin (username, email, password, id_number) VALUES (?, ?, ?, ?)";
+            $query = "INSERT INTO admin (username, email, password, id_number, account_status) VALUES (?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($query);
-            $stmt->bind_param('ssss', $username, $email, $password, $id_number);
+            $stmt->bind_param('ssss', $username, $email, $password, $id_number, $account_status);
             break;
         default:
-            echo '{"success":false, "message":"Invalid user type"}';
+            echo json_encode(['success' => false, 'message' => 'Invalid user type']);
             return;
     }
 
+    // Execute the user insert query
     if ($stmt && $stmt->execute()) {
-        echo '{"success":true, "message":"Registration successful!"}';
+        echo json_encode(['success' => true, 'message' => 'Registration successful!']);
     } else {
-        echo '{"success":false, "message": "' . $stmt->error . '"}';
+        echo json_encode(['success' => false, 'message' => $stmt->error]);
     }
+
     $stmt->close();
 }
+
 
 function handleLogout()
 {
@@ -1428,4 +1473,3 @@ function verifyTwoFactorAuth()
 
     $stmt->close();
 }
-
