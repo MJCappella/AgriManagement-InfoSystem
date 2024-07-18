@@ -120,7 +120,8 @@ CREATE TABLE orders (
     buyer_id INT,
     crop_id INT,
     quantity INT,
-    status ENUM('pending', 'confirmed', 'shipped', 'delivered') NOT NULL,
+    date DATE NOT NULL,
+    status ENUM('pending', 'confirmed', 'cancelled', 'delivered') NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     created_by INT,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -146,9 +147,9 @@ CREATE TABLE compliance_certificates (
 CREATE TABLE transactions (
     transaction_id INT AUTO_INCREMENT PRIMARY KEY,
     farmer_id INT NOT NULL,
-    amount DECIMAL(10, 2) NOT NULL,
     transaction_code VARCHAR(255) NOT NULL,
-    status ENUM('pending', 'approved') NOT NULL,
+    status ENUM('pending', 'valid', 'rejected', 'expired') NOT NULL,
+    date DATE NOT NULL,
     FOREIGN KEY (farmer_id) REFERENCES farmer(farmer_id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     created_by INT,
@@ -172,7 +173,7 @@ CREATE TABLE market_prices (
 CREATE TABLE market_trends (
     trend_id INT AUTO_INCREMENT PRIMARY KEY,
     crop_id INT NOT NULL,
-    trend_data TEXT,
+    price decimal(10,2) NOT NULL,
     date DATE NOT NULL,
     FOREIGN KEY (crop_id) REFERENCES crops(crop_id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -185,7 +186,7 @@ CREATE TABLE demand_trends (
     trend_id INT PRIMARY KEY AUTO_INCREMENT,
     crop_id INT,
     demand INT,
-    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    date NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     created_by INT,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -209,12 +210,10 @@ CREATE TABLE yields (
 
 CREATE TABLE customer_feedback (
     feedback_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_type_id INT NOT NULL,
     buyer_id INT NOT NULL,
     farmer_id INT NOT NULL,
     feedback TEXT,
     date DATE NOT NULL,
-    FOREIGN KEY (user_type_id) REFERENCES user_type_tbl(user_type_id),
     FOREIGN KEY (buyer_id) REFERENCES buyer(buyer_id),
     FOREIGN KEY (farmer_id) REFERENCES farmer(farmer_id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -235,6 +234,15 @@ CREATE TABLE forex (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     updated_by INT
 );
+
+CREATE TABLE messages (
+    message_id INT AUTO_INCREMENT PRIMARY KEY,
+    message_text TEXT NOT NULL,
+    sender_id INT NOT NULL,
+    receiver_id INT NOT NULL,
+    sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 
 CREATE TABLE counties (
     county_id INT PRIMARY KEY AUTO_INCREMENT,
