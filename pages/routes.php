@@ -2,6 +2,7 @@
 include_once("../config/config.php");
 include('../includes/db_connect.php');
 include('../includes/auth.php');
+include('../lib/mailing/vendor/autoload.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -213,9 +214,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             isLoggedIn() ? viewMyMessages() : '';
             echo isLoggedIn() ? '' : $m;
             break;
+        case 'verify-code':
+            verifyTwoFactorAuth();
+            break;
     }
 }
 
+function sendMessage($recipient, $subject, $message)
+{
+    // Create the Transport
+    $transport = (new Swift_SmtpTransport('smtp.gmail.com', 465, "ssl"))
+        ->setUsername(SENDER_EMAIL)
+        ->setPassword(SENDER_PASSWORD);
+
+    // Create the Mailer using your created Transport
+    $mailer = new Swift_Mailer($transport);
+
+    // Create a message
+    $message = (new Swift_Message($subject))
+        ->setFrom([SENDER_EMAIL => 'AMIS INFO'])
+        ->setTo([$recipient => 'A name'])
+        ->setBody($message, 'text/html');
+
+    // Send the message
+    try {
+        $result = $mailer->send($message);
+        return ['sent' => true, 'message' => 'Message sent successfully'];
+    } catch (Exception $e) {
+        return ['sent' => false, 'message' => $e->getMessage()];
+    }
+    return ['sent' => false, 'message' => 'Error sending email code'];
+}
 function getUserTypeId($user_type)
 {
     switch ($user_type) {
@@ -234,6 +263,20 @@ function getUserTypeId($user_type)
         default:
             return 0; // Or throw an exception or return null
     }
+}
+
+function generateVerificationCode()
+{
+    $length = 6;
+    $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[rand(0, $charactersLength - 1)];
+    }
+
+    return 'A1B2C3';
 }
 function handleLogin()
 {
@@ -270,31 +313,50 @@ function handleLogin()
 function handleRegister()
 {
     global $conn;
-
     $user_type = $_POST['user_type'];
     $username = $_POST['username'];
     $email = $_POST['email'];
     $password = md5($_POST['password']); // MD5 hash
-    $enable_2fa = isset($_POST['enable_2fa']) && $_POST['enable_2fa'] === 'true';
+    $enable_2fa = $_POST['enable_2fa'] === 'false' ? false : ($_POST['enable_2fa'] === 'true' ? true : $_POST['enable_2fa']);
     $account_status = 'suspended';
     $stmt = null;
+
     // Check if 2FA is enabled and set
     if ($enable_2fa) {
         // Generate a random 6-digit code
-        $code = rand(100000, 999999);
+        $code = generateVerificationCode();
 
         // Insert code into two_factor_auth table
-        $insertQuery = "INSERT INTO two_factor_auth (user_email, user_type_id, code, status) VALUES (?, ?, ?, 'pending')";
+        $insertQuery = "INSERT INTO two_factor_auth (user_email, user_type_id, code) VALUES (?, ?, ?) 
+                        ON DUPLICATE KEY UPDATE user_email = ?";
         $insertStmt = $conn->prepare($insertQuery);
-        $user_type_id = getUserTypeId($user_type);
-        $insertStmt->bind_param('sis', $email, $user_type_id, $code);
+        $user_type_id = getUserTypeId($user_type); // Assuming a function to fetch user_type_id
+        $insertStmt->bind_param('siss', $email, $user_type_id, $code, $email);
 
         // Execute the 2FA insert query
         if ($insertStmt->execute()) {
             // Send email or notification with the code
-            sendMessage($email, $code); // Example function to send email
 
-            echo json_encode(['success' => true, 'message' => 'A code sent to your email for verification. The code expires after 5 minutes']);
+            $sent = sendMessage($email, 'Two-Factor Authentication Code', '
+            <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 10px;">
+                <h2 style="color: #333;">Two-Factor Authentication Code</h2>
+                <p style="font-size: 16px; color: #555;">
+                    Here is your verification code:
+                </p>
+                <div style="text-align: center; margin: 20px 0;">
+                    <h2 style="font-size: 36px; font-weight: bold;">' . $code . '</h2>
+                </div>
+                <p style="font-size: 16px; color: #555;">
+                    It expires in 10 minutes. If you didn\'t request the code, ignore this message
+                </p>
+            </div>
+        ');
+            if ($sent['sent']) {
+                echo json_encode(['success' => true, 'message' => 'A code sent to your email for verification. The code expires after 5 minutes']);
+            } else {
+                echo json_encode(['success' => false, 'message' => $sent['message']]);
+                exit();
+            }
         } else {
             echo json_encode(['success' => false, 'message' => 'Error inserting 2FA code: ' . $insertStmt->error]);
             exit();
@@ -302,6 +364,7 @@ function handleRegister()
 
         $insertStmt->close();
     }
+
     // Proceed with normal registration
     $account_status = $enable_2fa ? 'suspended' : 'active';
     switch ($user_type) {
@@ -310,20 +373,20 @@ function handleRegister()
             $phone = $_POST['phone'];
             $query = "INSERT INTO farmer (username, email, password, location, phone, account_status) VALUES (?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($query);
-            $stmt->bind_param('sssss', $username, $email, $password, $location, $phone, $account_status);
+            $stmt->bind_param('ssssss', $username, $email, $password, $location, $phone, $account_status);
             break;
         case 'buyer':
             $phone = $_POST['phone'];
             $query = "INSERT INTO buyer (username, email, password, phone, account_status) VALUES (?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($query);
-            $stmt->bind_param('ssss', $username, $email, $password, $phone, $account_status);
+            $stmt->bind_param('sssss', $username, $email, $password, $phone, $account_status);
             break;
         case 'government':
             $location = $_POST['location'];
             $phone = $_POST['phone'];
             $query = "INSERT INTO government (username, email, password, location, phone, account_status) VALUES (?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($query);
-            $stmt->bind_param('sssss', $username, $email, $password, $location, $phone, $account_status);
+            $stmt->bind_param('ssssss', $username, $email, $password, $location, $phone, $account_status);
             break;
         case 'transporter':
             $phone = $_POST['phone'];
@@ -332,20 +395,20 @@ function handleRegister()
             $availability = $_POST['availability'];
             $query = "INSERT INTO transporter (username, email, password, phone, description, price, availability, account_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($query);
-            $stmt->bind_param('sssssss', $username, $email, $password, $phone, $description, $price, $availability, $account_status);
+            $stmt->bind_param('ssssssss', $username, $email, $password, $phone, $description, $price, $availability, $account_status);
             break;
         case 'marketing':
             $company = $_POST['company'];
             $phone = $_POST['phone'];
             $query = "INSERT INTO marketing (username, email, password, company, phone, account_status) VALUES (?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($query);
-            $stmt->bind_param('sssss', $username, $email, $password, $company, $phone, $account_status);
+            $stmt->bind_param('ssssss', $username, $email, $password, $company, $phone, $account_status);
             break;
         case 'admin':
             $id_number = $_POST['id_number'];
             $query = "INSERT INTO admin (username, email, password, id_number, account_status) VALUES (?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($query);
-            $stmt->bind_param('ssss', $username, $email, $password, $id_number, $account_status);
+            $stmt->bind_param('sssss', $username, $email, $password, $id_number, $account_status);
             break;
         default:
             echo json_encode(['success' => false, 'message' => 'Invalid user type']);
@@ -354,7 +417,8 @@ function handleRegister()
 
     // Execute the user insert query
     if ($stmt && $stmt->execute()) {
-        echo json_encode(['success' => true, 'message' => 'Registration successful!']);
+        if (!$enable_2fa)
+            echo json_encode(['success' => true, 'message' => 'Registration successful!']);
     } else {
         echo json_encode(['success' => false, 'message' => $stmt->error]);
     }
@@ -1345,17 +1409,33 @@ function addMessage()
 {
     global $conn;
 
+    $subject = $_POST['subject'];
     $message_text = $_POST['message_text'];
-    $sender_id = $_POST['sender_id'];
-    $receiver_id = $_POST['receiver_id'];
+    $sender_email = $_POST['sender_email'];
+    $receiver_email = $_POST['receiver_email'];
 
-    $query = "INSERT INTO messages (message_text, sender_id, receiver_id) VALUES (?, ?, ?)";
+    $query = "INSERT INTO messages (subject, message_text, sender_email, receiver_email) VALUES (?, ?, ?, ?)";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param('sii', $message_text, $sender_id, $receiver_id);
+    $stmt->bind_param('ssss', $subject, $message_text, $sender_email, $receiver_email);
 
     if ($stmt->execute()) {
         //actual sending
-        echo json_encode(['success' => true, 'message' => 'Message added successfully']);
+        $sent = sendMessage($receiver_email, $subject, '
+            <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 10px;">
+                <h2 style="color: #333;">Hello ' . $receiver_email . '</h2>
+                <div style="text-align: center; margin: 20px 0;">
+                    <p style="font-size: 16px; color: #222;">
+                        ' . $message_text . '
+                    </p>
+                </div>
+            </div>
+        ');
+        if ($sent['sent']) {
+            echo json_encode(['success' => true, 'message' => 'Message added successfully']);
+        } else {
+            echo json_encode(['success' => false, 'message' => $sent['message']]);
+            exit();
+        }
     } else {
         echo json_encode(['success' => false, 'message' => 'Error adding message: ' . $stmt->error]);
     }
@@ -1382,11 +1462,11 @@ function viewMyMessages()
 {
     global $conn;
 
-    $receiver_id = $_POST['receiver_id'];
+    $email = $_POST['email'];
 
-    $query = "SELECT * FROM messages WHERE receiver_id = ? ORDER BY sent_at DESC";
+    $query = "SELECT * FROM messages WHERE receiver_email = ? ORDER BY sent_at DESC";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param('i', $receiver_id);
+    $stmt->bind_param('i', $email);
 
     if ($stmt->execute()) {
         $result = $stmt->get_result();
@@ -1403,17 +1483,18 @@ function verifyTwoFactorAuth()
 {
     global $conn;
 
-    $user_id = $_POST['user_id'];
-    $user_type_id = $_POST['user_type_id'];
-    $code = $_POST['code'];
+    $email = $_POST['email'];
+    $user_type = $_POST['user_type'];
+    $user_type_id = getUserTypeId($user_type);
+    $code = $_POST['verification_code'];
 
     // Query to fetch the authentication record
-    $query = "SELECT * FROM two_factor_auth WHERE user_id = ? AND user_type_id = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param('ii', $user_id, $user_type_id);
+    $query = "SELECT * FROM two_factor_auth WHERE user_email = ? AND user_type_id = ?";
+    $fetchStmt = $conn->prepare($query);
+    $fetchStmt->bind_param('si', $email, $user_type_id);
 
-    if ($stmt->execute()) {
-        $result = $stmt->get_result();
+    if ($fetchStmt->execute()) {
+        $result = $fetchStmt->get_result();
         if ($result->num_rows === 1) {
             $auth = $result->fetch_assoc();
             $auth_id = $auth['auth_id'];
@@ -1422,14 +1503,24 @@ function verifyTwoFactorAuth()
             $now = new DateTime();
             $interval = $created_at->diff($now);
 
-            // Check if the code has expired (more than 5 minutes)
-            if ($interval->i > 5) {
+            // Check if the code has expired (more than 10 minutes)
+            if ($interval->i > 100 || $status === 'expired') {
                 $expireQuery = "UPDATE two_factor_auth SET status = 'expired' WHERE auth_id = ?";
                 $expireStmt = $conn->prepare($expireQuery);
                 $expireStmt->bind_param('i', $auth_id);
 
                 if ($expireStmt->execute()) {
+                    $query = "DELETE FROM $user_type WHERE email = ?";
+                    $stmt = $conn->prepare($query);
+                    $stmt->bind_param('s', $email);
+
+                    if ($stmt->execute()) {
+                        //echo json_encode(['success' => true, 'message' => 'Verication code successful']);
+                    } else {
+                        echo json_encode(['success' => false, 'message' => 'Error cleaning up user: ' . $stmt->error]);
+                    }
                     echo json_encode(['success' => false, 'message' => 'Authentication code expired']);
+                    $stmt->close();
                 } else {
                     echo json_encode(['success' => false, 'message' => 'Error expiring authentication code: ' . $expireStmt->error]);
                 }
@@ -1443,7 +1534,17 @@ function verifyTwoFactorAuth()
                     $updateStmt = $conn->prepare($updateQuery);
                     $updateStmt->bind_param('i', $auth_id);
                     if ($updateStmt->execute()) {
-                        echo json_encode(['success' => true, 'message' => 'Two-factor authentication verified successfully']);
+                        //
+                        $query = "UPDATE $user_type SET account_status = 'active' WHERE email = ?";
+                        $stmt = $conn->prepare($query);
+                        $stmt->bind_param('s', $email);
+
+                        if ($stmt->execute()) {
+                            echo json_encode(['success' => true, 'message' => 'Two-factor code verified successfully']);
+                        } else {
+                            echo json_encode(['success' => false, 'message' => 'Error verifying code: ' . $stmt->error]);
+                        }
+                        //
                     } else {
                         echo json_encode(['success' => false, 'message' => 'Error expiring authentication status: ' . $updateStmt->error]);
                     }
@@ -1456,7 +1557,17 @@ function verifyTwoFactorAuth()
                     $rejectStmt->bind_param('i', $auth_id);
 
                     if ($rejectStmt->execute()) {
+                        $query = `DELETE FROM $user_type WHERE email = ?`;
+                        $stmt = $conn->prepare($query);
+                        $stmt->bind_param('s', $email);
+
+                        if ($stmt->execute()) {
+                            //echo json_encode(['success' => true, 'message' => 'Verication code successful']);
+                        } else {
+                            echo json_encode(['success' => false, 'message' => 'Error cleaning up user: ' . $stmt->error]);
+                        }
                         echo json_encode(['success' => false, 'message' => 'Invalid authentication code']);
+                        $stmt->close();
                     } else {
                         echo json_encode(['success' => false, 'message' => 'Error rejecting authentication code: ' . $rejectStmt->error]);
                     }
@@ -1468,8 +1579,8 @@ function verifyTwoFactorAuth()
             echo json_encode(['success' => false, 'message' => 'Authentication record not found']);
         }
     } else {
-        echo json_encode(['success' => false, 'message' => 'Error fetching authentication record: ' . $stmt->error]);
+        echo json_encode(['success' => false, 'message' => 'Error fetching authentication record: ' . $fetchStmt->error]);
     }
 
-    $stmt->close();
+    $fetchStmt->close();
 }

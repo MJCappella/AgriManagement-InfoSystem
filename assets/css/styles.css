@@ -67,3 +67,7 @@ footer {
     display: block;
     margin-bottom: 5px;
 }
+
+.two-fa-section {
+    display: none;
+}

@@ -75,11 +75,34 @@ $conn->close();
             </div>
         </div>
     </div>
-    <div id="additional-fields" class="form-group"></div><br>
+    <div id="additional-fields" class="form-group"></div>
+    <div class="form-group mb-2">
+        <label for="enable_2fa">
+            <input type="checkbox" id="enable_2fa" name="status_2fa"> Enable Two-Factor Authentication
+        </label>
+    </div>
     <button type="button" class="btn btn-primary" onclick="submitRegForm()">Register</button>
     <button class="btn btn-success" type="button" onclick="window.location.href='login.php'" id="register">I already have an account</button>
 
 </form>
+
+<!-- Verification code section, initially hidden -->
+<div id="verification-section" style="display: none;">
+    <h3>Enter Verification Code</h3>
+    <form id="verification-form" class="needs-validation" novalidate>
+        <input type="hidden" id="v_action" name="action" value="verify-code">
+        <input type="hidden" id="v_user_type" name="user_type" value="farmer">
+        <input type="hidden" id="v_email" name="email" value="example@email.com">
+        <div class="form-group mb-2">
+            <label for="verification_code">Verification Code:</label>
+            <input type="text" id="verification_code" name="verification_code" class="form-control" required>
+            <div class="invalid-feedback">
+                Please enter the verification code sent to your email.
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary" onclick="submitVerificationForm()">Verify</button>
+    </form>
+</div>
 
 <script>
     function togglePwd() {
@@ -104,8 +127,17 @@ $conn->close();
 
         myForm.classList.remove('was-validated');
 
+        $('#v_action').val('verify-code');
+        $('#v_user_type').val($('#user_type').val());
+        $('#v_email').val($('#email').val());
         var formData = $(myForm).serialize();
-
+        if ($('#enable_2fa').prop('checked')) {
+            formData=formData.substring(0, formData.lastIndexOf('&'));
+            formData+='&enable_2fa=true';
+        } else {
+            formData+='&enable_2fa=false';
+        }
+        console.log(formData);
         $.ajax({
             url: '/amis-project-/pages/routes.php',
             type: 'POST',
@@ -116,6 +148,49 @@ $conn->close();
                 var alertPlaceholder = $('#alert-placeholder');
                 console.log(data);
                 if (registrationSuccessful) {
+                    if ($('#enable_2fa').is(':checked')) {
+                        $('#registration-form').hide();
+                        $('#verification-section').show();
+                        alertPlaceholder.html('<div class="alert alert-success" role="alert">'+ data.message +'</div>');
+                    } else {
+                        alertPlaceholder.html('<div class="alert alert-success" role="alert">'+ data.message +' Redirecting...</div>');
+                        setTimeout(() => {
+                            window.location.href = 'login.php';
+                        }, 1000);
+                    }
+                } else {
+                    alertPlaceholder.html('<div class="alert alert-danger" role="alert">' + data.message + '</div>');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Registration error:', error);
+                $('#alert-placeholder').html('<div class="alert alert-danger" role="alert">An error occurred during registration. Please try again.</div>');
+            }
+        });
+    }
+
+    function submitVerificationForm(){
+        var verificationForm = document.getElementById('verification-form');
+
+        if (verificationForm.checkValidity() === false) {
+            verificationForm.classList.add('was-validated');
+            return;
+        }
+
+        verificationForm.classList.remove('was-validated');
+
+        var formData = $(verificationForm).serialize();
+        console.log(formData);
+        $.ajax({
+            url: '/amis-project-/pages/routes.php', // Update with your verification endpoint
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                var data = JSON.parse(response);
+                var verificationSuccessful = data.success;
+                var alertPlaceholder = $('#alert-placeholder');
+                console.log(data);
+                if (verificationSuccessful) {
                     alertPlaceholder.html('<div class="alert alert-success" role="alert">'+ data.message +' Redirecting...</div>');
                     setTimeout(() => {
                         window.location.href = 'login.php';
@@ -125,8 +200,8 @@ $conn->close();
                 }
             },
             error: function(xhr, status, error) {
-                console.error('Registration error:', error);
-                $('#alert-placeholder').html('<div class="alert alert-danger" role="alert">An error occurred during registration. Please try again.</div>');
+                console.error('Verification error:', error);
+                $('#alert-placeholder').html('<div class="alert alert-danger" role="alert">An error occurred during verification. Please try again.</div>');
             }
         });
     }
@@ -228,28 +303,10 @@ $conn->close();
                         <div class="invalid-feedback">Please enter your ID number.</div>
                     </div>`;
                 break;
-            default:
+                default:
                 break;
         }
     });
-
-    // Bootstrap validation
-    (function() {
-        'use strict';
-        window.addEventListener('load', function() {
-            var forms = document.getElementsByClassName('needs-validation');
-            Array.prototype.filter.call(forms, function(form) {
-                form.addEventListener('submit', function(event) {
-                    if (form.checkValidity() === false) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                    }
-                    form.classList.add('was-validated');
-                }, false);
-            });
-        }, false);
-    })();
 </script>
-
 
 <?php include('../includes/footer.php'); ?>

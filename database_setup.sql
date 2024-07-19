@@ -30,7 +30,7 @@ CREATE TABLE two_factor_auth (
     user_email VARCHAR(100) UNIQUE,
     user_type_id INT,
     code VARCHAR(6),
-    status ENUM('pending', 'verified', 'expired', 'rejected') NOT NULL,
+    status ENUM('pending', 'verified', 'expired', 'rejected') NOT NULL DEFAULT 'pending',
     sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     verified_at TIMESTAMP,
     FOREIGN KEY (user_type_id) REFERENCES user_type_tbl(user_type_id)
@@ -192,7 +192,7 @@ CREATE TABLE demand_trends (
     trend_id INT PRIMARY KEY AUTO_INCREMENT,
     crop_id INT,
     demand INT,
-    date NOT NULL,
+    date DATE NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     created_by INT,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -243,9 +243,10 @@ CREATE TABLE forex (
 
 CREATE TABLE messages (
     message_id INT AUTO_INCREMENT PRIMARY KEY,
+    subject TEXT NOT NULL,
     message_text TEXT NOT NULL,
-    sender_id INT NOT NULL,
-    receiver_id INT NOT NULL,
+    sender_email VARCHAR(20) NOT NULL,
+    receiver_email VARCHAR(20) NOT NULL,
     sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

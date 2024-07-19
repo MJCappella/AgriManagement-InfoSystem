@@ -9,24 +9,497 @@
 		{
 			"name": "LOGOUT",
 			"request": {
-				"method": "GET",
-				"header": []
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "action",
+							"value": "logout",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/amis-project-/pages/routes.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"amis-project-",
+						"pages",
+						"routes.php"
+					]
+				}
 			},
 			"response": []
 		},
 		{
+			"name": "REGISTER",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "action",
+							"value": "logout",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/amis-project-/pages/routes.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"amis-project-",
+						"pages",
+						"routes.php"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "FARMER",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "action",
+									"value": "logout",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/amis-project-/pages/routes.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"amis-project-",
+								"pages",
+								"routes.php"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "2FA",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "action",
+									"value": "logout",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/amis-project-/pages/routes.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"amis-project-",
+								"pages",
+								"routes.php"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "BUYER",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "action",
+									"value": "register",
+									"type": "text"
+								},
+								{
+									"key": "user_type",
+									"value": "buyer",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "John Doe",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "johndoe@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "721878789",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/amis-project-/pages/routes.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"amis-project-",
+								"pages",
+								"routes.php"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "GOVERNMENT",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "action",
+									"value": "register",
+									"type": "text"
+								},
+								{
+									"key": "user_type",
+									"value": "government",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "John Doe",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "johndoe@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "e10adc3949ba59abbe56e057f20f883e",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "721878789",
+									"type": "text"
+								},
+								{
+									"key": "location",
+									"value": "Nairobi",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/amis-project-/pages/routes.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"amis-project-",
+								"pages",
+								"routes.php"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "TRANSPORTER",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "action",
+									"value": "register",
+									"type": "text"
+								},
+								{
+									"key": "user_type",
+									"value": "government",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "John Doe",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "johndoe@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "e10adc3949ba59abbe56e057f20f883e",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "721878789",
+									"type": "text"
+								},
+								{
+									"key": "location",
+									"value": "Nairobi",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/amis-project-/pages/routes.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"amis-project-",
+								"pages",
+								"routes.php"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "MARKETING",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "action",
+									"value": "register",
+									"type": "text"
+								},
+								{
+									"key": "user_type",
+									"value": "government",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "John Doe",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "johndoe@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "e10adc3949ba59abbe56e057f20f883e",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "721878789",
+									"type": "text"
+								},
+								{
+									"key": "location",
+									"value": "Nairobi",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/amis-project-/pages/routes.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"amis-project-",
+								"pages",
+								"routes.php"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "ADMIN",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "action",
+									"value": "register",
+									"type": "text"
+								},
+								{
+									"key": "user_type",
+									"value": "government",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "John Doe",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "johndoe@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "e10adc3949ba59abbe56e057f20f883e",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "721878789",
+									"type": "text"
+								},
+								{
+									"key": "location",
+									"value": "Nairobi",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/amis-project-/pages/routes.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"amis-project-",
+								"pages",
+								"routes.php"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
 			"name": "LOGIN",
 			"request": {
-				"method": "GET",
-				"header": []
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "action",
+							"value": "login",
+							"type": "text"
+						},
+						{
+							"key": "user_type",
+							"value": "farmer",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "John Doe",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/amis-project-/pages/routes.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"amis-project-",
+						"pages",
+						"routes.php"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "DASHBOARD",
 			"request": {
-				"method": "GET",
-				"header": []
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/amis-project-/pages/dashboard.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"amis-project-",
+						"pages",
+						"dashboard.php"
+					]
+				}
 			},
 			"response": []
 		},
@@ -159,6 +632,439 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "FETCH FOREX",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "action",
+							"value": "delete-crop",
+							"type": "text"
+						},
+						{
+							"key": "cropname",
+							"value": "Tomato",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/amis-project-/pages/routes.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"amis-project-",
+						"pages",
+						"routes.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "YIELDS",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "action",
+							"value": "delete-crop",
+							"type": "text"
+						},
+						{
+							"key": "cropname",
+							"value": "Tomato",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/amis-project-/pages/routes.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"amis-project-",
+						"pages",
+						"routes.php"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "GET",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "action",
+									"value": "delete-crop",
+									"type": "text"
+								},
+								{
+									"key": "cropname",
+									"value": "Tomato",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/amis-project-/pages/routes.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"amis-project-",
+								"pages",
+								"routes.php"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "ADD",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "action",
+									"value": "delete-crop",
+									"type": "text"
+								},
+								{
+									"key": "cropname",
+									"value": "Tomato",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/amis-project-/pages/routes.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"amis-project-",
+								"pages",
+								"routes.php"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "UPDATE",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "action",
+									"value": "update-yield",
+									"type": "text"
+								},
+								{
+									"key": "yield_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "farmer_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "crop_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "quantity",
+									"value": "200",
+									"type": "text"
+								},
+								{
+									"key": "harvest_date",
+									"value": "2024-07-19",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/amis-project-/pages/routes.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"amis-project-",
+								"pages",
+								"routes.php"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "DELETE",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "action",
+									"value": "update-yield",
+									"type": "text"
+								},
+								{
+									"key": "yield_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "farmer_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "crop_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "quantity",
+									"value": "200",
+									"type": "text"
+								},
+								{
+									"key": "harvest_date",
+									"value": "2024-07-19",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/amis-project-/pages/routes.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"amis-project-",
+								"pages",
+								"routes.php"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "MESSAGES",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "action",
+							"value": "delete-crop",
+							"type": "text"
+						},
+						{
+							"key": "cropname",
+							"value": "Tomato",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/amis-project-/pages/routes.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"amis-project-",
+						"pages",
+						"routes.php"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "GET ALL",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "action",
+									"value": "delete-crop",
+									"type": "text"
+								},
+								{
+									"key": "cropname",
+									"value": "Tomato",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/amis-project-/pages/routes.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"amis-project-",
+								"pages",
+								"routes.php"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "GET ONE",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "action",
+									"value": "delete-crop",
+									"type": "text"
+								},
+								{
+									"key": "cropname",
+									"value": "Tomato",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/amis-project-/pages/routes.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"amis-project-",
+								"pages",
+								"routes.php"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "SEND",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "action",
+									"value": "update-yield",
+									"type": "text"
+								},
+								{
+									"key": "yield_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "farmer_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "crop_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "quantity",
+									"value": "200",
+									"type": "text"
+								},
+								{
+									"key": "harvest_date",
+									"value": "2024-07-19",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/amis-project-/pages/routes.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"amis-project-",
+								"pages",
+								"routes.php"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
 		}
 	]
 }
