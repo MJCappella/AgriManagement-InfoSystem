@@ -1,16 +1,17 @@
 <?php
 session_start();
 
-function isLoggedIn() {
+function isLoggedIn($user_types) {
     if (isset($_SESSION['user_id'])) {
-        //echo $_SESSION['user_type'];
+        if(in_array($_SESSION['user_type'],$user_types))
         return true;
     }
     return false;
 }
 
-function login($user_id, $user_type) {
+function login($user_id, $username, $user_type) {
     $_SESSION['user_id'] = $user_id;
+    $_SESSION['username'] = $username;
     $_SESSION['user_type'] = $user_type;
 }
 
@@ -29,9 +30,9 @@ function getCurrentUserType() {
 }
 
 // Redirect to login page if user is not logged in
-function ensureLoggedIn() {
-    if (!isLoggedIn()) {
-        echo '{"success":false, message:"You must be logged in"}';
+function ensureLoggedIn($user_type) {
+    if (!isLoggedIn([$user_type])) {
+        echo '{"success":false, message:"You must be logged in as '.$user_type.'"}';
         header('Location: /amis-project-/pages/login.php');
         exit();
     }

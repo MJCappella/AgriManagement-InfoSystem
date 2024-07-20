@@ -6,7 +6,6 @@ include('../lib/mailing/vendor/autoload.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $m = json_encode(array('success' => false, 'message' => 'You must be logged in'));
     switch ($_POST['action']) {
         case 'login':
             handleLogin();
@@ -18,222 +17,334 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             handleLogout();
             break;
         case 'add-crop':
-            isLoggedIn() ? addCrop() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['farmer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? addCrop() : '';
+            display_login_request($logged, $authorized_users);
             break;
         case 'delete-crop':
-            isLoggedIn() ? deleteCrop() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['farmer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? deleteCrop() : '';
+            display_login_request($logged, $authorized_users);
             break;
         case 'update-crop':
-            isLoggedIn() ? updateCrop() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['farmer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? updateCrop() : '';
+            display_login_request($logged, $authorized_users);
             break;
         case 'get-crop':
-            isLoggedIn() ? getCrops() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['farmer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? getCrops() : '';
+            display_login_request($logged, $authorized_users);
             break;
         case 'update-forex':
-            isLoggedIn() ? updateForex() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['farmer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? updateForex() : '';
+            display_login_request($logged, $authorized_users);
             break;
         case 'fetch-forex':
-            isLoggedIn() ? fetchForex() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['farmer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? fetchForex() : '';
+            display_login_request($logged, $authorized_users);
             break;
         case 'get-yields':
-            isLoggedIn() ? getYields() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['farmer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? getYields() : '';
+            display_login_request($logged, $authorized_users);
             break;
         case 'get-yield':
-            isLoggedIn() ? getYield() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['farmer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? getYield() : '';
+            display_login_request($logged, $authorized_users);
             break;
         case 'add-yield':
-            isLoggedIn() ? addYield() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['farmer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? addYield() : '';
+            display_login_request($logged, $authorized_users);
             break;
         case 'update-yield':
-            isLoggedIn() ? updateYield() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['farmer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? updateYield() : '';
+            display_login_request($logged, $authorized_users);
             break;
         case 'delete-yield':
-            isLoggedIn() ? deleteYield() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['farmer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? deleteYield() : '';
+            display_login_request($logged, $authorized_users);
             break;
         case 'get-feedback':
-            isLoggedIn() ? getAllFeedback() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['farmer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? getAllFeedback() : '';
+            display_login_request($logged, $authorized_users);
             break;
         case 'get-feedback-buyer':
-            isLoggedIn() ? getFeedbackByBuyer() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['farmer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? getFeedbackByBuyer() : '';
+            display_login_request($logged, $authorized_users);
             break;
         case 'get-feedback-farmer':
-            isLoggedIn() ? getFeedbackByFarmer() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['farmer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? getFeedbackByFarmer() : '';
+            display_login_request($logged, $authorized_users);
             break;
         case 'add-feedback':
-            isLoggedIn() ? addFeedback() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['farmer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? addFeedback() : '';
+            display_login_request($logged, $authorized_users);
             break;
         case 'update-feedback':
-            isLoggedIn() ? updateFeedback() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['farmer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? updateFeedback() : '';
+            display_login_request($logged, $authorized_users);
             break;
         case 'delete-feedback':
-            isLoggedIn() ? deleteFeedback() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['farmer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? deleteFeedback() : '';
+            display_login_request($logged, $authorized_users);
             break;
         case 'get-crop-market-price':
-            isLoggedIn() ? getCropMarketPrice() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['farmer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? getCropMarketPrice() : '';
+            display_login_request($logged, $authorized_users);
             break;
 
         case 'get-market-prices':
-            isLoggedIn() ? getMarketPrices() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['farmer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? getMarketPrices() : '';
+            display_login_request($logged, $authorized_users);
             break;
 
         case 'update-crop-market-price':
-            isLoggedIn() ? updateCropMarketPrice() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['farmer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? updateCropMarketPrice() : '';
+            display_login_request($logged, $authorized_users);
             break;
 
         case 'add-crop-market-price':
-            isLoggedIn() ? addCropMarketPrice() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['farmer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? addCropMarketPrice() : '';
+            display_login_request($logged, $authorized_users);
             break;
         case 'get-compliance-certificates':
-            isLoggedIn() ? getComplianceCertificates() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['farmer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? getComplianceCertificates() : '';
+            display_login_request($logged, $authorized_users);
             break;
 
         case 'update-certificate':
-            isLoggedIn() ? updateCertificate() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['farmer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? updateCertificate() : '';
+            display_login_request($logged, $authorized_users);
             break;
 
         case 'get-farmer-compliance-certificate':
-            isLoggedIn() ? getFarmerComplianceCertificate() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['farmer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? getFarmerComplianceCertificate() : '';
+            display_login_request($logged, $authorized_users);
             break;
         case 'add-transaction':
-            isLoggedIn() ? addTransaction() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['farmer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? addTransaction() : '';
+            display_login_request($logged, $authorized_users);
             break;
 
         case 'update-transaction':
-            isLoggedIn() ? updateTransaction() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['farmer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? updateTransaction() : '';
+            display_login_request($logged, $authorized_users);
             break;
 
         case 'get-transaction':
-            isLoggedIn() ? getTransaction() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['farmer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? getTransaction() : '';
+            display_login_request($logged, $authorized_users);
             break;
         case 'verify-transactions':
-            isLoggedIn() ? verifyTransactions() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['farmer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? verifyTransactions() : '';
+            display_login_request($logged, $authorized_users);
             break;
         case 'get-all-orders':
-            isLoggedIn() ? getAllOrders() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['farmer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? getAllOrders() : '';
+            display_login_request($logged, $authorized_users);
             break;
 
         case 'get-orders-by-crop':
-            isLoggedIn() ? getOrdersByCrop() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['farmer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? getOrdersByCrop() : '';
+            display_login_request($logged, $authorized_users);
             break;
 
         case 'get-orders-by-farmer':
-            isLoggedIn() ? getOrdersByFarmer() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['farmer','buyer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? getOrdersByFarmer() : '';
+            display_login_request($logged, $authorized_users);
             break;
 
         case 'get-orders-by-buyer':
-            isLoggedIn() ? getOrdersByBuyer() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['buyer','admin'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? getOrdersByBuyer() : '';
+            display_login_request($logged, $authorized_users);
             break;
 
         case 'add-order':
-            isLoggedIn() ? addOrder() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['buyer','admin'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? addOrder() : '';
+            display_login_request($logged, $authorized_users);
             break;
 
         case 'update-order':
-            isLoggedIn() ? updateOrder() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['farmer','buyer','admin'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? updateOrder() : '';
+            display_login_request($logged, $authorized_users);
             break;
 
         case 'update-order-status':
-            isLoggedIn() ? updateOrderStatus() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['farmer','buyer','admin'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? updateOrderStatus() : '';
+            display_login_request($logged, $authorized_users);
             break;
         case 'add-crop-demand':
-            isLoggedIn() ? addCropDemand() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['admin'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? addCropDemand() : '';
+            display_login_request($logged, $authorized_users);
             break;
 
         case 'get-crop-demand':
-            isLoggedIn() ? getCropDemand() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['farmer','admin','buyer','government','marketing'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? getCropDemand() : '';
+            display_login_request($logged, $authorized_users);
             break;
 
         case 'get-demand-trends':
-            isLoggedIn() ? getDemandTrends() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['farmer','admin','buyer','government','marketing'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? getDemandTrends() : '';
+            display_login_request($logged, $authorized_users);
             break;
 
         case 'add-crop-market-trend':
-            isLoggedIn() ? addCropMarketTrend() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['admin'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? addCropMarketTrend() : '';
+            display_login_request($logged, $authorized_users);
             break;
 
         case 'get-crop-market-trend':
-            isLoggedIn() ? getCropMarketTrend() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['farmer','admin','buyer','government','marketing'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? getCropMarketTrend() : '';
+            display_login_request($logged, $authorized_users);
             break;
 
         case 'get-market-trends':
-            isLoggedIn() ? getMarketTrends() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['farmer','admin','buyer','government','marketing'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? getMarketTrends() : '';
+            display_login_request($logged, $authorized_users);
             break;
 
         case 'add-message':
-            isLoggedIn() ? addMessage() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['admin'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? addMessage() : '';
+            display_login_request($logged, $authorized_users);
             break;
 
         case 'view-messages':
-            isLoggedIn() ? viewMessages() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['admin'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? viewMessages() : '';
+            display_login_request($logged, $authorized_users);
             break;
 
         case 'view-my-messages':
-            isLoggedIn() ? viewMyMessages() : '';
-            echo isLoggedIn() ? '' : $m;
+            $authorized_users = ['farmer', 'buyer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? viewMyMessages() : '';
+            display_login_request($logged, $authorized_users);
             break;
         case 'verify-code':
             verifyTwoFactorAuth();
             break;
+        case 'subscribe':
+            $authorized_users = ['buyer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? subscribe() : '';
+            display_login_request($logged, $authorized_users);
+            break;
+        case 'unsubscribe':
+            $authorized_users = ['buyer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged ? unsubscribe() : '';
+            display_login_request($logged, $authorized_users);
+            break;
     }
 }
 
-function sendMessage($recipient, $subject, $message)
+function display_login_request($logged, $user_types)
 {
-    // Create the Transport
+    $user_types_str = implode(', ', $user_types); // Convert array to string
+    $message = json_encode(array('success' => false, 'message' => 'You must be logged in as ' . $user_types_str));
+    if (!$logged) {
+        echo $message;
+    }
+}
+
+function sendMessage($recipients, $subject, $message)
+{
+    // Ensure $recipients is an array, even if a single email is passed
+    if (!is_array($recipients)) {
+        $recipients = [$recipients];
+    }
+
     $transport = (new Swift_SmtpTransport('smtp.gmail.com', 465, "ssl"))
         ->setUsername(SENDER_EMAIL)
         ->setPassword(SENDER_PASSWORD);
 
-    // Create the Mailer using your created Transport
     $mailer = new Swift_Mailer($transport);
 
     // Create a message
     $message = (new Swift_Message($subject))
         ->setFrom([SENDER_EMAIL => 'AMIS INFO'])
-        ->setTo([$recipient => 'A name'])
+        ->setTo($recipients)
         ->setBody($message, 'text/html');
 
     // Send the message
@@ -245,6 +356,7 @@ function sendMessage($recipient, $subject, $message)
     }
     return ['sent' => false, 'message' => 'Error sending email code'];
 }
+
 function getUserTypeId($user_type)
 {
     switch ($user_type) {
@@ -276,7 +388,7 @@ function generateVerificationCode()
         $randomString .= $characters[rand(0, $charactersLength - 1)];
     }
 
-    return 'A1B2C3';
+    return $randomString;
 }
 function handleLogin()
 {
@@ -297,7 +409,7 @@ function handleLogin()
         $user = $result->fetch_assoc();
         if ($password === $user['password']) {
             $id = reset($user);
-            login($id, $username . '-' . $user_type);
+            login($id, $username, $user_type);
             echo '{"success":true, "message": "login successful"}';
         } else {
             echo '{"success":false, "message": "Invalid password"}';
@@ -337,7 +449,7 @@ function handleRegister()
         if ($insertStmt->execute()) {
             // Send email or notification with the code
 
-            $sent = sendMessage($email, 'Two-Factor Authentication Code', '
+            $sent = sendMessage([$email], 'Two-Factor Authentication Code', '
             <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 10px;">
                 <h2 style="color: #333;">Two-Factor Authentication Code</h2>
                 <p style="font-size: 16px; color: #555;">
@@ -1411,16 +1523,15 @@ function addMessage()
 
     $subject = $_POST['subject'];
     $message_text = $_POST['message_text'];
-    $sender_email = $_POST['sender_email'];
     $receiver_email = $_POST['receiver_email'];
 
-    $query = "INSERT INTO messages (subject, message_text, sender_email, receiver_email) VALUES (?, ?, ?, ?)";
+    $query = "INSERT INTO messages (subject, message_text, receiver_email) VALUES (?, ?, ?)";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param('ssss', $subject, $message_text, $sender_email, $receiver_email);
+    $stmt->bind_param('sss', $subject, $message_text, $receiver_email);
 
     if ($stmt->execute()) {
         //actual sending
-        $sent = sendMessage($receiver_email, $subject, '
+        $sent = sendMessage([$receiver_email], $subject, '
             <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 10px;">
                 <h2 style="color: #333;">Hello ' . $receiver_email . '</h2>
                 <div style="text-align: center; margin: 20px 0;">
@@ -1431,13 +1542,13 @@ function addMessage()
             </div>
         ');
         if ($sent['sent']) {
-            echo json_encode(['success' => true, 'message' => 'Message added successfully']);
+            echo json_encode(['success' => true, 'message' => 'Message sent successfully']);
         } else {
             echo json_encode(['success' => false, 'message' => $sent['message']]);
             exit();
         }
     } else {
-        echo json_encode(['success' => false, 'message' => 'Error adding message: ' . $stmt->error]);
+        echo json_encode(['success' => false, 'message' => 'Error adding message to db: ' . $stmt->error]);
     }
 
     $stmt->close();
@@ -1583,4 +1694,42 @@ function verifyTwoFactorAuth()
     }
 
     $fetchStmt->close();
+}
+
+function subscribe()
+{
+    global $conn;
+
+    $email = $_POST['email'];
+
+    $query = "UPDATE buyer SET subscription = 'subscribed' WHERE email = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param('s', $email);
+
+    if ($stmt->execute()) {
+        echo json_encode(['success' => true, 'message' => 'Subscription status updated to subscribed']);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Error updating subscription status: ' . $stmt->error]);
+    }
+
+    $stmt->close();
+}
+
+function unsubscribe()
+{
+    global $conn;
+
+    $email = $_POST['email'];
+
+    $query = "UPDATE buyer SET subscription = 'unsubscribed' WHERE email = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param('s', $email);
+
+    if ($stmt->execute()) {
+        echo json_encode(['success' => true, 'message' => 'Subscription status updated to unsubscribed']);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Error updating subscription status: ' . $stmt->error]);
+    }
+
+    $stmt->close();
 }

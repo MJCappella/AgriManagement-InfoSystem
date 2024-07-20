@@ -57,7 +57,8 @@ CREATE TABLE buyer (
     email VARCHAR(100) UNIQUE,
     password VARCHAR(255),
     phone VARCHAR(20),
-    account_status ENUM('active','suspended', 'inactive') NOT NULL,
+    account_status ENUM('active','suspended', 'inactive') NOT NULL DEFAULT 'inactive',
+    subscription ENUM('subscribed', 'unsubscribed') NOT NULL DEFAULT 'unsubscribed',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     created_by INT,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -114,6 +115,7 @@ CREATE TABLE crops (
     cropname VARCHAR(100),
     description TEXT,
     price DECIMAL(10, 2),
+    image_path VARCHAR(255) DEFAULT '../uploads/images/crops/default.jpg'
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     created_by INT,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -245,8 +247,8 @@ CREATE TABLE messages (
     message_id INT AUTO_INCREMENT PRIMARY KEY,
     subject TEXT NOT NULL,
     message_text TEXT NOT NULL,
-    sender_email VARCHAR(20) NOT NULL,
-    receiver_email VARCHAR(20) NOT NULL,
+    sender_email VARCHAR(50) NOT NULL DEFAULT 'info@amis.com',
+    receiver_email VARCHAR(50) NOT NULL,
     sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
