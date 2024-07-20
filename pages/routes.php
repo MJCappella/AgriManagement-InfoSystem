@@ -17,37 +17,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             handleLogout();
             break;
         case 'add-crop':
-            $authorized_users = ['farmer'];
+            $authorized_users = ['farmer', 'admin'];
             $logged = isLoggedIn($authorized_users);
             $logged  ? addCrop() : '';
             display_login_request($logged, $authorized_users);
             break;
         case 'delete-crop':
-            $authorized_users = ['farmer'];
+            $authorized_users = ['admin'];
             $logged = isLoggedIn($authorized_users);
             $logged  ? deleteCrop() : '';
             display_login_request($logged, $authorized_users);
             break;
         case 'update-crop':
-            $authorized_users = ['farmer'];
+            $authorized_users = ['admin'];
             $logged = isLoggedIn($authorized_users);
             $logged  ? updateCrop() : '';
             display_login_request($logged, $authorized_users);
             break;
-        case 'get-crop':
-            $authorized_users = ['farmer'];
+        case 'get-crops':
+            $authorized_users = ['farmer', 'admin', 'buyer'];
             $logged = isLoggedIn($authorized_users);
             $logged  ? getCrops() : '';
             display_login_request($logged, $authorized_users);
             break;
+        case 'get-crop':
+            $authorized_users = ['farmer', 'admin', 'buyer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? getCrop() : '';
+            display_login_request($logged, $authorized_users);
+            break;
         case 'update-forex':
-            $authorized_users = ['farmer'];
+            $authorized_users = ['admin'];
             $logged = isLoggedIn($authorized_users);
             $logged  ? updateForex() : '';
             display_login_request($logged, $authorized_users);
             break;
         case 'fetch-forex':
-            $authorized_users = ['farmer'];
+            $authorized_users = ['farmer', 'admin', 'buyer', 'government', 'marketing'];
             $logged = isLoggedIn($authorized_users);
             $logged  ? fetchForex() : '';
             display_login_request($logged, $authorized_users);
@@ -119,28 +125,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             display_login_request($logged, $authorized_users);
             break;
         case 'get-crop-market-price':
-            $authorized_users = ['farmer'];
+            $authorized_users = ['farmer', 'admin', 'buyer', 'government', 'marketing'];
             $logged = isLoggedIn($authorized_users);
             $logged  ? getCropMarketPrice() : '';
             display_login_request($logged, $authorized_users);
             break;
 
         case 'get-market-prices':
-            $authorized_users = ['farmer'];
+            $authorized_users = ['admin'];
             $logged = isLoggedIn($authorized_users);
             $logged  ? getMarketPrices() : '';
             display_login_request($logged, $authorized_users);
             break;
 
         case 'update-crop-market-price':
-            $authorized_users = ['farmer'];
+            $authorized_users = ['admin'];
             $logged = isLoggedIn($authorized_users);
             $logged  ? updateCropMarketPrice() : '';
             display_login_request($logged, $authorized_users);
             break;
 
         case 'add-crop-market-price':
-            $authorized_users = ['farmer'];
+            $authorized_users = ['admin'];
             $logged = isLoggedIn($authorized_users);
             $logged  ? addCropMarketPrice() : '';
             display_login_request($logged, $authorized_users);
@@ -206,76 +212,76 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             break;
 
         case 'get-orders-by-farmer':
-            $authorized_users = ['farmer','buyer'];
+            $authorized_users = ['farmer', 'buyer'];
             $logged = isLoggedIn($authorized_users);
             $logged  ? getOrdersByFarmer() : '';
             display_login_request($logged, $authorized_users);
             break;
 
         case 'get-orders-by-buyer':
-            $authorized_users = ['buyer','admin'];
+            $authorized_users = ['buyer', 'admin'];
             $logged = isLoggedIn($authorized_users);
             $logged  ? getOrdersByBuyer() : '';
             display_login_request($logged, $authorized_users);
             break;
 
         case 'add-order':
-            $authorized_users = ['buyer','admin'];
+            $authorized_users = ['buyer', 'admin'];
             $logged = isLoggedIn($authorized_users);
             $logged  ? addOrder() : '';
             display_login_request($logged, $authorized_users);
             break;
 
         case 'update-order':
-            $authorized_users = ['farmer','buyer','admin'];
+            $authorized_users = ['farmer', 'buyer', 'admin'];
             $logged = isLoggedIn($authorized_users);
             $logged  ? updateOrder() : '';
             display_login_request($logged, $authorized_users);
             break;
 
         case 'update-order-status':
-            $authorized_users = ['farmer','buyer','admin'];
+            $authorized_users = ['farmer', 'buyer', 'admin'];
             $logged = isLoggedIn($authorized_users);
             $logged  ? updateOrderStatus() : '';
             display_login_request($logged, $authorized_users);
             break;
         case 'add-crop-demand':
-            $authorized_users = ['admin'];
+            $authorized_users = ['admin', 'buyer', 'farmer'];
             $logged = isLoggedIn($authorized_users);
             $logged  ? addCropDemand() : '';
             display_login_request($logged, $authorized_users);
             break;
 
         case 'get-crop-demand':
-            $authorized_users = ['farmer','admin','buyer','government','marketing'];
+            $authorized_users = ['farmer', 'admin', 'buyer', 'government', 'marketing'];
             $logged = isLoggedIn($authorized_users);
             $logged  ? getCropDemand() : '';
             display_login_request($logged, $authorized_users);
             break;
 
         case 'get-demand-trends':
-            $authorized_users = ['farmer','admin','buyer','government','marketing'];
+            $authorized_users = ['farmer', 'admin', 'buyer', 'government', 'marketing'];
             $logged = isLoggedIn($authorized_users);
             $logged  ? getDemandTrends() : '';
             display_login_request($logged, $authorized_users);
             break;
 
         case 'add-crop-market-trend':
-            $authorized_users = ['admin'];
+            $authorized_users = ['admin', 'farmer'];
             $logged = isLoggedIn($authorized_users);
             $logged  ? addCropMarketTrend() : '';
             display_login_request($logged, $authorized_users);
             break;
 
         case 'get-crop-market-trend':
-            $authorized_users = ['farmer','admin','buyer','government','marketing'];
+            $authorized_users = ['farmer', 'admin', 'buyer', 'government', 'marketing'];
             $logged = isLoggedIn($authorized_users);
             $logged  ? getCropMarketTrend() : '';
             display_login_request($logged, $authorized_users);
             break;
 
         case 'get-market-trends':
-            $authorized_users = ['farmer','admin','buyer','government','marketing'];
+            $authorized_users = ['farmer', 'admin', 'buyer', 'government', 'marketing'];
             $logged = isLoggedIn($authorized_users);
             $logged  ? getMarketTrends() : '';
             display_login_request($logged, $authorized_users);
@@ -553,18 +559,40 @@ function addCrop()
     $cropname = $_POST['cropname'];
     $description = $_POST['description'];
     $price = $_POST['price'];
+    $imagePath = null;
 
-    $query = "INSERT INTO crops (cropname, description, price) VALUES (?, ?, ?)";
+    if (isset($_FILES['crop_image']) && $_FILES['crop_image']['error'] == 0) {
+        $targetDir = "../uploads/images/crops/";
+        $targetFile = $targetDir . basename($_FILES['crop_image']['name']);
+        $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+
+        // Check if image file is a actual image or fake image
+        $check = getimagesize($_FILES['crop_image']['tmp_name']);
+        if ($check !== false) {
+            if (move_uploaded_file($_FILES['crop_image']['tmp_name'], $targetFile)) {
+                $imagePath = $targetFile;
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Sorry, there was an error uploading your file.']);
+                return;
+            }
+        } else {
+            echo json_encode(['success' => false, 'message' => 'File is not an image.']);
+            return;
+        }
+    }
+
+    $query = "INSERT INTO crops (cropname, description, price, image_path) VALUES (?, ?, ?, ?)";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param('sss', $cropname, $description, $price);
+    $stmt->bind_param('ssss', $cropname, $description, $price, $imagePath);
 
     if ($stmt && $stmt->execute()) {
-        echo '{"success":true, "message":"Crop added successful!"}';
+        echo json_encode(['success' => true, 'message' => 'Crop added successfully!']);
     } else {
-        echo '{"success":false, "message": "' . $stmt->error . '"}';
+        echo json_encode(['success' => false, 'message' => $stmt->error]);
     }
     $stmt->close();
 }
+
 
 function deleteCrop()
 {
@@ -613,6 +641,27 @@ function updateCrop()
     $cropname = $_POST['cropname'];
     $description = $_POST['description'];
     $price = $_POST['price'];
+    $imagePath = null;
+
+    if (isset($_FILES['crop_image']) && $_FILES['crop_image']['error'] == 0) {
+        $targetDir = "../uploads/";
+        $targetFile = $targetDir . basename($_FILES['crop_image']['name']);
+        $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+
+        // Check if image file is a actual image or fake image
+        $check = getimagesize($_FILES['crop_image']['tmp_name']);
+        if ($check !== false) {
+            if (move_uploaded_file($_FILES['crop_image']['tmp_name'], $targetFile)) {
+                $imagePath = $targetFile;
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Sorry, there was an error uploading your file.']);
+                return;
+            }
+        } else {
+            echo json_encode(['success' => false, 'message' => 'File is not an image.']);
+            return;
+        }
+    }
 
     // Prepare the SELECT query
     $query = "SELECT * FROM crops WHERE cropname = ?";
@@ -628,28 +677,53 @@ function updateCrop()
             $crop_id = $crop['crop_id'];
 
             // Prepare the UPDATE query
-            $query = "UPDATE crops SET description = ?, price = ? WHERE crop_id = ?";
+            $query = "UPDATE crops SET description = ?, price = ?, image_path = ? WHERE crop_id = ?";
             $stmt = $conn->prepare($query);
-            $stmt->bind_param('sss', $description, $price, $crop_id);
+            $stmt->bind_param('ssss', $description, $price, $imagePath, $crop_id);
 
             if ($stmt && $stmt->execute()) {
-                echo '{"success":true, "message":"Crop updated successfully!"}';
+                echo json_encode(['success' => true, 'message' => 'Crop updated successfully!']);
             } else {
-                echo '{"success":false, "message": "' . $stmt->error . '"}';
+                echo json_encode(['success' => false, 'message' => $stmt->error]);
             }
         } else if ($result->num_rows == 0) {
-            echo '{"success":false, "message": "No record found"}';
+            echo json_encode(array('success' => false, 'message' => 'No record found'));
         } else {
-            echo '{"success":false, "message": "Multiple records exist"}';
+            echo json_encode(array('success' => false, 'message' => 'Multiple records exist'));
         }
     } else {
-        echo '{"success":false, "message": "' . $stmt->error . '"}';
+        echo json_encode(array('success' => false, 'message' => $stmt->error));
     }
 
     // Close the statement
     $stmt->close();
 }
 
+function getCrop()
+{
+    global $conn;
+    $cropname = $_POST['cropname'];
+    $query = "SELECT * FROM crops WHERE cropname = ? LIMIT 1";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param('s', $cropname);
+
+    if ($stmt && $stmt->execute()) {
+        $result = $stmt->get_result();
+        // Check if there is exactly one record
+        if ($result->num_rows == 1) {
+            $crop = $result->fetch_assoc();
+            echo json_encode(['success' => true, 'crop' => $crop]);
+        } else if ($result->num_rows == 0) {
+            echo json_encode(['success' => false, 'message' => 'Crop not found']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Multiple records exist']);
+        }
+    } else {
+        echo json_encode(['success' => false, 'message' => $stmt->error]);
+    }
+
+    $stmt->close();
+}
 function getCrops()
 {
     global $conn;
@@ -774,76 +848,232 @@ function getYields()
 function getYield()
 {
     global $conn;
-    $farmer_id = $_POST['farmer_id'];
-    $query = "SELECT y.yield_id, c.cropname, y.quantity, y.harvest_date FROM yields as y JOIN crops as c ON y.crop_id = c.crop_id WHERE y.farmer_id = $farmer_id";
-    $result = $conn->query($query);
+    $farmer_email = $_POST['farmer_email'];
 
-    if ($result->num_rows > 0) {
-        $yields = [];
-        while ($row = $result->fetch_assoc()) {
-            $yields[] = $row;
+    // Fetch the farmer_id based on farmer_email
+    $farmerQuery = "SELECT farmer_id FROM farmers WHERE email = ? LIMIT 1";
+    $farmerStmt = $conn->prepare($farmerQuery);
+    $farmerStmt->bind_param('s', $farmer_email);
+
+    if ($farmerStmt->execute()) {
+        $farmerResult = $farmerStmt->get_result();
+
+        if ($farmerResult->num_rows == 1) {
+            $farmer = $farmerResult->fetch_assoc();
+            $farmer_id = $farmer['farmer_id'];
+
+            // Fetch the yields based on farmer_id
+            $query = "SELECT y.yield_id, c.cropname, y.quantity, y.harvest_date 
+                      FROM yields AS y 
+                      JOIN crops AS c ON y.crop_id = c.crop_id 
+                      WHERE y.farmer_id = ?";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param('i', $farmer_id);
+
+            if ($stmt->execute()) {
+                $result = $stmt->get_result();
+                if ($result->num_rows > 0) {
+                    $yields = [];
+                    while ($row = $result->fetch_assoc()) {
+                        $yields[] = $row;
+                    }
+                    echo json_encode(['success' => true, 'yields' => $yields]);
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'No yields found']);
+                }
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Error fetching yields: ' . $stmt->error]);
+            }
+            $stmt->close();
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Farmer not found']);
         }
-        echo json_encode(['success' => true, 'yields' => $yields]);
+        $farmerStmt->close();
     } else {
-        echo json_encode(['success' => false, 'message' => 'No yields found']);
+        echo json_encode(['success' => false, 'message' => 'Error fetching farmer ID: ' . $farmerStmt->error]);
     }
 }
+
 
 function deleteYield()
 {
     global $conn;
     $yield_id = $_POST['yield_id'];
-    $farmer_id = $_POST['farmer_id'];
-    $query = "DELETE FROM yields WHERE yield_id = ? AND farmer_id = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param('ii', $yield_id, $farmer_id);
+    $cropname = $_POST['cropname'];
+    $farmer_email = $_POST['farmer_email'];
 
-    if ($stmt->execute()) {
-        echo json_encode(['success' => true, 'message' => 'Yield deleted successfully']);
+    // Fetch the crop_id based on cropname
+    $cropQuery = "SELECT crop_id FROM crops WHERE cropname = ? LIMIT 1";
+    $cropStmt = $conn->prepare($cropQuery);
+    $cropStmt->bind_param('s', $cropname);
+
+    if ($cropStmt->execute()) {
+        $cropResult = $cropStmt->get_result();
+
+        if ($cropResult->num_rows == 1) {
+            $crop = $cropResult->fetch_assoc();
+            $crop_id = $crop['crop_id'];
+
+            // Fetch the farmer_id based on farmer_email
+            $farmerQuery = "SELECT farmer_id FROM farmers WHERE email = ? LIMIT 1";
+            $farmerStmt = $conn->prepare($farmerQuery);
+            $farmerStmt->bind_param('s', $farmer_email);
+
+            if ($farmerStmt->execute()) {
+                $farmerResult = $farmerStmt->get_result();
+
+                if ($farmerResult->num_rows == 1) {
+                    $farmer = $farmerResult->fetch_assoc();
+                    $farmer_id = $farmer['farmer_id'];
+
+                    // Delete the yield entry
+                    $deleteQuery = "DELETE FROM yields WHERE yield_id = ? AND crop_id = ? AND farmer_id = ?";
+                    $deleteStmt = $conn->prepare($deleteQuery);
+                    $deleteStmt->bind_param('iii', $yield_id, $crop_id, $farmer_id);
+
+                    if ($deleteStmt->execute()) {
+                        echo json_encode(['success' => true, 'message' => 'Yield deleted successfully']);
+                    } else {
+                        echo json_encode(['success' => false, 'message' => 'Error deleting yield: ' . $deleteStmt->error]);
+                    }
+                    $deleteStmt->close();
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'Farmer not found']);
+                }
+                $farmerStmt->close();
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Error fetching farmer ID: ' . $farmerStmt->error]);
+            }
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Crop not found']);
+        }
+        $cropStmt->close();
     } else {
-        echo json_encode(['success' => false, 'message' => 'Error deleting yield: ' . $stmt->error]);
+        echo json_encode(['success' => false, 'message' => 'Error fetching crop ID: ' . $cropStmt->error]);
     }
-    $stmt->close();
 }
+
 
 function updateYield()
 {
     global $conn;
     $yield_id = $_POST['yield_id'];
-    $farmer_id = $_POST['farmer_id'];
-    $crop_id = $_POST['crop_id'];
+    $cropname = $_POST['cropname'];
+    $farmer_email = $_POST['farmer_email'];
     $quantity = $_POST['quantity'];
     $harvest_date = $_POST['harvest_date'];
-    $query = "UPDATE yields SET crop_id = ?, quantity = ?, harvest_date = ? WHERE yield_id = ? AND farmer_id = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param('iisii', $crop_id, $quantity, $harvest_date, $yield_id, $farmer_id);
 
-    if ($stmt->execute()) {
-        echo json_encode(['success' => true, 'message' => 'Yield updated successfully']);
+    // Fetch the crop_id based on cropname
+    $cropQuery = "SELECT crop_id FROM crops WHERE cropname = ? LIMIT 1";
+    $cropStmt = $conn->prepare($cropQuery);
+    $cropStmt->bind_param('s', $cropname);
+
+    if ($cropStmt->execute()) {
+        $cropResult = $cropStmt->get_result();
+
+        if ($cropResult->num_rows == 1) {
+            $crop = $cropResult->fetch_assoc();
+            $crop_id = $crop['crop_id'];
+
+            // Fetch the farmer_id based on farmer_email
+            $farmerQuery = "SELECT farmer_id FROM farmers WHERE email = ? LIMIT 1";
+            $farmerStmt = $conn->prepare($farmerQuery);
+            $farmerStmt->bind_param('s', $farmer_email);
+
+            if ($farmerStmt->execute()) {
+                $farmerResult = $farmerStmt->get_result();
+
+                if ($farmerResult->num_rows == 1) {
+                    $farmer = $farmerResult->fetch_assoc();
+                    $farmer_id = $farmer['farmer_id'];
+
+                    // Update the yield data
+                    $updateQuery = "UPDATE yields SET crop_id = ?, quantity = ?, harvest_date = ? WHERE yield_id = ? AND farmer_id = ?";
+                    $updateStmt = $conn->prepare($updateQuery);
+                    $updateStmt->bind_param('iisii', $crop_id, $quantity, $harvest_date, $yield_id, $farmer_id);
+
+                    if ($updateStmt->execute()) {
+                        echo json_encode(['success' => true, 'message' => 'Yield updated successfully']);
+                    } else {
+                        echo json_encode(['success' => false, 'message' => 'Error updating yield: ' . $updateStmt->error]);
+                    }
+                    $updateStmt->close();
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'Farmer not found']);
+                }
+                $farmerStmt->close();
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Error fetching farmer ID: ' . $farmerStmt->error]);
+            }
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Crop not found']);
+        }
+        $cropStmt->close();
     } else {
-        echo json_encode(['success' => false, 'message' => 'Error updating yield: ' . $stmt->error]);
+        echo json_encode(['success' => false, 'message' => 'Error fetching crop ID: ' . $cropStmt->error]);
     }
-    $stmt->close();
 }
+
 
 function addYield()
 {
     global $conn;
-    $farmer_id = $_POST['farmer_id'];
-    $crop_id = $_POST['crop_id'];
+    $cropname = $_POST['cropname'];
+    $farmer_email = $_POST['farmer_email'];
     $quantity = $_POST['quantity'];
     $harvest_date = $_POST['harvest_date'];
-    $query = "INSERT INTO yields (farmer_id, crop_id, quantity, harvest_date) VALUES (?, ?, ?, ?)";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param('iiis', $farmer_id, $crop_id, $quantity, $harvest_date);
 
-    if ($stmt->execute()) {
-        echo json_encode(['success' => true, 'message' => 'Yield added successfully']);
+    // Fetch the crop_id based on cropname
+    $cropQuery = "SELECT crop_id FROM crops WHERE cropname = ? LIMIT 1";
+    $cropStmt = $conn->prepare($cropQuery);
+    $cropStmt->bind_param('s', $cropname);
+
+    if ($cropStmt->execute()) {
+        $cropResult = $cropStmt->get_result();
+
+        if ($cropResult->num_rows == 1) {
+            $crop = $cropResult->fetch_assoc();
+            $crop_id = $crop['crop_id'];
+
+            // Fetch the farmer_id based on farmer_email
+            $farmerQuery = "SELECT farmer_id FROM farmers WHERE email = ? LIMIT 1";
+            $farmerStmt = $conn->prepare($farmerQuery);
+            $farmerStmt->bind_param('s', $farmer_email);
+
+            if ($farmerStmt->execute()) {
+                $farmerResult = $farmerStmt->get_result();
+
+                if ($farmerResult->num_rows == 1) {
+                    $farmer = $farmerResult->fetch_assoc();
+                    $farmer_id = $farmer['farmer_id'];
+
+                    // Insert the yield data
+                    $insertQuery = "INSERT INTO yields (farmer_id, crop_id, quantity, harvest_date) VALUES (?, ?, ?, ?)";
+                    $insertStmt = $conn->prepare($insertQuery);
+                    $insertStmt->bind_param('iiis', $farmer_id, $crop_id, $quantity, $harvest_date);
+
+                    if ($insertStmt->execute()) {
+                        echo json_encode(['success' => true, 'message' => 'Yield added successfully']);
+                    } else {
+                        echo json_encode(['success' => false, 'message' => 'Error adding yield: ' . $insertStmt->error]);
+                    }
+                    $insertStmt->close();
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'Farmer not found']);
+                }
+                $farmerStmt->close();
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Error fetching farmer ID: ' . $farmerStmt->error]);
+            }
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Crop not found']);
+        }
+        $cropStmt->close();
     } else {
-        echo json_encode(['success' => false, 'message' => 'Error adding yield: ' . $stmt->error]);
+        echo json_encode(['success' => false, 'message' => 'Error fetching crop ID: ' . $cropStmt->error]);
     }
-    $stmt->close();
 }
+
 
 function getFeedbackByBuyer()
 {
@@ -951,21 +1181,49 @@ function updateFeedback()
 function getCropMarketPrice()
 {
     global $conn;
-    $crop_id = $_POST['crop_id'];
+    $cropname = $_POST['cropname'];
 
-    $query = "SELECT * FROM market_prices WHERE crop_id = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param('i', $crop_id);
+    // Fetch the crop_id based on cropname
+    $selectQuery = "SELECT crop_id FROM crops WHERE cropname = ? LIMIT 1";
+    $selectStmt = $conn->prepare($selectQuery);
+    $selectStmt->bind_param('s', $cropname);
 
-    if ($stmt->execute()) {
-        $result = $stmt->get_result();
-        $market_prices = $result->fetch_all(MYSQLI_ASSOC);
-        echo json_encode(['success' => true, 'data' => $market_prices]);
+    if ($selectStmt->execute()) {
+        $result = $selectStmt->get_result();
+
+        if ($result->num_rows == 1) {
+            $crop = $result->fetch_assoc();
+            $crop_id = $crop['crop_id'];
+
+            // Retrieve market prices for the crop
+            $query = "SELECT * FROM market_prices WHERE crop_id = ?";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param('i', $crop_id);
+
+            if ($stmt->execute()) {
+                $result = $stmt->get_result();
+                if ($result->num_rows > 0) {
+                    $market_prices = $result->fetch_all(MYSQLI_ASSOC);
+                    echo json_encode(['success' => true, 'data' => $market_prices]);
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'No market prices found for the crop']);
+                }
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Error fetching market prices: ' . $stmt->error]);
+            }
+            $stmt->close();
+        } else if ($result->num_rows == 0) {
+            echo json_encode(['success' => false, 'message' => 'Crop not found']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Multiple crops found with the same name']);
+        }
     } else {
-        echo json_encode(['success' => false, 'message' => 'Error fetching market prices: ' . $stmt->error]);
+        echo json_encode(['success' => false, 'message' => 'Error fetching crop id: ' . $selectStmt->error]);
     }
-    $stmt->close();
+
+    $selectStmt->close();
 }
+
 
 function getMarketPrices()
 {
@@ -986,42 +1244,90 @@ function updateCropMarketPrice()
 {
     global $conn;
     $price_id = $_POST['price_id'];
-    $crop_id = $_POST['crop_id'];
+    $cropname = $_POST['cropname'];
     $price = $_POST['price'];
     $status = $_POST['status'];
     $date = $_POST['date'];
 
-    $query = "UPDATE market_prices SET crop_id = ?, price = ?, status = ?, date = ? WHERE price_id = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param('idssi', $crop_id, $price, $status, $date, $price_id);
+    // Fetch the crop_id based on cropname
+    $selectQuery = "SELECT crop_id FROM crops WHERE cropname = ? LIMIT 1";
+    $selectStmt = $conn->prepare($selectQuery);
+    $selectStmt->bind_param('s', $cropname);
 
-    if ($stmt->execute()) {
-        echo json_encode(['success' => true, 'message' => 'Market price updated successfully']);
+    if ($selectStmt->execute()) {
+        $result = $selectStmt->get_result();
+
+        if ($result->num_rows == 1) {
+            $crop = $result->fetch_assoc();
+            $crop_id = $crop['crop_id'];
+
+            // Update the market price
+            $query = "UPDATE market_prices SET crop_id = ?, price = ?, status = ?, date = ? WHERE price_id = ?";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param('idssi', $crop_id, $price, $status, $date, $price_id);
+
+            if ($stmt->execute()) {
+                echo json_encode(['success' => true, 'message' => 'Market price updated successfully']);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Error updating market price: ' . $stmt->error]);
+            }
+            $stmt->close();
+        } else if ($result->num_rows == 0) {
+            echo json_encode(['success' => false, 'message' => 'Crop not found']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Multiple crops found with the same name']);
+        }
     } else {
-        echo json_encode(['success' => false, 'message' => 'Error updating market price: ' . $stmt->error]);
+        echo json_encode(['success' => false, 'message' => 'Error fetching crop id: ' . $selectStmt->error]);
     }
-    $stmt->close();
+
+    $selectStmt->close();
 }
+
 
 function addCropMarketPrice()
 {
     global $conn;
-    $crop_id = $_POST['crop_id'];
+    $cropname = $_POST['cropname'];
     $price = $_POST['price'];
     $status = $_POST['status'];
-    $date = $_POST['date'];
+    $date = date('Y-m-d');
 
-    $query = "INSERT INTO market_prices (crop_id, price, status, date) VALUES (?, ?, ?, ?)";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param('idss', $crop_id, $price, $status, $date);
+    // Fetch the crop_id based on cropname
+    $selectQuery = "SELECT crop_id FROM crops WHERE cropname = ? LIMIT 1";
+    $selectStmt = $conn->prepare($selectQuery);
+    $selectStmt->bind_param('s', $cropname);
 
-    if ($stmt->execute()) {
-        echo json_encode(['success' => true, 'message' => 'Market price added successfully']);
+    if ($selectStmt->execute()) {
+        $result = $selectStmt->get_result();
+
+        if ($result->num_rows == 1) {
+            $crop = $result->fetch_assoc();
+            $crop_id = $crop['crop_id'];
+
+            // Insert the market price
+            $query = "INSERT INTO market_prices (crop_id, price, status, date) VALUES (?, ?, ?, ?)";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param('idss', $crop_id, $price, $status, $date);
+
+            if ($stmt->execute()) {
+                echo json_encode(['success' => true, 'message' => 'Market price added successfully']);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Error adding market price: ' . $stmt->error]);
+            }
+            $stmt->close();
+        } else if ($result->num_rows == 0) {
+            echo json_encode(['success' => false, 'message' => 'Crop not found']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Multiple crops found with the same name']);
+        }
     } else {
-        echo json_encode(['success' => false, 'message' => 'Error adding market price: ' . $stmt->error]);
+        echo json_encode(['success' => false, 'message' => 'Error fetching crop id: ' . $selectStmt->error]);
     }
-    $stmt->close();
+
+    $selectStmt->close();
 }
+
 
 function getComplianceCertificates()
 {
@@ -1447,51 +1753,104 @@ function addCropMarketTrend()
 {
     global $conn;
 
-    $crop_id = $_POST['crop_id'];
+    $cropname = $_POST['cropname'];
     $price = $_POST['price'];
     $date = date('Y-m-d');
 
-    // Insert or update the market trend for the crop
-    $insertQuery = "INSERT INTO market_trends (crop_id, price, date) VALUES (?, ?, ?)
-                        ON DUPLICATE KEY UPDATE price = ?";
-    $insertStmt = $conn->prepare($insertQuery);
-    $insertStmt->bind_param('idsd', $crop_id, $price, $date, $price);
+    // Fetch the crop_id based on cropname
+    $selectQuery = "SELECT crop_id FROM crops WHERE cropname = ?";
+    $selectStmt = $conn->prepare($selectQuery);
+    $selectStmt->bind_param('s', $cropname);
 
-    if ($insertStmt->execute()) {
-        echo json_encode(['success' => true, 'message' => 'Crop market trend updated successfully']);
+    if ($selectStmt->execute()) {
+        $result = $selectStmt->get_result();
+
+        if ($result->num_rows == 1) {
+            $crop = $result->fetch_assoc();
+            $crop_id = $crop['crop_id'];
+
+            // Insert or update the market trend for the crop
+            $insertQuery = "INSERT INTO market_trends (crop_id, price, date) VALUES (?, ?, ?)
+                            ON DUPLICATE KEY UPDATE price = ?";
+            $insertStmt = $conn->prepare($insertQuery);
+            $insertStmt->bind_param('idsd', $crop_id, $price, $date, $price);
+
+            if ($insertStmt->execute()) {
+                echo json_encode(['success' => true, 'message' => 'Crop market trend updated successfully']);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Error updating crop market trend: ' . $insertStmt->error]);
+            }
+
+            $insertStmt->close();
+        } else if ($result->num_rows == 0) {
+            echo json_encode(['success' => false, 'message' => 'Crop not found']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Multiple crops found with the same name']);
+        }
     } else {
-        echo json_encode(['success' => false, 'message' => 'Error updating crop market trend: ' . $insertStmt->error]);
+        echo json_encode(['success' => false, 'message' => 'Error fetching crop id: ' . $selectStmt->error]);
     }
 
-    $insertStmt->close();
+    $selectStmt->close();
 }
+
 
 function getCropMarketTrend()
 {
     global $conn;
+    $cropname = $_POST['cropname'];
 
-    $crop_id = $_POST['crop_id'];
+    // Fetch the crop_id based on cropname
+    $selectQuery = "SELECT crop_id FROM crops WHERE cropname = ? LIMIT 1";
+    $selectStmt = $conn->prepare($selectQuery);
+    $selectStmt->bind_param('s', $cropname);
 
-    // Retrieve the latest market trend for the crop
-    $query = "SELECT * FROM market_trends WHERE crop_id = ? ORDER BY date DESC LIMIT 1";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param('i', $crop_id);
+    if ($selectStmt->execute()) {
+        $result1 = $selectStmt->get_result();
 
-    if ($stmt->execute()) {
-        $result = $stmt->get_result();
-        $marketTrend = $result->fetch_assoc();
+        if ($result1->num_rows == 1) {
+            $crop = $result1->fetch_assoc();
+            $crop_id = $crop['crop_id'];
 
-        if ($marketTrend) {
-            echo json_encode(['success' => true, 'market_trend' => $marketTrend]);
+            // Retrieve the latest market trend for the crop along with max price
+            $query = "
+                SELECT mt.*, 
+                       COALESCE((SELECT MAX(mp.price) 
+                                 FROM market_prices mp 
+                                 WHERE mp.crop_id = mt.crop_id), 0) AS max_price 
+                FROM market_trends mt 
+                WHERE mt.crop_id = ?
+                ORDER BY mt.date DESC";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param('i', $crop_id);
+
+            if ($stmt->execute()) {
+                $result = $stmt->get_result();
+                $marketTrend = $result->fetch_all(MYSQLI_ASSOC);
+
+                if ($marketTrend) {
+                    echo json_encode(['success' => true, 'length' => $result->num_rows, 'market_trend' => $marketTrend]);
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'Market trend not found for the crop']);
+                }
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Error fetching market trend: ' . $stmt->error]);
+            }
+
+            $stmt->close();
+        } else if ($result1->num_rows == 0) {
+            echo json_encode(['success' => false, 'message' => 'Crop not found']);
         } else {
-            echo json_encode(['success' => false, 'message' => 'Market trend not found for the crop']);
+            echo json_encode(['success' => false, 'message' => 'Multiple crops found with the same name']);
         }
     } else {
-        echo json_encode(['success' => false, 'message' => 'Error fetching market trend: ' . $stmt->error]);
+        echo json_encode(['success' => false, 'message' => 'Error fetching crop id: ' . $selectStmt->error]);
     }
 
-    $stmt->close();
+    $selectStmt->close();
 }
+
+
 
 function getMarketTrends()
 {
@@ -1506,7 +1865,7 @@ function getMarketTrends()
         $marketTrends = $result->fetch_all(MYSQLI_ASSOC);
 
         if ($marketTrends) {
-            echo json_encode(['success' => true, 'market_trends' => $marketTrends]);
+            echo json_encode(['success' => true, 'length' => $result->num_rows, 'market_trends' => $marketTrends]);
         } else {
             echo json_encode(['success' => false, 'message' => 'No market trends found']);
         }

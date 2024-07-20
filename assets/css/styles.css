@@ -71,3 +71,62 @@ footer {
 .two-fa-section {
     display: none;
 }
+
+/* Home page */
+body {
+    font-family: 'Proxima Nova', Arial, sans-serif;
+}
+.hero {
+    background: url('http://localhost/amis-project-/uploads/images/crops/default.jpg') no-repeat center center;
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+}
+.hero h1 {
+    font-size: 3rem;
+    font-weight: bold;
+}
+.hero button {
+    margin-top: 20px;
+}
+.services, .advantages {
+    padding: 60px 0;
+}
+.services .card, .advantages .card {
+    transition: transform 0.3s ease;
+}
+.services .card:hover, .advantages .card:hover {
+    transform: translateY(-10px);
+}
+.footer {
+    background-color: #007377;
+    color: white;
+    padding: 30px 0;
+}
+.footer a {
+    color: white;
+    text-decoration: none;
+}
+.footer a:hover {
+    text-decoration: underline;
+}
+.go-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #007377;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}

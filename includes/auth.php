@@ -30,9 +30,9 @@ function getCurrentUserType() {
 }
 
 // Redirect to login page if user is not logged in
-function ensureLoggedIn($user_type) {
-    if (!isLoggedIn([$user_type])) {
-        echo '{"success":false, message:"You must be logged in as '.$user_type.'"}';
+function ensureLoggedIn($authorized_users) {
+    if (!isLoggedIn($authorized_users)) {
+        echo '{"success":false, message:"You must be logged in"}';
         header('Location: /amis-project-/pages/login.php');
         exit();
     }
