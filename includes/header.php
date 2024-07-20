@@ -14,8 +14,31 @@
     <script src="<?php echo BASE_URL; ?>/assets/js/d3.min.js" defer></script>
     <script src="<?php echo BASE_URL; ?>/assets/js/bootstrap.min.js" integrity="sha512-ykZ1QQr0Jy/4ZkvKuqWn4iF3lqPZyij9iRv6sGqLRdTPkY69YX6+7wvVGmsdBbiIfN/8OdsI7HABjvEok6ZopQ==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
     <script src="<?php echo BASE_URL; ?>/assets/js/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Proxima+Nova:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Proxima Nova', sans-serif;
+    }
+    #scrollToTopBtn {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      right: 30px;
+      z-index: 99;
+      border: none;
+      outline: none;
+      background-color: #007377;
+      color: white;
+      cursor: pointer;
+      padding: 15px;
+      border-radius: 10px;
+    }
+    #scrollToTopBtn:hover {
+      background-color: #555;
+    }
+  </style>
 </head>
 
 <body>
-    <div class="container">
+    <div class="container1">
         
