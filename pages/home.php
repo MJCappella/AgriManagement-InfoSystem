@@ -71,6 +71,14 @@ include_once('../config/config.php');
         #my-nav{
         background-color: #f3f9f9 !important;
         }
+        .text-content .full-text {
+    display: none;
+}
+
+.read-more-btn {
+    cursor: pointer;
+}
+
     </style>
 </head>
 
@@ -227,8 +235,8 @@ include_once('../config/config.php');
             <div class="row">
                 <div class="col-md-4">
                     <h5>Contact Us</h5>
-                    <p>Email: info@agrimarket.com</p>
-                    <p>Phone: +123 456 7890</p>
+                    <p>Email: info@amis.com</p>
+                    <p>Phone: +254 711 000 200</p>
                 </div>
                 <div class="col-md-4">
                     <h5>Important Links</h5>
@@ -269,6 +277,31 @@ include_once('../config/config.php');
             document.documentElement.scrollTop = 0;
         }
     </script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const readMoreButtons = document.querySelectorAll('.read-more-btn');
+
+        readMoreButtons.forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                const textContent = this.previousElementSibling;
+                const fullText = textContent.querySelector('.full-text');
+                const shortText = textContent.querySelector('.short-text');
+                
+                if (fullText.style.display === "none") {
+                    fullText.style.display = "block";
+                    shortText.style.display = "none";
+                    this.textContent = "Read Less &laquo;";
+                } else {
+                    fullText.style.display = "none";
+                    shortText.style.display = "block";
+                    this.textContent = "Read More &raquo;";
+                }
+            });
+        });
+    });
+</script>
+
 </body>
 
 </html>
