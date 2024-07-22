@@ -446,12 +446,17 @@ function handleRegister()
 
         // Insert code into two_factor_auth table
         $insertQuery = "INSERT INTO two_factor_auth (user_email, user_type_id, code) VALUES (?, ?, ?) 
-                        ON DUPLICATE KEY UPDATE user_email = ?";
+                ON DUPLICATE KEY UPDATE 
+                user_email = VALUES(user_email), 
+                user_type_id = VALUES(user_type_id), 
+                code = VALUES(code)";
+
         $insertStmt = $conn->prepare($insertQuery);
         $user_type_id = getUserTypeId($user_type); // Assuming a function to fetch user_type_id
-        $insertStmt->bind_param('siss', $email, $user_type_id, $code, $email);
+        $insertStmt->bind_param('sis', $email, $user_type_id, $code);
 
-        // Execute the 2FA insert query
+
+        // Execute the 2FA insert queryc
         if ($insertStmt->execute()) {
             // Send email or notification with the code
 
