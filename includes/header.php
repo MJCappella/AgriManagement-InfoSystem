@@ -140,10 +140,10 @@ $pageTitle = isset($pageTitle) ? $pageTitle : 'AMIS Project';
                         <ul class="navbar-nav">
                             <li class="nav-item">
                                 <?php echo isset($logoutButton) ?
-                                    '<form action="/amis-project-/pages/routes.php" method="post" mt-4>
+                                    '<form action="/amis-project-/pages/routes.php" method="post">
                                         <input type="hidden" name="action" value="logout">
                                         <button type="submit" class="nav-link"><i class="fa fa-sign-out"></i>&nbsp; Logout</button>
-                                        </form><br />'
+                                        </form>'
                                     : '<a class="nav-link" href="login.php"><i class="fa fa-unlock"></i>&nbsp; Login</a>' ?>
                             </li>
 

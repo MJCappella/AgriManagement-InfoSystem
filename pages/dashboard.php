@@ -1,8 +1,8 @@
 <?php
 include_once("../config/config.php");
 include_once('../includes/auth.php');
-include_once('../includes/header.php');
 ensureLoggedIn(['farmer', 'admin', 'buyer', 'government', 'marketing']);
+include_once('../includes/header.php');
 ?>
 
 <h2>Dashboard</h2>

@@ -111,6 +111,7 @@ include_once('../includes/header.php');
       }
 
       myForm.classList.remove('was-validated');
+      console.log($('#user_type option:selected').text());
 
       var formData = $(myForm).serialize();
 
@@ -126,7 +127,7 @@ include_once('../includes/header.php');
               if (loginSuccessful) {
                   alertPlaceholder.html('<div class="alert alert-success" role="alert">Login successful! Redirecting...</div>');
                   setTimeout(() => {
-                      window.location.href = 'dashboards/farmer_dashboard.php';
+                      window.location.href = 'dashboards/'+$('#user_type option:selected').text().trim()+'_dashboard.php';
                   }, 1200);
               } else {
                   alertPlaceholder.html('<div class="alert alert-danger" role="alert">' + data.message + '</div>');
@@ -147,9 +148,6 @@ include_once('../includes/header.php');
   }
 </script>
 
-<?php
-include('../includes/footer.php');
-?>
 </body>
 
 </html>

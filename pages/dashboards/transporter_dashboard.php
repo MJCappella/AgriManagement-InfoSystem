@@ -1,9 +1,9 @@
 <?php
 include_once("../../config/config.php");
-$pageTitle = 'Farmers Dashboard';
+$pageTitle = 'Transporter Dashboard';
 $logoutButton = true;
 include_once('../../includes/auth.php');
-ensureLoggedIn(['farmer']);
+ensureLoggedIn(['transporter']);
 include_once('../../includes/header.php');
 ?>
 
@@ -13,28 +13,28 @@ include_once('../../includes/header.php');
             <!-- sidebar -->
             <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 250px;">
                 <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
-                    <span class="fs-4">Farmer Dashboard</span>
+                    <span class="fs-4">Transporter Dashboard</span>
                 </a>
                 <hr>
                 <ul class="nav nav-pills flex-column mb-auto">
                     <li class="nav-item">
-                        <a href="/amis-project-/pages/dashboard.php" class="nav-link active">
+                        <a href="/amis-project-/pages/transporter_dashboard.php" class="nav-link active">
                             Dashboard
                         </a>
                     </li>
                     <li>
-                        <a href="/amis-project-/pages/view_crops.php" class="nav-link link-dark">
-                            View Crops
+                        <a href="/amis-project-/pages/transport_schedule.php" class="nav-link link-dark">
+                            Transport Schedule
                         </a>
                     </li>
                     <li>
-                        <a href="/amis-project-/pages/market_prices.php" class="nav-link link-dark">
-                            Market Prices
+                        <a href="/amis-project-/pages/track_shipments.php" class="nav-link link-dark">
+                            Track Shipments
                         </a>
                     </li>
                     <li>
-                        <a href="/amis-project-/pages/transport_info.php" class="nav-link link-dark">
-                            Transportation Info
+                        <a href="/amis-project-/pages/available_routes.php" class="nav-link link-dark">
+                            Available Routes
                         </a>
                     </li>
                     <li>
@@ -47,7 +47,7 @@ include_once('../../includes/header.php');
                 <div class="dropdown">
                     <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle"
                         id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
-                        <strong>Farmer Name</strong>
+                        <strong>Transporter Name</strong>
                     </a>
                     <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
                         <li><a class="dropdown-item" href="#">Profile</a></li>
@@ -65,7 +65,6 @@ include_once('../../includes/header.php');
                     </ul>
                 </div>
             </div>
-
         </nav>
 
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
@@ -79,28 +78,27 @@ include_once('../../includes/header.php');
                 <div class="col-12 col-md-6 col-lg-4 mb-4">
                     <div class="card shadow-sm">
                         <div class="card-body">
-                            <h5 class="card-title">Market Prices</h5>
-                            <p class="card-text">Check the latest market prices for your crops.</p>
-                            <a href="/amis-project-/pages/market_prices.php" class="btn btn-primary">View Prices</a>
+                            <h5 class="card-title">Transport Schedule</h5>
+                            <p class="card-text">View and manage your transport schedule.</p>
+                            <a href="/amis-project-/pages/transport_schedule.php" class="btn btn-primary">View Schedule</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-12 col-md-6 col-lg-4 mb-4">
                     <div class="card shadow-sm">
                         <div class="card-body">
-                            <h5 class="card-title">Crop Yields</h5>
-                            <p class="card-text">Track your crop yields over time.</p>
-                            <a href="/amis-project-/pages/view_crops.php" class="btn btn-primary">View Yields</a>
+                            <h5 class="card-title">Track Shipments</h5>
+                            <p class="card-text">Track your current shipments.</p>
+                            <a href="/amis-project-/pages/track_shipments.php" class="btn btn-primary">Track Shipments</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-12 col-md-6 col-lg-4 mb-4">
                     <div class="card shadow-sm">
                         <div class="card-body">
-                            <h5 class="card-title">Transportation</h5>
-                            <p class="card-text">Access transportation information for your crops.</p>
-                            <a href="/amis-project-/pages/transport_info.php" class="btn btn-primary">View
-                                Transportation</a>
+                            <h5 class="card-title">Available Routes</h5>
+                            <p class="card-text">Explore available transport routes.</p>
+                            <a href="/amis-project-/pages/available_routes.php" class="btn btn-primary">View Routes</a>
                         </div>
                     </div>
                 </div>
@@ -111,5 +109,4 @@ include_once('../../includes/header.php');
 
 <?php include('../../includes/footer.php') ?>
 </body>
-
 </html>

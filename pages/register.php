@@ -17,7 +17,7 @@ include_once('../includes/header.php'); ?>
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 $user_types[] = $row['user_type'];
-            }
+            }array_pop($user_types);
         }
 
         // Fetch locations for farmers

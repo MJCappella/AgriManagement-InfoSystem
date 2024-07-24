@@ -75,6 +75,8 @@ footer {
 /* Home page */
 body {
     font-family: 'Proxima Nova', Arial, sans-serif;
+    display: flex;
+    height: 100vh;
 }
 .hero {
     background: url('http://localhost/amis-project-/uploads/images/crops/default.jpg') no-repeat center center;
@@ -129,4 +131,23 @@ body {
     font-size: 20px;
     cursor: pointer;
     box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.sidebar {
+    height: 100vh;
+    position: fixed;
+}
+
+.main-content {
+    margin-left: 250px; /* Sidebar width */
+    padding: 20px;
+}
+
+.card {
+    border: none;
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: scale(1.05);
 }
