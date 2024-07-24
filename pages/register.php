@@ -1,4 +1,5 @@
 <?php include_once("../config/config.php");
+$pageTitle = 'Register';
 include('../includes/header.php'); ?>
 <h2 class="mt-4">Register</h2>
 
@@ -103,7 +104,7 @@ $conn->close();
         <button type="button" class="btn btn-primary" onclick="submitVerificationForm()">Verify</button>
     </form>
 </div>
-
+<?php include('../includes/footer.php') ?>
 <script>
     function togglePwd() {
         if ($('#password').attr('type') === 'password') {
@@ -309,4 +310,5 @@ $conn->close();
     });
 </script>
 
-<?php include('../includes/footer.php'); ?>
+</body>
+</html>

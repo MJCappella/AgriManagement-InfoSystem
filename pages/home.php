@@ -1,120 +1,8 @@
 <?php
 include_once('../config/config.php');
+$pageTitle = 'Home';
+include('../includes/header.php');
 ?>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Agriculture Marketing Information System connecting farmers, buyers, and market professionals">
-    <meta name="keywords" content="agriculture, marketing, information, system, farmers, buyers">
-    <meta name="author" content="Your Name">
-    <title>Home</title>
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js" integrity="sha512-u3fPA7V8qQmhBPNT5quvaXVa1mnnLSXUep5PS1qo5NRzHwG19aHmNJnj1Q8hpA/nBWZtZD4r4AX6YOt5ynLN2g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="<?php echo BASE_URL; ?>/assets/js/scripts.js" defer></script>
-    <script src="<?php echo BASE_URL; ?>/assets/js/popper.min.js" defer></script>
-    <script src="<?php echo BASE_URL; ?>/assets/js/d3.min.js" defer></script>
-    <script src="<?php echo BASE_URL; ?>/assets/js/bootstrap.min.js" integrity="sha512-ykZ1QQr0Jy/4ZkvKuqWn4iF3lqPZyij9iRv6sGqLRdTPkY69YX6+7wvVGmsdBbiIfN/8OdsI7HABjvEok6ZopQ==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
-    <script src="<?php echo BASE_URL; ?>/assets/js/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
-    <link href="https://fonts.googleapis.com/css2?family=Proxima+Nova:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js" defer></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            AOS.init();
-        });
-    </script>
-
-    <style>
-        body {
-            font-family: 'Proxima Nova', sans-serif;
-        }
-
-        #scrollToTopBtn {
-            display: none;
-            position: fixed;
-            bottom: 20px;
-            right: 30px;
-            z-index: 99;
-            border: none;
-            outline: none;
-            background-color: #007377;
-            color: white;
-            cursor: pointer;
-            padding: 15px;
-            border-radius: 10px;
-        }
-
-        #scrollToTopBtn:hover {
-            background-color: #555;
-        }
-
-        .bg-body-tertiary {
-            background-color: #f8f9fa !important;
-        }
-
-        .list-unstyled li {
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-        }
-
-        .list-unstyled li i {
-            margin-right: 10px;
-        }
-
-        .featurette-image {
-            border-radius: 15px;
-        }
-        #my-nav{
-        background-color: #f3f9f9 !important;
-        }
-        .text-content .full-text {
-    display: none;
-}
-
-.read-more-btn {
-    cursor: pointer;
-}
-
-    </style>
-</head>
-
-<body class="d-flex flex-column h-100">
-    <div>
-
-        <!-- Navigation -->
-        <nav id="my-nav" class="navbar navbar-expand-lg navbar-light bg-light" data-aos="fade-down">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#"><img width="36" src="<?php echo BASE_URL; ?>/assets/images/logo.png" alt="Logo">&nbsp;AMIS</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Services</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">About</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="login.php"><i class="fa fa-lock"></i>&nbsp; Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="register.php">Sign Up</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
 
         <!-- Hero Section -->
         <div class="container-fluid bg-dark text-white text-center d-flex align-items-center justify-content-center" style="background-image: url('<?php echo BASE_URL; ?>/uploads/images/crops/default.jpg'); background-size: cover; height: 70vh; background-position: center;" data-aos="fade-up">
@@ -229,37 +117,7 @@ include_once('../config/config.php');
     </div>
 
 
-    <!-- Footer -->
-    <footer class="bg-dark text-white py-4">
-        <div class="container" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1500">
-            <div class="row">
-                <div class="col-md-4">
-                    <h5>Contact Us</h5>
-                    <p>Email: info@amis.com</p>
-                    <p>Phone: +254 711 000 200</p>
-                </div>
-                <div class="col-md-4">
-                    <h5>Important Links</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="text-white">Privacy Policy</a></li>
-                        <li><a href="#" class="text-white">Terms of Service</a></li>
-                        <li><a href="#" class="text-white">About Us</a></li>
-                        <li><a href="#" class="text-white">FAQ</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4 text-end">
-                    <h5>Follow Us</h5>
-                    <a href="#" class="text-white me-2"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="text-white me-2"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
-                </div>
-            </div>
-            <div class="text-center mt-3">
-                <p>&copy; 2024 Agriculture Marketing Information System. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-    </div>
+    <?php include('../includes/footer.php') ?>
 
     <script>
         // Show or hide the scroll-to-top button based on scroll position
