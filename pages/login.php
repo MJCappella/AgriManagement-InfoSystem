@@ -1,7 +1,7 @@
 <?php
 include_once("../config/config.php");
 $pageTitle = 'Login';
-include('../includes/header.php');
+include_once('../includes/header.php');
 ?>
 
 <div class="container centered-form">
@@ -126,7 +126,7 @@ include('../includes/header.php');
               if (loginSuccessful) {
                   alertPlaceholder.html('<div class="alert alert-success" role="alert">Login successful! Redirecting...</div>');
                   setTimeout(() => {
-                      window.location.href = 'dashboard.php';
+                      window.location.href = 'dashboards/farmer_dashboard.php';
                   }, 1200);
               } else {
                   alertPlaceholder.html('<div class="alert alert-danger" role="alert">' + data.message + '</div>');

@@ -1,6 +1,6 @@
 <?php include_once("../config/config.php");
 $pageTitle = 'Register';
-include('../includes/header.php'); ?>
+include_once('../includes/header.php'); ?>
 
 <div class="container centered-form">
     <div class="form-container">

@@ -118,36 +118,39 @@ $pageTitle = isset($pageTitle) ? $pageTitle : 'AMIS Project';
 
 <body class="d-flex flex-column h-100">
     <div>
-        <?php
-        echo '<header>
-    <nav id="my-nav" class="navbar navbar-expand-lg navbar-light bg-light" data-aos="fade-down">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#"><img width="36" src="' . BASE_URL . '/assets/images/logo.png" alt="Logo">&nbsp;AMIS</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="home.php">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Services</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
-                    </li>
-                </ul>
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="login.php"><i class="fa fa-lock"></i>&nbsp; Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="register.php">Sign Up</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</header>';
-        ?>
+        <header>
+            <nav id="my-nav" class="navbar navbar-expand-lg navbar-light bg-light" data-aos="fade-down">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="#"><img width="36" src="<?php echo BASE_URL; ?>/assets/images/logo.png" alt="Logo">&nbsp;AMIS</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="home.php">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Services</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">About</a>
+                            </li>
+                        </ul>
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <?php echo isset($logoutButton) ?
+                                    '<form action="/amis-project-/pages/routes.php" method="post" mt-4>
+                                        <input type="hidden" name="action" value="logout">
+                                        <button type="submit" class="nav-link"><i class="fa fa-sign-out"></i>&nbsp; Logout</button>
+                                        </form><br />'
+                                    : '<a class="nav-link" href="login.php"><i class="fa fa-unlock"></i>&nbsp; Login</a>' ?>
+                            </li>
+
+                            <?php echo isset($logoutButton) ? '' : '<li class="nav-item"><a class="nav-link" href="register.php">Sign Up</a></li>' ?>
+
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
