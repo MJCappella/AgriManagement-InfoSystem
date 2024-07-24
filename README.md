@@ -3,7 +3,7 @@ The following is the progress::
 - [x] UML Use Case UML design
 - [x] Database design
 - [x] Backend development
-- [ ] Frontend development
+- [x] Frontend development
 - [ ] Integration and testing
 - [ ] Release
 ## Description
