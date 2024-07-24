@@ -1,108 +1,113 @@
 <?php include_once("../config/config.php");
 $pageTitle = 'Register';
 include('../includes/header.php'); ?>
-<h2 class="mt-4">Register</h2>
 
-<?php
-// Fetch user types from the database
-include('../includes/db_connect.php'); // Ensure this file connects to your database
+<div class="container centered-form">
+    <div class="form-container">
+        <h2 class="mt-4">Register</h2>
 
-$query = "SELECT user_type FROM user_type_tbl";
-$result = $conn->query($query);
+        <?php
+        // Fetch user types from the database
+        include('../includes/db_connect.php'); // Ensure this file connects to your database
 
-$user_types = [];
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $user_types[] = $row['user_type'];
-    }
-}
+        $query = "SELECT user_type FROM user_type_tbl";
+        $result = $conn->query($query);
 
-// Fetch locations for farmers
-$location_query = "SELECT name as county FROM counties";
-$location_result = $conn->query($location_query);
+        $user_types = [];
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $user_types[] = $row['user_type'];
+            }
+        }
 
-$locations = [];
-if ($location_result->num_rows > 0) {
-    while ($row = $location_result->fetch_assoc()) {
-        $locations[] = $row['county'];
-    }
-}
+        // Fetch locations for farmers
+        $location_query = "SELECT name as county FROM counties";
+        $location_result = $conn->query($location_query);
 
-$conn->close();
-?>
+        $locations = [];
+        if ($location_result->num_rows > 0) {
+            while ($row = $location_result->fetch_assoc()) {
+                $locations[] = $row['county'];
+            }
+        }
 
-<div id="alert-placeholder"></div>
-<form id="registration-form" role="form" class="needs-validation" novalidate>
-    <input type="hidden" name="action" value="register">
-    <div class="form-group mb-2">
-        <label for="user_type">User Type:</label>
-        <select id="user_type" name="user_type" class="form-control" required>
-            <option value="" disabled selected>Select user type</option>
-            <?php foreach ($user_types as $user_type) : ?>
-                <option value="<?php echo htmlspecialchars($user_type); ?>">
-                    <?php echo htmlspecialchars(ucfirst($user_type)); ?>
-                </option>
-            <?php endforeach; ?>
-        </select>
-        <div class="invalid-feedback">
-            Please select a user type.
-        </div>
-    </div>
-    <div class="form-group mb-2">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" class="form-control" required>
-        <div class="invalid-feedback">
-            Please enter a username.
-        </div>
-    </div>
-    <div class="form-group mb-2">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" class="form-control" required>
-        <div class="invalid-feedback">
-            Please enter a valid email address.
-        </div>
-    </div>
-    <div class="form-group mb-2">
-        <label for="password">Password:</label>
-        <div class="input-group">
-            <input type="password" id="password" name="password" class="form-control" required>
-            <div class="input-group-append">
-                <span class="input-group-text" id="toggle-password" style="cursor: pointer; height: 38px;">
-                    <i class="fa fa-eye" onclick="togglePwd()" id="togglePassword"></i>
-                </span>
+        $conn->close();
+        ?>
+
+        <div id="alert-placeholder"></div>
+        <form id="registration-form" role="form" class="needs-validation" novalidate>
+            <input type="hidden" name="action" value="register">
+            <div class="form-group mb-2">
+                <label for="user_type">User Type:</label>
+                <select id="user_type" name="user_type" class="form-control" required>
+                    <option value="" disabled selected>Select user type</option>
+                    <?php foreach ($user_types as $user_type) : ?>
+                        <option value="<?php echo htmlspecialchars($user_type); ?>">
+                            <?php echo htmlspecialchars(ucfirst($user_type)); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                <div class="invalid-feedback">
+                    Please select a user type.
+                </div>
             </div>
-            <div class="invalid-feedback">
-                Please enter your password.
+            <div class="form-group mb-2">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" class="form-control" required>
+                <div class="invalid-feedback">
+                    Please enter a username.
+                </div>
             </div>
+            <div class="form-group mb-2">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" class="form-control" required>
+                <div class="invalid-feedback">
+                    Please enter a valid email address.
+                </div>
+            </div>
+            <div class="form-group mb-2">
+                <label for="password">Password:</label>
+                <div class="input-group">
+                    <input type="password" id="password" name="password" class="form-control" required>
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="toggle-password" style="cursor: pointer; height: 38px;">
+                            <i class="fa fa-eye" onclick="togglePwd()" id="togglePassword"></i>
+                        </span>
+                    </div>
+                    <div class="invalid-feedback">
+                        Please enter your password.
+                    </div>
+                </div>
+            </div>
+            <div id="additional-fields" class="form-group"></div>
+            <div class="form-group mb-2">
+                <label for="enable_2fa">
+                    <input type="checkbox" id="enable_2fa" name="status_2fa"> Enable Two-Factor Authentication
+                </label>
+            </div>
+            <button type="button" class="btn btn-primary w-100" onclick="submitRegForm()">Register</button>
+            <button class="btn btn-success w-100 mt-2" type="button" onclick="window.location.href='login.php'" id="register">I already have an account</button>
+
+        </form>
+
+        <!-- Verification code section, initially hidden -->
+        <div id="verification-section" style="display: none;">
+            <h3>Enter Verification Code</h3>
+            <form id="verification-form" class="needs-validation" novalidate>
+                <input type="hidden" id="v_action" name="action" value="verify-code">
+                <input type="hidden" id="v_user_type" name="user_type" value="farmer">
+                <input type="hidden" id="v_email" name="email" value="example@email.com">
+                <div class="form-group mb-2">
+                    <label for="verification_code">Verification Code:</label>
+                    <input type="text" id="verification_code" name="verification_code" class="form-control" required>
+                    <div class="invalid-feedback">
+                        Please enter the verification code sent to your email.
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary" onclick="submitVerificationForm()">Verify</button>
+            </form>
         </div>
     </div>
-    <div id="additional-fields" class="form-group"></div>
-    <div class="form-group mb-2">
-        <label for="enable_2fa">
-            <input type="checkbox" id="enable_2fa" name="status_2fa"> Enable Two-Factor Authentication
-        </label>
-    </div>
-    <button type="button" class="btn btn-primary" onclick="submitRegForm()">Register</button>
-    <button class="btn btn-success" type="button" onclick="window.location.href='login.php'" id="register">I already have an account</button>
-
-</form>
-
-<!-- Verification code section, initially hidden -->
-<div id="verification-section" style="display: none;">
-    <h3>Enter Verification Code</h3>
-    <form id="verification-form" class="needs-validation" novalidate>
-        <input type="hidden" id="v_action" name="action" value="verify-code">
-        <input type="hidden" id="v_user_type" name="user_type" value="farmer">
-        <input type="hidden" id="v_email" name="email" value="example@email.com">
-        <div class="form-group mb-2">
-            <label for="verification_code">Verification Code:</label>
-            <input type="text" id="verification_code" name="verification_code" class="form-control" required>
-            <div class="invalid-feedback">
-                Please enter the verification code sent to your email.
-            </div>
-        </div>
-        <button type="button" class="btn btn-primary" onclick="submitVerificationForm()">Verify</button>
-    </form>
 </div>
 <?php include('../includes/footer.php') ?>
 <script>
@@ -118,7 +123,7 @@ $conn->close();
         }
     }
 
-    function submitRegForm(){
+    function submitRegForm() {
         var myForm = document.getElementById('registration-form');
 
         if (myForm.checkValidity() === false) {
@@ -133,10 +138,10 @@ $conn->close();
         $('#v_email').val($('#email').val());
         var formData = $(myForm).serialize();
         if ($('#enable_2fa').prop('checked')) {
-            formData=formData.substring(0, formData.lastIndexOf('&'));
-            formData+='&enable_2fa=true';
+            formData = formData.substring(0, formData.lastIndexOf('&'));
+            formData += '&enable_2fa=true';
         } else {
-            formData+='&enable_2fa=false';
+            formData += '&enable_2fa=false';
         }
         console.log(formData);
         $.ajax({
@@ -152,9 +157,9 @@ $conn->close();
                     if ($('#enable_2fa').is(':checked')) {
                         $('#registration-form').hide();
                         $('#verification-section').show();
-                        alertPlaceholder.html('<div class="alert alert-success" role="alert">'+ data.message +'</div>');
+                        alertPlaceholder.html('<div class="alert alert-success" role="alert">' + data.message + '</div>');
                     } else {
-                        alertPlaceholder.html('<div class="alert alert-success" role="alert">'+ data.message +' Redirecting...</div>');
+                        alertPlaceholder.html('<div class="alert alert-success" role="alert">' + data.message + ' Redirecting...</div>');
                         setTimeout(() => {
                             window.location.href = 'login.php';
                         }, 1000);
@@ -170,7 +175,7 @@ $conn->close();
         });
     }
 
-    function submitVerificationForm(){
+    function submitVerificationForm() {
         var verificationForm = document.getElementById('verification-form');
 
         if (verificationForm.checkValidity() === false) {
@@ -192,7 +197,7 @@ $conn->close();
                 var alertPlaceholder = $('#alert-placeholder');
                 console.log(data);
                 if (verificationSuccessful) {
-                    alertPlaceholder.html('<div class="alert alert-success" role="alert">'+ data.message +' Redirecting...</div>');
+                    alertPlaceholder.html('<div class="alert alert-success" role="alert">' + data.message + ' Redirecting...</div>');
                     setTimeout(() => {
                         window.location.href = 'login.php';
                     }, 1000);
@@ -304,11 +309,12 @@ $conn->close();
                         <div class="invalid-feedback">Please enter your ID number.</div>
                     </div>`;
                 break;
-                default:
+            default:
                 break;
         }
     });
 </script>
 
 </body>
+
 </html>

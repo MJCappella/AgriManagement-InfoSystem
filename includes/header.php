@@ -80,6 +80,7 @@ $pageTitle = isset($pageTitle) ? $pageTitle : 'AMIS Project';
         .read-more-btn {
             cursor: pointer;
         }
+
         .go-to-top {
             position: fixed;
             bottom: 20px;
@@ -94,7 +95,23 @@ $pageTitle = isset($pageTitle) ? $pageTitle : 'AMIS Project';
             line-height: 50px;
             font-size: 20px;
             cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .centered-form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* height: 70vh; */
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
