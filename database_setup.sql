@@ -14,7 +14,7 @@ CREATE TABLE user_type_tbl (
 
 CREATE TABLE admin (
     admin_id INT PRIMARY KEY AUTO_INCREMENT,
-    user_type_id INT,
+    user_type_id INT NOT NULL DEFAULT 6,
     username VARCHAR(100),
     email VARCHAR(100) UNIQUE,
     id_number INT(9) NOT NULL,
@@ -276,6 +276,17 @@ VALUES ('farmer'), ('buyer'), ('government'), ('transporter'), ('marketing'), ('
 INSERT INTO admin(user_type_id, username, email, id_number, password) VALUES(6,"John Smith","johnsmith@yahoo.com",23423231,"d0d8bda2ec288938dbed16522a638011"); 
 
 INSERT INTO farmer(username, email, password, location, phone) VALUES("John Doe","johndoe@gmail.com","d0d8bda2ec288938dbed16522a638011","Embu",720121232); 
+
+INSERT INTO crops(cropname, description, price, image_path) VALUES('beans', 'High protein legume', 100, '../../uploads/images/crops/beans.jpg');
+INSERT INTO crops(cropname, description, price, image_path) VALUES('corn', 'Staple grain', 50, '../../uploads/images/crops/corn.jpg');
+INSERT INTO crops(cropname, description, price, image_path) VALUES('wheat', 'Common cereal grain', 70, '../../uploads/images/crops/wheat.jpg');
+INSERT INTO crops(cropname, description, price, image_path) VALUES('rice', 'Primary food source', 60, '../../uploads/images/crops/rice.jpg');
+INSERT INTO crops(cropname, description, price, image_path) VALUES('potatoes', 'Starchy tuber', 40, '../../uploads/images/crops/potatoes.jpg');
+INSERT INTO crops(cropname, description, price, image_path) VALUES('tomatoes', 'Versatile fruit', 80, '../../uploads/images/crops/tomatoes.jpg');
+INSERT INTO crops(cropname, description, price, image_path) VALUES('carrots', 'Root vegetable', 30, '../../uploads/images/crops/carrots.jpg');
+INSERT INTO crops(cropname, description, price, image_path) VALUES('lettuce', 'Leafy green', 20, '../../uploads/images/crops/lettuce.jpg');
+INSERT INTO crops(cropname, description, price, image_path) VALUES('peppers', 'Spicy vegetable', 90, '../../uploads/images/crops/peppers.jpg');
+INSERT INTO crops(cropname, description, price, image_path) VALUES('cabbage', 'Cruciferous vegetable', 25, '../../uploads/images/crops/cabbage.jpg');
 
 INSERT INTO counties (name, code) VALUES ('Baringo', 30);
 INSERT INTO counties (name, code) VALUES ('Bomet', 36);

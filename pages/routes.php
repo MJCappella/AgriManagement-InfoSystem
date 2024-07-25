@@ -132,7 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             break;
 
         case 'get-market-prices':
-            $authorized_users = ['admin'];
+            $authorized_users = ['admin','farmer'];
             $logged = isLoggedIn($authorized_users);
             $logged  ? getMarketPrices() : '';
             display_login_request($logged, $authorized_users);
@@ -743,7 +743,7 @@ function getCrops()
             $crops[] = $crop;
         }
 
-        echo json_encode(['success' => true, 'crops' => $crops]);
+        echo json_encode(['success' => true, 'length' => $result->num_rows, 'crops' => $crops]);
     } else {
         echo json_encode(['success' => false, 'message' => $stmt->error]);
     }
@@ -845,7 +845,7 @@ function getYields()
         while ($row = $result->fetch_assoc()) {
             $yields[] = $row;
         }
-        echo json_encode(['success' => true, 'yields' => $yields]);
+        echo json_encode(['success' => true, 'length' => $result->num_rows, 'yields' => $yields]);
     } else {
         echo json_encode(['success' => false, 'message' => 'No yields found']);
     }
@@ -1239,7 +1239,7 @@ function getMarketPrices()
 
     if ($result) {
         $market_prices = $result->fetch_all(MYSQLI_ASSOC);
-        echo json_encode(['success' => true, 'data' => $market_prices]);
+        echo json_encode(['success' => true, 'length' => $result->num_rows, 'data' => $market_prices]);
     } else {
         echo json_encode(['success' => false, 'message' => 'Error fetching market prices: ' . $conn->error]);
     }
