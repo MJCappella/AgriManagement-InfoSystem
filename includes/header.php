@@ -128,7 +128,7 @@ $pageTitle = isset($pageTitle) ? $pageTitle : 'AMIS Project';
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="home.php">Home</a>
+                                <a class="nav-link active" aria-current="page" href="<?php echo BASE_URL; ?>/public">Home</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#">Services</a>

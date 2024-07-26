@@ -5,13 +5,36 @@ include('../includes/header.php');
 ?>
 
         <!-- Hero Section -->
-        <div class="container-fluid bg-dark text-white text-center d-flex align-items-center justify-content-center" style="background-image: url('<?php echo BASE_URL; ?>/uploads/images/crops/default.jpg'); background-size: cover; height: 70vh; background-position: center;" data-aos="fade-up">
-            <div>
-                <h1 class="display-4">Welcome to the Agriculture Marketing Information System</h1>
-                <p class="lead">Connecting Farmers, Buyers, and Market Professionals</p>
-                <a href="register.php" class="btn btn-info btn-lg">Get Started</a>
-            </div>
-        </div>
+<div class="container-fluid bg-dark text-white text-center d-flex align-items-center justify-content-center hero-section" style="background-image: url('<?php echo BASE_URL; ?>/uploads/images/crops/default.jpg'); background-size: cover; height: 70vh; background-position: center;" data-aos="fade-up">
+    <div class="hero-content">
+        <h1 class="display-4">Welcome to the Agriculture Marketing Information System</h1>
+        <p class="lead">Connecting Farmers, Buyers, and Market Professionals</p>
+        <a href="register.php" class="btn btn-info btn-lg">Get Started</a>
+    </div>
+</div>
+
+<style>
+.hero-section {
+    position: relative;
+}
+
+.hero-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 26, 38, .5); /* Adjust the color and opacity here */
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+</style>
+
 
         <!-- Mission and Core values -->
         <div class="container marketing text-center mt-4">
