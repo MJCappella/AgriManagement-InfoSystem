@@ -16,11 +16,16 @@ $pageTitle = isset($pageTitle) ? $pageTitle : 'AMIS Project';
     <script src="<?php echo BASE_URL; ?>/assets/js/scripts.js" defer></script>
     <script src="<?php echo BASE_URL; ?>/assets/js/popper.min.js" defer></script>
     <script src="<?php echo BASE_URL; ?>/assets/js/d3.min.js" defer></script>
+    <script src=https://code.jquery.com/jquery-3.7.1.js></script>
     <script src="<?php echo BASE_URL; ?>/assets/js/bootstrap.min.js" integrity="sha512-ykZ1QQr0Jy/4ZkvKuqWn4iF3lqPZyij9iRv6sGqLRdTPkY69YX6+7wvVGmsdBbiIfN/8OdsI7HABjvEok6ZopQ==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
-    <script src="<?php echo BASE_URL; ?>/assets/js/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
     <link href="https://fonts.googleapis.com/css2?family=Proxima+Nova:wght@400;700&display=swap" rel="stylesheet">
+    
+    <link href=https://cdn.datatables.net/2.1.2/css/dataTables.dataTables.css rel=stylesheet>
+    <script src=https://cdn.datatables.net/2.1.2/js/dataTables.js></script>
+
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js" defer></script>
+    
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             AOS.init();

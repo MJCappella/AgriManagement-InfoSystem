@@ -9,8 +9,9 @@ function isLoggedIn($user_types) {
     return false;
 }
 
-function login($user_id, $username, $user_type) {
+function login($user_id, $email, $username, $user_type) {
     $_SESSION['user_id'] = $user_id;
+    $_SESSION['email'] = $email;
     $_SESSION['username'] = $username;
     $_SESSION['user_type'] = $user_type;
 }

@@ -414,8 +414,9 @@ function handleLogin()
     if ($result->num_rows === 1) {
         $user = $result->fetch_assoc();
         if ($password === $user['password']) {
+            $email= $user['email'];
             $id = reset($user);
-            login($id, $username, $user_type);
+            login($id, $email, $username, $user_type);
             echo '{"success":true, "message": "login successful"}';
         } else {
             echo '{"success":false, "message": "Invalid password"}';
@@ -815,7 +816,7 @@ function fetchForex()
                 'eur' => $forex['eur'],
                 'cad' => $forex['cad']
             ];
-            echo json_encode(['success' => true, 'forex' => $filteredForex]);
+            echo json_encode(['success' => true, 'length' => $result->num_rows, 'forex' => $filteredForex]);
         } else {
             // Return default values if no records found
             $defaultForex = [
@@ -825,7 +826,7 @@ function fetchForex()
                 'eur' => 100,
                 'cad' => 100
             ];
-            echo json_encode(['success' => true, 'forex' => $defaultForex]);
+            echo json_encode(['success' => true, 'length' => $result->num_rows, 'forex' => $defaultForex]);
         }
     } else {
         echo json_encode(['success' => false, 'message' => $stmt->error]);
@@ -853,10 +854,9 @@ function getYields()
 function getYield()
 {
     global $conn;
-    $farmer_email = $_POST['farmer_email'];
-
+    $farmer_email = $_SESSION['email'];
     // Fetch the farmer_id based on farmer_email
-    $farmerQuery = "SELECT farmer_id FROM farmers WHERE email = ? LIMIT 1";
+    $farmerQuery = "SELECT farmer_id FROM farmer WHERE email = ? LIMIT 1";
     $farmerStmt = $conn->prepare($farmerQuery);
     $farmerStmt->bind_param('s', $farmer_email);
 
@@ -882,7 +882,7 @@ function getYield()
                     while ($row = $result->fetch_assoc()) {
                         $yields[] = $row;
                     }
-                    echo json_encode(['success' => true, 'yields' => $yields]);
+                    echo json_encode(['success' => true, 'length' => $result->num_rows, 'yields' => $yields]);
                 } else {
                     echo json_encode(['success' => false, 'message' => 'No yields found']);
                 }
@@ -920,7 +920,7 @@ function deleteYield()
             $crop_id = $crop['crop_id'];
 
             // Fetch the farmer_id based on farmer_email
-            $farmerQuery = "SELECT farmer_id FROM farmers WHERE email = ? LIMIT 1";
+            $farmerQuery = "SELECT farmer_id FROM farmer WHERE email = ? LIMIT 1";
             $farmerStmt = $conn->prepare($farmerQuery);
             $farmerStmt->bind_param('s', $farmer_email);
 
@@ -981,7 +981,7 @@ function updateYield()
             $crop_id = $crop['crop_id'];
 
             // Fetch the farmer_id based on farmer_email
-            $farmerQuery = "SELECT farmer_id FROM farmers WHERE email = ? LIMIT 1";
+            $farmerQuery = "SELECT farmer_id FROM farmer WHERE email = ? LIMIT 1";
             $farmerStmt = $conn->prepare($farmerQuery);
             $farmerStmt->bind_param('s', $farmer_email);
 
@@ -1041,7 +1041,7 @@ function addYield()
             $crop_id = $crop['crop_id'];
 
             // Fetch the farmer_id based on farmer_email
-            $farmerQuery = "SELECT farmer_id FROM farmers WHERE email = ? LIMIT 1";
+            $farmerQuery = "SELECT farmer_id FROM farmer WHERE email = ? LIMIT 1";
             $farmerStmt = $conn->prepare($farmerQuery);
             $farmerStmt->bind_param('s', $farmer_email);
 
@@ -1095,7 +1095,7 @@ function getFeedbackByBuyer()
         $feedbacks[] = $row;
     }
 
-    echo json_encode(['success' => true, 'feedbacks' => $feedbacks]);
+    echo json_encode(['success' => true, 'length' => $result->num_rows, 'feedbacks' => $feedbacks]);
 }
 
 function getFeedbackByFarmer()
@@ -1113,7 +1113,7 @@ function getFeedbackByFarmer()
         $feedbacks[] = $row;
     }
 
-    echo json_encode(['success' => true, 'feedbacks' => $feedbacks]);
+    echo json_encode(['success' => true, 'length' => $result->num_rows, 'feedbacks' => $feedbacks]);
 }
 
 function getAllFeedback()
@@ -1127,7 +1127,7 @@ function getAllFeedback()
         $feedbacks[] = $row;
     }
 
-    echo json_encode(['success' => true, 'feedbacks' => $feedbacks]);
+    echo json_encode(['success' => true, 'length' => $result->num_rows, 'feedbacks' => $feedbacks]);
 }
 
 function deleteFeedback()
@@ -1234,7 +1234,7 @@ function getMarketPrices()
 {
     global $conn;
 
-    $query = "SELECT * FROM market_prices";
+    $query = "SELECT m.*,c.cropname FROM market_prices as m join crops as c on m.crop_id=c.crop_id";
     $result = $conn->query($query);
 
     if ($result) {
@@ -1345,7 +1345,7 @@ function getComplianceCertificates()
         $certificates[] = $row;
     }
 
-    echo json_encode(['success' => true, 'data' => $certificates]);
+    echo json_encode(['success' => true, 'length' => $result->num_rows, 'data' => $certificates]);
 }
 
 // Function to approve a compliance certificate
@@ -1386,7 +1386,7 @@ function getFarmerComplianceCertificate()
         $certificates[] = $row;
     }
 
-    echo json_encode(['success' => true, 'data' => $certificates]);
+    echo json_encode(['success' => true, 'length' => $result->num_rows, 'data' => $certificates]);
 
     $stmt->close();
 }
@@ -1449,7 +1449,7 @@ function getTransaction()
         $transaction = $result->fetch_assoc();
 
         if ($transaction) {
-            echo json_encode(['success' => true, 'transaction' => $transaction]);
+            echo json_encode(['success' => true, 'length' => $result->num_rows, 'transaction' => $transaction]);
         } else {
             echo json_encode(['success' => false, 'message' => 'Transaction not found']);
         }
@@ -1524,7 +1524,7 @@ function getAllOrders()
 
     if ($result) {
         $orders = $result->fetch_all(MYSQLI_ASSOC);
-        echo json_encode(['success' => true, 'orders' => $orders]);
+        echo json_encode(['success' => true, 'length' => $result->num_rows, 'orders' => $orders]);
     } else {
         echo json_encode(['success' => false, 'message' => 'Error fetching orders: ' . $conn->error]);
     }
@@ -1566,7 +1566,7 @@ function getOrdersByFarmer()
     if ($stmt->execute()) {
         $result = $stmt->get_result();
         $orders = $result->fetch_all(MYSQLI_ASSOC);
-        echo json_encode(['success' => true, 'orders' => $orders]);
+        echo json_encode(['success' => true, 'length' => $result->num_rows, 'orders' => $orders]);
     } else {
         echo json_encode(['success' => false, 'message' => 'Error fetching orders by farmer: ' . $stmt->error]);
     }
@@ -1588,7 +1588,7 @@ function getOrdersByBuyer()
     if ($stmt->execute()) {
         $result = $stmt->get_result();
         $orders = $result->fetch_all(MYSQLI_ASSOC);
-        echo json_encode(['success' => true, 'orders' => $orders]);
+        echo json_encode(['success' => true, 'length' => $result->num_rows, 'orders' => $orders]);
     } else {
         echo json_encode(['success' => false, 'message' => 'Error fetching orders by buyer: ' . $stmt->error]);
     }
@@ -1722,7 +1722,7 @@ function getCropDemand()
         $demand_trends = $result->fetch_all(MYSQLI_ASSOC);
 
         if (!empty($demand_trends)) {
-            echo json_encode(['success' => true, 'demand_trends' => $demand_trends]);
+            echo json_encode(['success' => true, 'length' => $result->num_rows, 'demand_trends' => $demand_trends]);
         } else {
             echo json_encode(['success' => false, 'message' => 'No demand trends found for this crop']);
         }
@@ -1745,7 +1745,7 @@ function getDemandTrends()
         $demand_trends = $result->fetch_all(MYSQLI_ASSOC);
 
         if (!empty($demand_trends)) {
-            echo json_encode(['success' => true, 'demand_trends' => $demand_trends]);
+            echo json_encode(['success' => true, 'length' => $result->num_rows, 'demand_trends' => $demand_trends]);
         } else {
             echo json_encode(['success' => false, 'message' => 'No demand trends found']);
         }
@@ -1927,7 +1927,7 @@ function viewMessages()
 
     if ($result) {
         $messages = $result->fetch_all(MYSQLI_ASSOC);
-        echo json_encode(['success' => true, 'messages' => $messages]);
+        echo json_encode(['success' => true, 'length' => $result->num_rows, 'messages' => $messages]);
     } else {
         echo json_encode(['success' => false, 'message' => 'Error fetching messages: ' . $conn->error]);
     }
@@ -1946,7 +1946,7 @@ function viewMyMessages()
     if ($stmt->execute()) {
         $result = $stmt->get_result();
         $messages = $result->fetch_all(MYSQLI_ASSOC);
-        echo json_encode(['success' => true, 'messages' => $messages]);
+        echo json_encode(['success' => true, 'length' => $result->num_rows, 'messages' => $messages]);
     } else {
         echo json_encode(['success' => false, 'message' => 'Error fetching messages: ' . $stmt->error]);
     }
