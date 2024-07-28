@@ -6,6 +6,11 @@ The following is the progress::
 - [x] Frontend development
 - [ ] Integration and testing
 - [ ] Release
+## Installation
+Run on cmd 
+```` bat
+        mysql -u root -p < database_setup.sql
+````
 ## Description
 AMIS is a client-server web application where the client in the case of this system, is the farmers, traders, buyers and government agencies that use client side applications or web browsers to interact with the system while the server is the system which is the data server that hosts the AMIS.
 ### Users of the system

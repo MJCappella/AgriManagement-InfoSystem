@@ -2,19 +2,152 @@
 
 body {
     font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 20px;
 }
 
-header, footer {
+header,
+footer {
     background-color: #f8f8f8;
     padding: 20px;
     text-align: center;
 }
 
-.container {
-    width: 80%;
-    margin: auto;
-    overflow: hidden;
+.card {
+    width: 250px;
+    margin: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    text-align: center;
+    position: relative;
 }
 
+.card .value {
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+.card .progress-bar {
+    position: absolute;
+    left: 0px;
+    width: 100%;
+    height: 4px;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    overflow: hidden;
+    bottom: 0px;
+}
+
+.card .progress-bar .fill {
+    height: 100%;
+    width: 0;
+    background-color: #76c7c0;
+    transition: width 2s ease-in-out;
+}
+
+.card.red .fill {
+    background-color: #ff6f61;
+}
+
+.card.blue .fill {
+    background-color: #4a90e2;
+}
+
+.card.green .fill {
+    background-color: #50e3c2;
+}
+
+.card::before {
+    content: attr(data-currency);
+    font-size: 1.2em;
+    color: #555;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.two-fa-section {
+    display: none;
+}
+
+/* Home page */
+body {
+    font-family: 'Proxima Nova', Arial, sans-serif;
+    display: flex;
+    height: 100vh;
+}
+.hero {
+    background: url('http://localhost/amis-project-/uploads/images/crops/default.jpg') no-repeat center center;
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+}
+.hero h1 {
+    font-size: 3rem;
+    font-weight: bold;
+}
+.hero button {
+    margin-top: 20px;
+}
+.services, .advantages {
+    padding: 60px 0;
+}
+.services .card, .advantages .card {
+    transition: transform 0.3s ease;
+}
+.services .card:hover, .advantages .card:hover {
+    transform: translateY(-10px);
+}
+.footer {
+    background-color: #007377;
+    color: white;
+    padding: 30px 0;
+}
+.footer a {
+    color: white;
+    text-decoration: none;
+}
+.footer a:hover {
+    text-decoration: underline;
+}
+.go-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #007377;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.sidebar {
+    height: 100vh;
+    position: fixed;
+}
+
+.main-content {
+    margin-left: 250px; /* Sidebar width */
+    padding: 20px;
+}
+
+.card {
+    border: none;
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}

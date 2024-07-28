@@ -36,5 +36,7 @@ define('DB_USER', getenv('DB_USER'));
 define('DB_PASS', getenv('DB_PASS'));
 define('FOREX_BASE_URL', getenv('FOREX_BASE_URL'));
 define('FOREX_API_KEY', getenv('FOREX_API_KEY'));
+define('FOREX_2_BASE_URL', getenv('FOREX_2_BASE_URL'));
+define('FOREX_2_API_KEY', getenv('FOREX_2_API_KEY'));
 define('SENDER_EMAIL', getenv('SENDER_EMAIL'));
 define('SENDER_PASSWORD', getenv('SENDER_PASSWORD'));
