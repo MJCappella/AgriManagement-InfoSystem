@@ -1784,6 +1784,7 @@ function getOrdersByFarmer()
                     orders.order_id,
                     crops.cropname,
                     orders.quantity,
+                    orders.unit,
                     orders.total_cost,
                     orders.date,
                     buyer.username AS buyer_username,

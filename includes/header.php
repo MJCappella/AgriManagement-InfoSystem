@@ -135,6 +135,9 @@ $pageTitle = isset($pageTitle) ? $pageTitle : 'AMIS Project';
     form#add-yield-form, form#edit-yield-form {
         margin-bottom: 15px;
     }
+    .sidebar .nav-link.active, .nav-link:hover {
+        color: white !important; /* Ensures the color stays white */
+    }
     </style>
 </head>
 

@@ -122,7 +122,70 @@ include_once('../../includes/header.php');
 
     </div>
 </div>
+<style>
+    /* Sidebar Styles */
+.sidebar {
+    background-color: #003366; /* Dark Blue */
+    color: white;
+}
 
+.sidebar .nav-link {
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+.sidebar .nav-link.active, 
+.sidebar .nav-link:hover {
+    background-color: #004080; /* Lighter Blue */
+    color: white !important;
+}
+
+.sidebar .nav-link:hover {
+    background-color: #00264d; /* Slightly darker blue */
+}
+
+.sidebar .dropdown-toggle {
+    color: white;
+}
+
+.sidebar .dropdown-menu {
+    background-color: #003366; /* Dark Blue */
+}
+
+.sidebar .dropdown-menu .dropdown-item {
+    color: white;
+}
+
+.sidebar .dropdown-menu .dropdown-item:hover {
+    background-color: #004080; /* Lighter Blue */
+}
+
+/* Modal Header */
+.modal-header {
+    background-color: #003366 !important; /* Dark Blue */
+    color: white;
+}
+
+/* Modal Footer Buttons */
+.modal-footer .btn-secondary {
+    background-color: #00264d; /* Slightly darker blue */
+    border-color: #00264d;
+}
+
+.modal-footer .btn-danger {
+    background-color: #cc0000; /* Red */
+    border-color: #cc0000;
+}
+
+/* Primary Button */
+.btn-primary {
+    background-color: #004080; /* Lighter Blue */
+    border-color: #004080;
+}
+
+    </style>
 <script>
     loadDashboard(document.getElementById('dashboard'));
 
@@ -425,7 +488,8 @@ include_once('../../includes/header.php');
     }
 
     // Load and display all adverts
-function orderCrops() {
+function orderCrops(element) {
+    setActiveLink(element);
     $.ajax({
         url: 'http://localhost/amis-project-/pages/routes.php',
         type: 'POST',

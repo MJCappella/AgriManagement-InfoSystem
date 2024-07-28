@@ -118,6 +118,53 @@ include_once('../../includes/header.php');
     </div>
 </div>
 
+<style>
+    body {
+        background-color: #f7f7f7;
+    }
+    .sidebar {
+        background-color: #004d00;
+        color: white;
+    }
+    .sidebar .nav-link {
+        color: white;
+    }
+    .sidebar .nav-link.active, .nav-link:hover {
+        background-color: #006600;
+        color: white !important; /* Ensures the color stays white */
+    }
+    .sidebar .nav-link:hover {
+        background-color: #005500;
+    }
+    .dropdown-toggle {
+        color: white;
+    }
+    .dropdown-menu {
+        background-color: #004d00;
+    }
+    .dropdown-menu .dropdown-item {
+        color: white;
+    }
+    .dropdown-menu .dropdown-item:hover {
+        background-color: #006600;
+    }
+    .modal-header {
+        background-color: #004d00;
+        color: white;
+    }
+    .modal-footer .btn-secondary {
+        background-color: #005500;
+        border-color: #005500;
+    }
+    .modal-footer .btn-danger {
+        background-color: #ff0000;
+        border-color: #ff0000;
+    }
+    .btn-primary {
+        background-color: #006600;
+        border-color: #006600;
+    }
+</style>
 
 <script>
     loadDashboard(document.getElementById('dashboard'));
@@ -127,6 +174,7 @@ include_once('../../includes/header.php');
         links.forEach(link => link.classList.remove('active'));
         element.classList.add('active');
     }
+
 
     function loadDashboard(element) {
         setActiveLink(element);
@@ -756,46 +804,45 @@ include_once('../../includes/header.php');
     }
 
     function deleteAdvert(advertId) {
-    // Show the confirm modal
-    var confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
-    confirmModal.show();
+        // Show the confirm modal
+        var confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+        confirmModal.show();
 
-    // Handle the confirm button click
-    document.getElementById('confirmDeleteBtn').onclick = function() {
-        var formData = {
-            action: 'delete-advert',
-            advert_id: advertId
-        };
-        $.ajax({
-            url: 'http://localhost/amis-project-/pages/routes.php',
-            type: 'POST',
-            data: formData,
-            success: function(response) {
-                var responseData = JSON.parse(response);
-                if (responseData.success) {
-                    loadAdverts(document.querySelector('.nav-link[onclick="loadAdverts(this)"]'));
-                    showAlert('Advert deleted successfully!');
-                } else {
-                    showAlert('Error: ' + responseData.message);
+        // Handle the confirm button click
+        document.getElementById('confirmDeleteBtn').onclick = function() {
+            var formData = {
+                action: 'delete-advert',
+                advert_id: advertId
+            };
+            $.ajax({
+                url: 'http://localhost/amis-project-/pages/routes.php',
+                type: 'POST',
+                data: formData,
+                success: function(response) {
+                    var responseData = JSON.parse(response);
+                    if (responseData.success) {
+                        loadAdverts(document.querySelector('.nav-link[onclick="loadAdverts(this)"]'));
+                        showAlert('Advert deleted successfully!');
+                    } else {
+                        showAlert('Error: ' + responseData.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error: ' + error);
+                    showAlert('An error occurred while deleting the advert. Please try again later.');
                 }
-            },
-            error: function(xhr, status, error) {
-                console.error('Error: ' + error);
-                showAlert('An error occurred while deleting the advert. Please try again later.');
-            }
-        });
+            });
 
-        // Hide the confirm modal
-        confirmModal.hide();
-    };
-}
+            // Hide the confirm modal
+            confirmModal.hide();
+        };
+    }
 
-function showAlert(message) {
-    document.getElementById('alertModalBody').textContent = message;
-    var alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
-    alertModal.show();
-}
-
+    function showAlert(message) {
+        document.getElementById('alertModalBody').textContent = message;
+        var alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
+        alertModal.show();
+    }
 
     //Manage orders
     function loadOrders(element) {
@@ -814,6 +861,7 @@ function showAlert(message) {
                     <tr data-order-id="${item.order_id}">
                         <td>${item.cropname}</td>
                         <td>${item.quantity}</td>
+                        <td>${item.unit}</td>
                         <td>${item.total_cost}</td>
                         <td>${item.date}</td>
                         <td>${item.buyer_username}</td>
@@ -839,6 +887,7 @@ function showAlert(message) {
                                     <tr>
                                         <th>Crop Name</th>
                                         <th>Quantity</th>
+                                        <th>Unit</th>
                                         <th>Cost</th>
                                         <th>Date</th>
                                         <th>Buyer</th>
