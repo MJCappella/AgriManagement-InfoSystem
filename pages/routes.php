@@ -132,7 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             break;
 
         case 'get-market-prices':
-            $authorized_users = ['admin','farmer'];
+            $authorized_users = ['admin', 'farmer', 'buyer'];
             $logged = isLoggedIn($authorized_users);
             $logged  ? getMarketPrices() : '';
             display_login_request($logged, $authorized_users);
@@ -197,22 +197,72 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $logged  ? verifyTransactions() : '';
             display_login_request($logged, $authorized_users);
             break;
+
+        case 'get-units':
+            $authorized_users = ['admin', 'buyer', 'farmer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? getUnits() : '';
+            display_login_request($logged, $authorized_users);
+            break;
+
+        case 'get-all-adverts':
+            $authorized_users = ['admin', 'buyer', 'farmer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? getAllAdverts() : '';
+            display_login_request($logged, $authorized_users);
+            break;
+
+        case 'get-adverts-by-farmer':
+            $authorized_users = ['farmer', 'admin'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? getAdvertsByFarmer() : '';
+            display_login_request($logged, $authorized_users);
+            break;
+
+        case 'add-advert':
+            $authorized_users = ['farmer', 'admin'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? addAdvert() : '';
+            display_login_request($logged, $authorized_users);
+            break;
+
+        case 'update-advert':
+            $authorized_users = ['farmer', 'admin'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? updateAdvert() : '';
+            display_login_request($logged, $authorized_users);
+            break;
+
+        case 'update-advert-status':
+            $authorized_users = ['farmer', 'admin'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? updateAdvertStatus() : '';
+            display_login_request($logged, $authorized_users);
+            break;
+
+        case 'delete-advert':
+            $authorized_users = ['farmer', 'admin'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? deleteAdvert() : '';
+            display_login_request($logged, $authorized_users);
+            break;
+
         case 'get-all-orders':
-            $authorized_users = ['farmer'];
+            $authorized_users = ['admin'];
             $logged = isLoggedIn($authorized_users);
             $logged  ? getAllOrders() : '';
             display_login_request($logged, $authorized_users);
             break;
 
         case 'get-orders-by-crop':
-            $authorized_users = ['farmer'];
+            $authorized_users = ['farmer', 'admin'];
             $logged = isLoggedIn($authorized_users);
             $logged  ? getOrdersByCrop() : '';
             display_login_request($logged, $authorized_users);
             break;
 
         case 'get-orders-by-farmer':
-            $authorized_users = ['farmer', 'buyer'];
+            $authorized_users = ['farmer', 'admin'];
             $logged = isLoggedIn($authorized_users);
             $logged  ? getOrdersByFarmer() : '';
             display_login_request($logged, $authorized_users);
@@ -322,6 +372,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $logged ? unsubscribe() : '';
             display_login_request($logged, $authorized_users);
             break;
+        default:
+            echo json_encode(['success' => false, 'message' => 'Undefined route']);
+            break;
     }
 }
 
@@ -414,7 +467,7 @@ function handleLogin()
     if ($result->num_rows === 1) {
         $user = $result->fetch_assoc();
         if ($password === $user['password']) {
-            $email= $user['email'];
+            $email = $user['email'];
             $id = reset($user);
             login($id, $email, $username, $user_type);
             echo '{"success":true, "message": "login successful"}';
@@ -904,20 +957,20 @@ function deleteYield()
 {
     global $conn;
     $yield_id = $_POST['yield_id'];
-    $cropname = $_POST['cropname'];
-    $farmer_email = $_POST['farmer_email'];
+    $farmer_email = $_SESSION['email'];
 
-    // Fetch the crop_id based on cropname
-    $cropQuery = "SELECT crop_id FROM crops WHERE cropname = ? LIMIT 1";
-    $cropStmt = $conn->prepare($cropQuery);
-    $cropStmt->bind_param('s', $cropname);
+    // Fetch the crop_id and farmer_id based on yield_id
+    $yieldQuery = "SELECT crop_id, farmer_id FROM yields WHERE yield_id = ? LIMIT 1";
+    $yieldStmt = $conn->prepare($yieldQuery);
+    $yieldStmt->bind_param('i', $yield_id);
 
-    if ($cropStmt->execute()) {
-        $cropResult = $cropStmt->get_result();
+    if ($yieldStmt->execute()) {
+        $yieldResult = $yieldStmt->get_result();
 
-        if ($cropResult->num_rows == 1) {
-            $crop = $cropResult->fetch_assoc();
-            $crop_id = $crop['crop_id'];
+        if ($yieldResult->num_rows == 1) {
+            $yield = $yieldResult->fetch_assoc();
+            $crop_id = $yield['crop_id'];
+            $farmer_id_from_yield = $yield['farmer_id'];
 
             // Fetch the farmer_id based on farmer_email
             $farmerQuery = "SELECT farmer_id FROM farmer WHERE email = ? LIMIT 1";
@@ -931,17 +984,21 @@ function deleteYield()
                     $farmer = $farmerResult->fetch_assoc();
                     $farmer_id = $farmer['farmer_id'];
 
-                    // Delete the yield entry
-                    $deleteQuery = "DELETE FROM yields WHERE yield_id = ? AND crop_id = ? AND farmer_id = ?";
-                    $deleteStmt = $conn->prepare($deleteQuery);
-                    $deleteStmt->bind_param('iii', $yield_id, $crop_id, $farmer_id);
+                    if ($farmer_id === $farmer_id_from_yield) {
+                        // Delete the yield entry
+                        $deleteQuery = "DELETE FROM yields WHERE yield_id = ? AND crop_id = ? AND farmer_id = ?";
+                        $deleteStmt = $conn->prepare($deleteQuery);
+                        $deleteStmt->bind_param('iii', $yield_id, $crop_id, $farmer_id);
 
-                    if ($deleteStmt->execute()) {
-                        echo json_encode(['success' => true, 'message' => 'Yield deleted successfully']);
+                        if ($deleteStmt->execute()) {
+                            echo json_encode(['success' => true, 'message' => 'Yield deleted successfully']);
+                        } else {
+                            echo json_encode(['success' => false, 'message' => 'Error deleting yield: ' . $deleteStmt->error]);
+                        }
+                        $deleteStmt->close();
                     } else {
-                        echo json_encode(['success' => false, 'message' => 'Error deleting yield: ' . $deleteStmt->error]);
+                        echo json_encode(['success' => false, 'message' => 'Farmer ID does not match with the yield record']);
                     }
-                    $deleteStmt->close();
                 } else {
                     echo json_encode(['success' => false, 'message' => 'Farmer not found']);
                 }
@@ -950,21 +1007,20 @@ function deleteYield()
                 echo json_encode(['success' => false, 'message' => 'Error fetching farmer ID: ' . $farmerStmt->error]);
             }
         } else {
-            echo json_encode(['success' => false, 'message' => 'Crop not found']);
+            echo json_encode(['success' => false, 'message' => 'Yield not found']);
         }
-        $cropStmt->close();
+        $yieldStmt->close();
     } else {
-        echo json_encode(['success' => false, 'message' => 'Error fetching crop ID: ' . $cropStmt->error]);
+        echo json_encode(['success' => false, 'message' => 'Error fetching yield details: ' . $yieldStmt->error]);
     }
 }
-
 
 function updateYield()
 {
     global $conn;
     $yield_id = $_POST['yield_id'];
     $cropname = $_POST['cropname'];
-    $farmer_email = $_POST['farmer_email'];
+    $farmer_email = $_SESSION['email'];
     $quantity = $_POST['quantity'];
     $harvest_date = $_POST['harvest_date'];
 
@@ -1019,19 +1075,18 @@ function updateYield()
     }
 }
 
-
 function addYield()
 {
     global $conn;
-    $cropname = $_POST['cropname'];
-    $farmer_email = $_POST['farmer_email'];
+    $crop_id = $_POST['crop_id'];
+    $farmer_email = $_SESSION['email'];
     $quantity = $_POST['quantity'];
     $harvest_date = $_POST['harvest_date'];
 
     // Fetch the crop_id based on cropname
-    $cropQuery = "SELECT crop_id FROM crops WHERE cropname = ? LIMIT 1";
+    $cropQuery = "SELECT crop_id FROM crops WHERE crop_id = ? LIMIT 1";
     $cropStmt = $conn->prepare($cropQuery);
-    $cropStmt->bind_param('s', $cropname);
+    $cropStmt->bind_param('i', $crop_id);
 
     if ($cropStmt->execute()) {
         $cropResult = $cropStmt->get_result();
@@ -1078,7 +1133,6 @@ function addYield()
         echo json_encode(['success' => false, 'message' => 'Error fetching crop ID: ' . $cropStmt->error]);
     }
 }
-
 
 function getFeedbackByBuyer()
 {
@@ -1514,6 +1568,173 @@ function verifyTransactions()
     $stmt->close();
 }
 
+function getUnits()
+{
+    global $conn;
+
+    $query = "SELECT * FROM unit_of_measure";
+    $result = $conn->query($query);
+
+    if ($result->num_rows > 0) {
+        $unit_of_measure = [];
+        while ($row = $result->fetch_assoc()) {
+            $unit_of_measure[] = $row;
+        }
+        echo json_encode(['success' => true, 'length' => $result->num_rows, 'units' => $unit_of_measure]);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'No unit_of_measure found']);
+    }
+}
+
+function getAllAdverts()
+{
+    global $conn;
+
+    $query = "
+                SELECT a.advert_id, a.price, a.quantity, a.unit, a.date, a.status, 
+                    f.username as 'farmer_username', c.cropname, c.description, c.image_path 
+                    FROM adverts as a 
+                    join farmer as f on a.farmer_id=f.farmer_id 
+                    join crops as c on a.crop_id=c.crop_id
+    ";
+    $result = $conn->query($query);
+
+    if ($result->num_rows > 0) {
+        $adverts = [];
+        while ($row = $result->fetch_assoc()) {
+            $adverts[] = $row;
+        }
+        echo json_encode(['success' => true, 'length' => $result->num_rows, 'adverts' => $adverts]);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'No adverts found']);
+    }
+}
+
+function getAdvertsByFarmer()
+{
+    global $conn;
+
+    $farmer_id = $_SESSION['user_id'];
+    $query = "SELECT a.*, c.cropname FROM adverts as a join crops as c on a.crop_id=c.crop_id WHERE a.farmer_id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param('i', $farmer_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $adverts = [];
+        while ($row = $result->fetch_assoc()) {
+            $adverts[] = $row;
+        }
+        echo json_encode(['success' => true, 'length' => $result->num_rows, 'adverts' => $adverts]);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'No adverts found for this farmer']);
+    }
+
+    $stmt->close();
+}
+
+function addAdvert()
+{
+    global $conn;
+
+    $farmer_id = $_SESSION['user_id'];
+    $crop_id = $_POST['crop_id'];
+    $quantity = $_POST['quantity'];
+    $price = $_POST['price'];
+    $unit = $_POST['unit'];
+    $date = date('Y-m-d');
+    $status = 'available'; // Default status
+    $created_by = $_SESSION['user_id'];
+
+    $query = "INSERT INTO adverts (farmer_id, crop_id, price, quantity, unit, date, status, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param('iisisssi', $farmer_id, $crop_id, $price, $quantity, $unit, $date, $status, $created_by);
+
+    if ($stmt->execute()) {
+        echo json_encode(['success' => true, 'message' => 'Advert added successfully']);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Error adding advert: ' . $stmt->error]);
+    }
+
+    $stmt->close();
+}
+
+function updateAdvert()
+{
+    global $conn;
+
+    $advert_id = $_POST['advert_id'];
+    $price = $_POST['price'];
+    $quantity = $_POST['quantity'];
+    $unit = $_POST['unit'];
+    $updated_by = $_SESSION['user_id'];
+
+    // Check if the advert_id exists
+    $checkQuery = "SELECT COUNT(*) FROM adverts WHERE advert_id = ?";
+    $checkStmt = $conn->prepare($checkQuery);
+    $checkStmt->bind_param('i', $advert_id);
+    $checkStmt->execute();
+    $checkStmt->bind_result($count);
+    $checkStmt->fetch();
+    $checkStmt->close();
+
+    if ($count == 0) {
+        echo json_encode(['success' => false, 'message' => 'Advert not found']);
+        return;
+    }
+
+    // Proceed with the update if the advert_id exists
+    $query = "UPDATE adverts SET price = ?, quantity = ?, unit = ?, updated_by = ? WHERE advert_id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param('sisii', $price, $quantity, $unit, $updated_by, $advert_id);
+
+    if ($stmt->execute()) {
+        echo json_encode(['success' => true, 'message' => 'Advert updated successfully']);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Error updating advert: ' . $stmt->error]);
+    }
+
+    $stmt->close();
+}
+
+
+function updateAdvertStatus()
+{
+    global $conn;
+
+    $advert_id = $_POST['advert_id'];
+    $status = $_POST['status'];
+    $updated_by = $_SESSION['user_id'];
+
+    $query = "UPDATE adverts SET status = ?, updated_by = ? WHERE advert_id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param('sii', $status, $updated_by, $advert_id);
+
+    if ($stmt->execute()) {
+        echo json_encode(['success' => true, 'message' => 'Advert status updated successfully']);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Error updating advert status: ' . $stmt->error]);
+    }
+
+    $stmt->close();
+}
+
+function deleteAdvert()
+{
+    global $conn;
+    $advert_id = $_POST['advert_id'];
+    $farmer_id = $_SESSION['user_id'];
+    $query = "DELETE FROM adverts WHERE advert_id = ? AND farmer_id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param('ii', $advert_id, $farmer_id);
+
+    if ($stmt->execute()) {
+        echo json_encode(['success' => true, 'message' => 'Advert deleted successfully']);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Error deleting advert']);
+    }
+}
 // Function to get all orders
 function getAllOrders()
 {
@@ -1556,10 +1777,24 @@ function getOrdersByCrop()
 function getOrdersByFarmer()
 {
     global $conn;
+    $farmer_id = $_SESSION['user_id'];
 
-    $farmer_id = $_POST['farmer_id'];
-
-    $query = "SELECT * FROM orders WHERE farmer_id = ?";
+    $query = "
+                SELECT
+                    orders.order_id,
+                    crops.cropname,
+                    orders.quantity,
+                    orders.total_cost,
+                    orders.date,
+                    buyer.username AS buyer_username,
+                    buyer.phone AS buyer_phone,
+                    orders.status
+                FROM
+                    orders
+                JOIN crops ON orders.crop_id = crops.crop_id
+                JOIN buyer ON orders.buyer_id = buyer.buyer_id
+                WHERE orders.farmer_id = ?
+            ";
     $stmt = $conn->prepare($query);
     $stmt->bind_param('i', $farmer_id);
 
@@ -1574,14 +1809,30 @@ function getOrdersByFarmer()
     $stmt->close();
 }
 
+
 // Function to get orders by buyer
 function getOrdersByBuyer()
 {
     global $conn;
 
-    $buyer_id = $_POST['buyer_id'];
+    $buyer_id = $_SESSION['user_id'];
 
-    $query = "SELECT * FROM orders WHERE buyer_id = ?";
+    $query = "
+                SELECT
+                    orders.order_id,
+                    crops.cropname,
+                    orders.quantity,
+                    orders.unit,
+                    orders.total_cost,
+                    orders.date,
+                    farmer.username AS farmer_username,
+                    orders.status
+                FROM
+                    orders
+                JOIN crops ON orders.crop_id = crops.crop_id
+                JOIN farmer ON orders.farmer_id = farmer.farmer_id
+                WHERE orders.buyer_id = ?
+            ";
     $stmt = $conn->prepare($query);
     $stmt->bind_param('i', $buyer_id);
 
@@ -1597,28 +1848,44 @@ function getOrdersByBuyer()
 }
 
 // Function to add a new order
-function addOrder()
-{
+function addOrder() {
     global $conn;
-
-    $farmer_id = $_POST['farmer_id'];
-    $buyer_id = $_POST['buyer_id'];
-    $crop_id = $_POST['crop_id'];
+    
+    $advert_id = $_POST['advert_id'];
+    $buyer_id = $_SESSION['user_id'];
     $quantity = $_POST['quantity'];
+    $unit = $_POST['unit'];
     $today = date('Y-m-d');
     $status = 'pending'; // Default status
 
-    $query = "INSERT INTO orders (farmer_id, buyer_id, crop_id, quantity, date, status) VALUES (?, ?, ?, ?, ?, ?)";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param('iiiiss', $farmer_id, $buyer_id, $crop_id, $quantity, $today, $status);
+    // Check if the farmer's email exists
+    $checkEmailQuery = "SELECT farmer_id, crop_id, price FROM adverts WHERE advert_id = ? LIMIT 1";
+    $checkEmailStmt = $conn->prepare($checkEmailQuery);
+    $checkEmailStmt->bind_param('i', $advert_id);
+    $checkEmailStmt->execute();
+    $result = $checkEmailStmt->get_result();
 
-    if ($stmt->execute()) {
-        echo json_encode(['success' => true, 'message' => 'Order added successfully']);
+    if ($result->num_rows == 1) {
+        $advert = $result->fetch_assoc();
+        
+        // Calculate total cost
+        $total_cost = $quantity * $advert['price'];
+
+        // Proceed to insert the order
+        $query = "INSERT INTO orders (farmer_id, buyer_id, crop_id, quantity, unit, total_cost, date, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param('iiissdss', $advert['farmer_id'], $buyer_id, $advert['crop_id'], $quantity, $unit, $total_cost, $today, $status);
+
+        if ($stmt->execute()) {
+            echo json_encode(['success' => true, 'message' => 'Order added successfully']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Error adding order: ' . $stmt->error]);
+        }
+        $stmt->close();
     } else {
-        echo json_encode(['success' => false, 'message' => 'Error adding order: ' . $stmt->error]);
+        echo json_encode(['success' => false, 'message' => 'Error: Farmer email does not exist']);
     }
-
-    $stmt->close();
+    $checkEmailStmt->close();
 }
 
 // Function to update an existing order
@@ -1628,10 +1895,11 @@ function updateOrder()
 
     $order_id = $_POST['order_id'];
     $quantity = $_POST['quantity'];
+    $unit = $_POST['unit'];
 
-    $query = "UPDATE orders SET quantity = ? WHERE order_id = ?";
+    $query = "UPDATE orders SET quantity = ?, unit = ? WHERE order_id = ?";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param('ii', $quantity, $order_id);
+    $stmt->bind_param('isi', $quantity, $unit, $order_id);
 
     if ($stmt->execute()) {
         echo json_encode(['success' => true, 'message' => 'Order updated successfully']);

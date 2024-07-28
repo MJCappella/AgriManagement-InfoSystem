@@ -127,7 +127,10 @@ CREATE TABLE orders (
     farmer_id INT,
     buyer_id INT,
     crop_id INT,
+    advert_id INT,
+    total_cost DECIMAL(7,2) NOT NULL DEFAULT 0,
     quantity INT,
+    unit ENUM('count','kgs','debes','crates','sacks') NOT NULL DEFAULT 'count',
     date DATE NOT NULL,
     status ENUM('pending', 'confirmed', 'cancelled', 'delivered') NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -136,6 +139,24 @@ CREATE TABLE orders (
     updated_by INT,
     FOREIGN KEY (farmer_id) REFERENCES farmer(farmer_id),
     FOREIGN KEY (buyer_id) REFERENCES buyer(buyer_id),
+    FOREIGN KEY (crop_id) REFERENCES crops(crop_id),
+    FOREIGN KEY (advert_id) REFERENCES adverts(advert_id)
+);
+
+CREATE TABLE adverts (
+    advert_id INT PRIMARY KEY AUTO_INCREMENT,
+    farmer_id INT,
+    crop_id INT,
+    price DECIMAL(10, 2) NOT NULL,
+    quantity INT,
+    unit ENUM('count','kgs','debes','crates','sacks') NOT NULL DEFAULT 'count',
+    date DATE NOT NULL,
+    status ENUM('available', 'unavailable', 'finished') NOT NULL DEFAULT 'available',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_by INT,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    updated_by INT,
+    FOREIGN KEY (farmer_id) REFERENCES farmer(farmer_id),
     FOREIGN KEY (crop_id) REFERENCES crops(crop_id)
 );
 
@@ -207,6 +228,7 @@ CREATE TABLE yields (
     farmer_id INT,
     crop_id INT,
     quantity INT,
+    unit ENUM('count','kgs','debes','crates','sacks') NOT NULL DEFAULT 'count',
     harvest_date DATE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     created_by INT,
@@ -267,6 +289,59 @@ CREATE TABLE sub_counties (
     FOREIGN KEY (county_id) REFERENCES counties(county_id)
 );
 
+CREATE TABLE order_status (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name ENUM('pending', 'confirmed', 'cancelled', 'delivered') NOT NULL DEFAULT 'pending'
+);
+
+INSERT INTO order_status (name) VALUES 
+('pending'),
+('confirmed'),
+('cancelled'),
+('delivered');
+
+CREATE TABLE advert_status (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name ENUM('available', 'unavailable', 'finished') NOT NULL DEFAULT 'available'
+);
+
+INSERT INTO advert_status (name) VALUES 
+('available'),
+('unavailable'),
+('finished');
+
+CREATE TABLE unit_of_measure (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name ENUM('count', 'kgs', 'debes', 'crates', 'sacks') NOT NULL DEFAULT 'count'
+);
+
+INSERT INTO unit_of_measure (name) VALUES 
+('count'),
+('kgs'),
+('debes'),
+('crates'),
+('sacks');
+
+CREATE TABLE account_status (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name ENUM('active', 'suspended', 'inactive') NOT NULL
+);
+
+INSERT INTO account_status (name) VALUES 
+('active'),
+('suspended'),
+('inactive');
+
+CREATE TABLE two_factor_auth_status (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name ENUM('pending', 'verified', 'expired', 'rejected') NOT NULL DEFAULT 'pending'
+);
+
+INSERT INTO two_factor_auth_status (name) VALUES 
+('pending'),
+('verified'),
+('expired'),
+('rejected');
 
 
 INSERT INTO user_type_tbl (user_type)

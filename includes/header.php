@@ -118,6 +118,23 @@ $pageTitle = isset($pageTitle) ? $pageTitle : 'AMIS Project';
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+        .form-label {
+        color: #007377;
+    }
+
+    .btn-primary {
+        background-color: #007377;
+        border-color: #007377;
+    }
+
+    .btn-primary:hover {
+        background-color: #005f5a;
+        border-color: #005f5a;
+    }
+
+    form#add-yield-form, form#edit-yield-form {
+        margin-bottom: 15px;
+    }
     </style>
 </head>
 
