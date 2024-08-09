@@ -2131,7 +2131,10 @@ function getMarketTrends()
     global $conn;
 
     // Retrieve all market trends
-    $query = "SELECT * FROM market_trends";
+    $query = "SELECT m.trend_id,c.cropname, m.price, m.date
+FROM market_trends m
+JOIN crops c ON m.crop_id = c.crop_id
+WHERE 1=1;";
     $stmt = $conn->prepare($query);
 
     if ($stmt->execute()) {
