@@ -526,6 +526,7 @@ include_once('../../includes/header.php');
                             <h5 class="card-title">${advert.cropname}</h5>
                             <p class="card-text">${advert.description}</p>
                             <p class="card-text"><small class="text-muted">Price: $${advert.price} per ${advert.unit}</small></p>
+                            <p class="card-text"><small class="text-muted">Location: ${advert.location}</small></p>
                             <p class="card-text"><small class="text-muted">Available Quantity: ${advert.quantity} ${advert.unit}</small></p>
                             <button class="btn btn-primary" onclick="showOrderModal(${advert.advert_id}, ${advert.price}, ${advert.quantity}, '${advert.unit}')">Order</button>
                           </div>

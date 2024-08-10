@@ -213,7 +213,7 @@ CREATE TABLE market_trends (
 
 CREATE TABLE demand_trends (
     trend_id INT PRIMARY KEY AUTO_INCREMENT,
-    crop_id INT,
+    crop_id INT UNIQUE,
     demand INT,
     date DATE NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
