@@ -1362,8 +1362,6 @@ function updateCropMarketPrice()
 
     $selectStmt->close();
 }
-
-
 function addCropMarketPrice()
 {
     global $conn;
