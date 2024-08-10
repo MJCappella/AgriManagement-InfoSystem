@@ -254,6 +254,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             display_login_request($logged, $authorized_users);
             break;
 
+        case 'get-all-customers':
+            $authorized_users = ['admin','marketing'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? getAllCustomers() : '';
+            display_login_request($logged, $authorized_users);
+            break;
+
         case 'get-orders-by-crop':
             $authorized_users = ['farmer', 'admin'];
             $logged = isLoggedIn($authorized_users);
@@ -348,6 +355,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $authorized_users = ['admin'];
             $logged = isLoggedIn($authorized_users);
             $logged  ? viewMessages() : '';
+            display_login_request($logged, $authorized_users);
+            break;
+        case 'add-engagement':
+            $authorized_users = ['admin','marketing','buyer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? addEngagement() : '';
+            display_login_request($logged, $authorized_users);
+            break;
+
+        case 'view-engagements':
+            $authorized_users = ['admin','marketing','buyer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? viewEngagements() : '';
             display_login_request($logged, $authorized_users);
             break;
 
@@ -1735,6 +1755,26 @@ function deleteAdvert()
         echo json_encode(['success' => false, 'message' => 'Error deleting advert']);
     }
 }
+
+
+// Function to get all customers
+function getAllCustomers()
+{
+    global $conn;
+
+    $query = "SELECT o.order_id, o.date, o.farmer_id, o.buyer_id, f.username as farmer_name, 
+    b.username as buyer_name FROM orders o 
+    JOIN farmer f ON o.farmer_id=f.farmer_id
+    JOIN buyer b ON o.buyer_id=b.buyer_id";
+    $result = $conn->query($query);
+
+    if ($result) {
+        $customers = $result->fetch_all(MYSQLI_ASSOC);
+        echo json_encode(['success' => true, 'length' => $result->num_rows, 'customers' => $customers]);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Error fetching customers: ' . $conn->error]);
+    }
+}
 // Function to get all orders
 function getAllOrders()
 {
@@ -1849,9 +1889,10 @@ function getOrdersByBuyer()
 }
 
 // Function to add a new order
-function addOrder() {
+function addOrder()
+{
     global $conn;
-    
+
     $advert_id = $_POST['advert_id'];
     $buyer_id = $_SESSION['user_id'];
     $quantity = $_POST['quantity'];
@@ -1868,7 +1909,7 @@ function addOrder() {
 
     if ($result->num_rows == 1) {
         $advert = $result->fetch_assoc();
-        
+
         // Calculate total cost
         $total_cost = $quantity * $advert['price'];
 
@@ -2007,7 +2048,17 @@ function getDemandTrends()
 {
     global $conn;
 
-    $query = "SELECT * FROM demand_trends";
+    $query = "SELECT 
+    c.cropname, 
+    SUM(d.demand) AS total_demand
+        FROM 
+            demand_trends d 
+        JOIN 
+            crops c 
+        ON 
+            d.crop_id = c.crop_id 
+        GROUP BY 
+            c.cropname;";
     $result = $conn->query($query);
 
     if ($result) {
@@ -2132,9 +2183,9 @@ function getMarketTrends()
 
     // Retrieve all market trends
     $query = "SELECT m.trend_id,c.cropname, m.price, m.date
-FROM market_trends m
-JOIN crops c ON m.crop_id = c.crop_id
-WHERE 1=1;";
+        FROM market_trends m
+        JOIN crops c ON m.crop_id = c.crop_id
+        WHERE 1=1;";
     $stmt = $conn->prepare($query);
 
     if ($stmt->execute()) {
@@ -2151,6 +2202,38 @@ WHERE 1=1;";
     }
 
     $stmt->close();
+}
+
+function addEngagement() {
+    global $conn;
+    $message_text = $_POST['message_text'];
+    $sender = $_POST['sender'];
+    $receiver = $_POST['receiver'];
+
+    $query = "INSERT INTO engagements (message_text, sender, receiver) VALUES (?, ?, ?)";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param('sss', $message_text, $sender, $receiver);
+
+    if ($stmt->execute()) {
+        echo json_encode(['success' => true, 'message' => 'Message sent successfully']);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Error adding message to db: ' . $stmt->error]);
+    }
+
+    $stmt->close();
+}
+
+function viewEngagements() {
+    global $conn;
+    $query = "SELECT * FROM engagements ORDER BY sent_at DESC";
+    $result = $conn->query($query);
+
+    if ($result) {
+        $messages = $result->fetch_all(MYSQLI_ASSOC);
+        echo json_encode(['success' => true, 'length' => $result->num_rows, 'engagements' => $messages]);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Error fetching messages: ' . $conn->error]);
+    }
 }
 
 function addMessage()

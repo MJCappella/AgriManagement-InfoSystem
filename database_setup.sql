@@ -274,6 +274,15 @@ CREATE TABLE messages (
     sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE engagements (
+    message_id INT AUTO_INCREMENT PRIMARY KEY,
+    subject VARCHAR(255) DEFAULT 'Engagement',
+    message_text TEXT NOT NULL,
+    sender VARCHAR(50) NOT NULL,
+    receiver VARCHAR(50) NOT NULL,
+    sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 
 CREATE TABLE counties (
     county_id INT PRIMARY KEY AUTO_INCREMENT,
