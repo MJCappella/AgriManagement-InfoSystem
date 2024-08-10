@@ -625,182 +625,179 @@ include_once('../../includes/header.php');
         }
 
     }
-   // Customer engagement
-function loadCustomerEngagement(element) {
-    setActiveLink(element);
-    document.getElementById('main-content').innerHTML = '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>';
+    // Customer engagement
+    function loadCustomerEngagement(element) {
+        setActiveLink(element);
+        document.getElementById('main-content').innerHTML = '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>';
 
-    // Fetch customer data
-    $.ajax({
-        url: 'http://localhost/amis-project-/pages/routes.php',
-        type: 'POST',
-        data: {
-            action: 'get-all-customers'
-        },
-        success: function(response) {
-            var customerData = JSON.parse(response);
-            if (customerData.success) {
-                let customers = customerData.customers;
-                let customerTable = `
-                <div style="height: 200px; overflow-y: auto;">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Date</th>
-                                <th>Farmer Name</th>
-                                <th>Buyer Name</th>
-                                <th>Engage</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+        // Fetch customer data
+        $.ajax({
+            url: 'http://localhost/amis-project-/pages/routes.php',
+            type: 'POST',
+            data: {
+                action: 'get-all-customers'
+            },
+            success: function(response) {
+                var customerData = JSON.parse(response);
+                if (customerData.success) {
+                    let customers = customerData.customers;
+                    let customerTable = `
+                    <div style="height: 200px; overflow-y: auto;">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Date</th>
+                                    <th>Farmer Name</th>
+                                    <th>Buyer Name</th>
+                                    <th>Engage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
                 `;
 
-                customers.forEach((customer, index) => {
-                    customerTable += `
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td>${customer.date}</td>
-                        <td>${customer.farmer_name}</td>
-                        <td>${customer.buyer_name}</td>
-                        <td>
-                            <button class="btn btn-primary" onclick="loadChat('${customer.buyer_name}')">
-                                <i class="bi bi-chat-dots"></i> Chat
-                            </button>
-                        </td>
-                    </tr>
-                `;
-                });
+                    customers.forEach((customer, index) => {
+                        customerTable += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${customer.date}</td>
+                            <td>${customer.farmer_name}</td>
+                            <td>${customer.buyer_name}</td>
+                            <td>
+                                <button class="btn btn-primary" onclick="loadChat('${customer.buyer_name}')">
+                                    <i class="bi bi-chat-dots"></i> Chat
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                    });
 
-                customerTable += `</tbody></table></div>`;
+                    customerTable += `</tbody></table></div>`;
 
-                // Insert the table and chat UI placeholder
-                document.getElementById('main-content').innerHTML = `
-                <div class="customer-table">
-                    ${customerTable}
-                </div>
-                <div id="chat-ui" class="mt-4"></div>
-            `;
-            } else {
-                document.getElementById('main-content').innerHTML = `<div class="alert alert-danger">Error: ${customerData.message}</div>`;
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error:', error);
-            document.getElementById('main-content').innerHTML = '<div class="alert alert-danger">An error occurred while fetching customers. Please try again later.</div>';
-        }
-    });
-}
-
-function loadChat(buyerName) {
-    // Display chat UI with landscape card and manual refresh button
-    document.getElementById('chat-ui').innerHTML = `
-    <div class="card" style="width: 80%; margin: 0 auto;">
-        <div class="card-header d-flex justify-content-between">
-            <span>Chat with ${buyerName}</span>
-            <button class="btn btn-secondary" onclick="loadChat('${buyerName}')">Refresh</button>
-        </div>
-        <div class="card-body" style="height: 400px; overflow-y: auto;">
-            <div id="message-list" class="mb-3">
-                <!-- Messages will be loaded here -->
-            </div>
-            <div>
-                <textarea id="message-text" class="form-control" placeholder="Type your message here"></textarea>
-                <button class="btn btn-success mt-2" onclick="sendMessage('${buyerName}')">Send</button>
-            </div>
-        </div>
-    </div>
-`;
-
-    fetchMessages(buyerName);
-
-    // Auto-refresh the chat every 15 seconds
-    setInterval(() => {
-        fetchMessages(buyerName);
-    }, 15000);
-}
-
-function fetchMessages(buyerName) {
-    // Fetch engagements
-    $.ajax({
-        url: 'http://localhost/amis-project-/pages/routes.php',
-        type: 'POST',
-        data: {
-            action: 'view-engagements'
-        },
-        success: function(response) {
-            var data = JSON.parse(response);
-            if (data.success) {
-                let engagements = data.engagements.filter(engagement =>
-                    (engagement.sender === buyerName || engagement.receiver === buyerName)
-                );
-
-                let messagesHtml = '';
-                engagements.forEach((engagement) => {
-                    let isSender = engagement.sender === 'Marketing 001';
-                    messagesHtml += `
-                    <div class="d-flex ${isSender ? 'justify-content-end' : 'justify-content-start'} mb-2">
-                        <div class="p-2 ${isSender ? 'bg-primary text-white' : 'bg-light text-dark'} rounded" style="max-width: 60%;">
-                            <strong>${engagement.sender}</strong><br>
-                            <p class="mb-1">${engagement.message_text}</p>
-                            <small class="text-muted">${engagement.sent_at}</small>
-                        </div>
+                    // Insert the table and chat UI placeholder
+                    document.getElementById('main-content').innerHTML = `
+                    <div class="customer-table">
+                        ${customerTable}
                     </div>
+                    <div id="chat-ui" class="mt-4"></div>
                 `;
-                });
-
-                document.getElementById('message-list').innerHTML = messagesHtml;
-                scrollToBottom('message-list');
-            } else {
-                document.getElementById('message-list').innerHTML = `<div class="alert alert-danger">Error: ${data.message}</div>`;
+                } else {
+                    document.getElementById('main-content').innerHTML = `<div class="alert alert-danger">Error: ${customerData.message}</div>`;
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                document.getElementById('main-content').innerHTML = '<div class="alert alert-danger">An error occurred while fetching customers. Please try again later.</div>';
             }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error:', error);
-            document.getElementById('message-list').innerHTML = '<div class="alert alert-danger">An error occurred while fetching messages. Please try again later.</div>';
-        }
-    });
-}
-
-function sendMessage(buyerName) {
-    let messageText = document.getElementById('message-text').value;
-    if (!messageText.trim()) {
-        alert('Please enter a message.');
-        return;
+        });
     }
 
-    // Send message
-    $.ajax({
-        url: 'http://localhost/amis-project-/pages/routes.php',
-        type: 'POST',
-        data: {
-            action: 'add-engagement',
-            message_text: messageText,
-            sender: 'Marketing 001', // You can dynamically set this
-            receiver: buyerName
-        },
-        success: function(response) {
-            var data = JSON.parse(response);
-            if (data.success) {
-                // Refresh chat
-                fetchMessages(buyerName);
-                document.getElementById('message-text').value = '';
-            } else {
-                alert('Error: ' + data.message);
+    function loadChat(buyerName) {
+        // Display chat UI
+        document.getElementById('chat-ui').innerHTML = `
+        <div class="card" style="width: 100%; max-width: 800px; margin: 0 auto;">
+            <div class="card-header d-flex justify-content-between">
+                <span>Chat with ${buyerName}</span>
+                <button class="btn btn-sm btn-secondary" onclick="loadChat('${buyerName}')">Refresh</button>
+            </div>
+            <div class="card-body" style="height: 400px; overflow-y: auto;">
+                <div id="message-list" class="mb-3">
+                    <!-- Messages will be loaded here -->
+                </div>
+                <div>
+                    <textarea id="message-text" class="form-control" placeholder="Type your message here"></textarea>
+                    <button class="btn btn-success mt-2" onclick="sendMessage('${buyerName}')">Send</button>
+                </div>
+            </div>
+        </div>
+    `;
+
+        // Fetch engagements and display messages
+        fetchEngagements(buyerName);
+
+        // Auto-refresh chat every 15 seconds
+        setInterval(() => {
+            fetchEngagements(buyerName);
+        }, 15000);
+    }
+
+    function fetchEngagements(buyerName) {
+        $.ajax({
+            url: 'http://localhost/amis-project-/pages/routes.php',
+            type: 'POST',
+            data: {
+                action: 'view-engagements'
+            },
+            success: function(response) {
+                var data = JSON.parse(response);
+                if (data.success) {
+                    let engagements = data.engagements.filter(engagement =>
+                        (engagement.sender === buyerName || engagement.receiver === buyerName)
+                    );
+
+                    engagements.sort((a, b) => new Date(a.sent_at) - new Date(b.sent_at));
+
+                    let messagesHtml = '';
+                    engagements.forEach((engagement) => {
+                        let isSender = engagement.sender === '<?php echo $_SESSION['username'] ?>';
+                        messagesHtml += `
+                        <div style="text-align: ${isSender ? 'right' : 'left'};">
+                            <div class="p-2" style="display: inline-block; max-width: 60%; background-color: ${isSender ? '#d1e7dd' : '#f8d7da'}; border-radius: 10px;">
+                                <strong>${engagement.sender}:</strong>
+                                <p>${engagement.message_text}</p>
+                                <small class="text-muted">${engagement.sent_at}</small>
+                            </div>
+                        </div>
+                        <div style="clear: both;"></div>
+                        <hr>
+                    `;
+                    });
+
+                    document.getElementById('message-list').innerHTML = messagesHtml;
+
+                } else {
+                    document.getElementById('message-list').innerHTML = `<div class="alert alert-danger">Error: ${data.message}</div>`;
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                document.getElementById('message-list').innerHTML = '<div class="alert alert-danger">An error occurred while fetching messages. Please try again later.</div>';
             }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error:', error);
-            alert('An error occurred while sending the message. Please try again later.');
+        });
+    }
+
+    function sendMessage(buyerName) {
+        let messageText = document.getElementById('message-text').value;
+        if (!messageText.trim()) {
+            alert('Please enter a message.');
+            return;
         }
-    });
-}
 
-function scrollToBottom(id) {
-    var div = document.getElementById(id);
-    div.scrollTop = div.scrollHeight;
-}
-
+        // Send message
+        $.ajax({
+            url: 'http://localhost/amis-project-/pages/routes.php',
+            type: 'POST',
+            data: {
+                action: 'add-engagement',
+                message_text: messageText,
+                sender: '<?php echo $_SESSION['username'] ?>', // You can dynamically set this
+                receiver: buyerName
+            },
+            success: function(response) {
+                var data = JSON.parse(response);
+                if (data.success) {
+                    // Refresh chat
+                    loadChat(buyerName);
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                alert('An error occurred while sending the message. Please try again later.');
+            }
+        });
+    }
 </script>
 
 <?php include('../../includes/footer.php') ?>
