@@ -33,12 +33,7 @@ include_once('../../includes/header.php');
                         </a>
                     </li>
                     <li>
-                        <a href="/amis-project-/pages/regulatory_compliance.php" class="nav-link link-dark">
-                            Regulatory Compliance
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/amis-project-/pages/account_settings.php" class="nav-link link-dark">
+                        <a href="#" class="nav-link link-dark">
                             Account Settings
                         </a>
                     </li>
