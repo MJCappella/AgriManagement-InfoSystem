@@ -341,6 +341,16 @@ INSERT INTO account_status (name) VALUES
 ('suspended'),
 ('inactive');
 
+CREATE TABLE price_status (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name ENUM('effective', 'provisional', 'ineffective') NOT NULL
+);
+
+INSERT INTO price_status (name) VALUES 
+('effective'),
+('provisional'),
+('ineffective');
+
 CREATE TABLE two_factor_auth_status (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name ENUM('pending', 'verified', 'expired', 'rejected') NOT NULL DEFAULT 'pending'

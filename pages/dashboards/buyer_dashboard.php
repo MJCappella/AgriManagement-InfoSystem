@@ -18,7 +18,7 @@ include_once('../../includes/header.php');
                 <hr>
                 <ul class="nav nav-pills flex-column mb-auto">
                     <li class="nav-item">
-                        <a href="#" class="nav-link active" id="dashboard" onclick="loadDashboard(this)">
+                        <a href="#" class="nav-link link-dark" id="dashboard" onclick="loadDashboard(this)">
                             Dashboard
                         </a>
                     </li>
@@ -217,7 +217,7 @@ include_once('../../includes/header.php');
                         <div class="card-body">
                             <h5 class="card-title">Search Crops</h5>
                             <p class="card-text">Find the crops you need.</p>
-                            <a href="/amis-project-/pages/search_crops.php" class="btn btn-primary">Search Crops</a>
+                            <a href="#" class="btn btn-primary">Search Crops</a>
                         </div>
                     </div>
                 </div>

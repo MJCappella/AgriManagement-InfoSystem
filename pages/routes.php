@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             display_login_request($logged, $authorized_users);
             break;
         case 'get-crops':
-            $authorized_users = ['farmer', 'admin', 'buyer'];
+            $authorized_users = ['farmer', 'admin', 'buyer','government'];
             $logged = isLoggedIn($authorized_users);
             $logged  ? getCrops() : '';
             display_login_request($logged, $authorized_users);
@@ -132,21 +132,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             break;
 
         case 'get-market-prices':
-            $authorized_users = ['admin', 'farmer', 'buyer'];
+            $authorized_users = ['admin', 'farmer', 'buyer','government'];
             $logged = isLoggedIn($authorized_users);
             $logged  ? getMarketPrices() : '';
             display_login_request($logged, $authorized_users);
             break;
 
         case 'update-crop-market-price':
-            $authorized_users = ['admin'];
+            $authorized_users = ['admin','government'];
             $logged = isLoggedIn($authorized_users);
             $logged  ? updateCropMarketPrice() : '';
             display_login_request($logged, $authorized_users);
             break;
 
         case 'add-crop-market-price':
-            $authorized_users = ['admin'];
+            $authorized_users = ['admin','government'];
             $logged = isLoggedIn($authorized_users);
             $logged  ? addCropMarketPrice() : '';
             display_login_request($logged, $authorized_users);
@@ -1406,8 +1406,6 @@ function addCropMarketPrice()
 
     $selectStmt->close();
 }
-
-
 function getComplianceCertificates()
 {
     global $conn;
