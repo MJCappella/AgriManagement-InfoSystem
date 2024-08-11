@@ -166,6 +166,51 @@ include_once('../../includes/header.php');
     </div>
 </div>
 <style>
+    /* Add custom styles for the user type containers */
+    .user-type-container {
+        margin-bottom: 30px;
+    }
+
+    .user-type-title {
+        display: flex;
+        align-items: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #007377;
+        /* Dark cyan color */
+    }
+
+    .user-type-icon {
+        width: 30px;
+        height: 30px;
+        margin-right: 10px;
+        /* Add a border or shadow to the icons if needed */
+        border-radius: 50%;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Add custom styles for the tables */
+    .table {
+        border-collapse: separate;
+        border-spacing: 0 1em;
+    }
+
+    .table thead th {
+        background-color: #007377;
+        /* Dark cyan color */
+        color: white;
+    }
+
+    .table tbody tr:nth-of-type(odd) {
+        background-color: #f9f9f9;
+        /* Light gray */
+    }
+
+    .table tbody tr:hover {
+        background-color: #e0f7fa;
+        /* Light cyan */
+    }
+
     .card {
         width: 250px;
         margin: 15px;
@@ -269,7 +314,7 @@ include_once('../../includes/header.php');
 
     /* Modal Header */
     .modal-header {
-        background-color: #003366 !important;
+        background-color: #007377 !important;
         /* Dark Blue */
         color: white;
     }
@@ -278,7 +323,7 @@ include_once('../../includes/header.php');
     .modal-footer .btn-secondary {
         background-color: #f67019;
         /* Slightly darker blue */
-        border-color: #f67019;
+        border-color: #007377;
     }
 
     .modal-footer .btn-danger {
@@ -287,11 +332,15 @@ include_once('../../includes/header.php');
         border-color: #cc0000;
     }
 
+    .btn-close{
+        background-color: #e0e0e0;
+    }
+
     /* Primary Button */
     .btn-primary {
-        background-color: #f67019;
+        background-color: #007377;
         /* Lighter Blue */
-        border-color: #f67019;
+        /* border-color: #f67019; */
     }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -358,39 +407,43 @@ include_once('../../includes/header.php');
             console.log(responseData);
             if (responseData.success) {
                 const tableContent = responseData[userType].map(user => `
-                <tr data-${userType.slice(0, -1)}-id="${user[Object.keys(user)[0]]}">
-                    <td>${user.username}</td>
-                    <td>${user.email}</td>
-                    <td>${user.phone}</td>
-                    <td>
-                        <select class="form-select" onchange="updateAccountStatus('${userType}', ${user[Object.keys(user)[0]]}, this.value)">
-                            <option value="active" ${user.account_status === 'active' ? 'selected' : ''}>Active</option>
-                            <option value="suspended" ${user.account_status === 'suspended' ? 'selected' : ''}>Suspended</option>
-                            <option value="inactive" ${user.account_status === 'inactive' ? 'selected' : ''}>Inactive</option>
-                        </select>
-                    </td>
-                </tr>
-            `).join('');
+            <tr data-${userType.slice(0, -1)}-id="${user[Object.keys(user)[0]]}">
+                <td>${user.username}</td>
+                <td>${user.email}</td>
+                <td>${user.phone}</td>
+                <td>
+                    <select class="form-select" onchange="updateAccountStatus('${userType}', ${user[Object.keys(user)[0]]}, this.value)">
+                        <option value="active" ${user.account_status === 'active' ? 'selected' : ''}>Active</option>
+                        <option value="suspended" ${user.account_status === 'suspended' ? 'selected' : ''}>Suspended</option>
+                        <option value="inactive" ${user.account_status === 'inactive' ? 'selected' : ''}>Inactive</option>
+                    </select>
+                </td>
+            </tr>
+        `).join('');
+        console.log(userType.slice(0, -1));
                 content += `
-            <div id="${userType}-table-container">
-                <h3>${userType.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</h3>
-                <div class="table-responsive">
-                    <table id="${userType}-table" class="table table-bordered table-hover">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>Username</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Account Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${tableContent}
-                        </tbody>
-                    </table>
-                </div>
+        <div id="${userType}-table-container" class="user-type-container">
+            <h3 class="user-type-title">
+                <img src="http://localhost/amis-project-/assets/images/${userType.slice(0,-1)}.png" alt="${userType} Icon" class="user-type-icon"/>
+                ${userType.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+            </h3>
+            <div class="table-responsive">
+                <table id="${userType}-table" class="table table-bordered table-hover table-responsive table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Account Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${tableContent}
+                    </tbody>
+                </table>
             </div>
-        `;
+        </div>
+    `;
             } else {
                 content += `<div class="alert alert-danger">Error fetching ${userType}: ${responseData.message}</div>`;
             }
@@ -446,6 +499,7 @@ include_once('../../includes/header.php');
             });
         });
     }
+
 
     // Example AJAX functions
     function getFarmers() {
@@ -579,7 +633,7 @@ include_once('../../includes/header.php');
                     </tr>
                 `).join('');
                     document.getElementById('main-content').innerHTML = `
-                        <button class="btn btn-success mb-3" id="add-crop" onclick="showAddCropModal()">Add Crop</button>
+                        <button class="btn btn-primary mb-3" id="add-crop" onclick="showAddCropModal()">Add Crop</button>
                         <h2>Market Prices</h2>
                         <div class="table-responsive">
                             <table class="table display table-bordered table-hover" id="cropsTable">

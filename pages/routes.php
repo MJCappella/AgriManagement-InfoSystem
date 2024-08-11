@@ -98,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $authorized_users = ['admin'];
             $logged = isLoggedIn($authorized_users);
             if ($logged) {
-                $agency_id = isset($_POST['agency_id']) ? intval($_POST['agency_id']) : null;
+                $agency_id = isset($_POST['government_id']) ? intval($_POST['government_id']) : null;
                 $status = isset($_POST['status']) ? $_POST['status'] : null;
 
                 if ($agency_id !== null && $status !== null) {
@@ -114,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $authorized_users = ['admin'];
             $logged = isLoggedIn($authorized_users);
             if ($logged) {
-                $professional_id = isset($_POST['professional_id']) ? intval($_POST['professional_id']) : null;
+                $professional_id = isset($_POST['marketing_id']) ? intval($_POST['marketing_id']) : null;
                 $status = isset($_POST['status']) ? $_POST['status'] : null;
 
                 if ($professional_id !== null && $status !== null) {
