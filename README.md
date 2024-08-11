@@ -191,9 +191,16 @@ The system enables government agencies to monitor market dynamics ,detect market
 
 * **Goal:** Ensure marketing activities comply with regulations.
 * **Actors:** Marketing Professionals
+
 * **Preconditions:** Marketing professional is logged into the system.
 * **Main Flow:**
     1. User logs into the system.
     2. User navigates to the "Regulatory Compliance" section.
     3. System displays compliance data.
     4. User monitors and ensures compliance with regulations.
+**Screenshots**
+* Home
+![image](https://github.com/user-attachments/assets/3f1dab6d-32c8-4d34-b09e-9b29d52eafc3)
+
+* Dashboards
+![image](https://github.com/user-attachments/assets/927d2b26-64bb-4185-9ec5-488a171f75a5)
