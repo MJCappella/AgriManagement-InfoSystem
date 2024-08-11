@@ -14,6 +14,15 @@ Run on cmd
 ````
 ## Description
 AMIS is a client-server web application where the client in the case of this system, is the farmers, traders, buyers and government agencies that use client side applications or web browsers to interact with the system while the server is the system which is the data server that hosts the AMIS.
+
+**Screenshots**
+
+* Home
+![image](https://github.com/user-attachments/assets/3f1dab6d-32c8-4d34-b09e-9b29d52eafc3)
+
+* Dashboards
+![image](https://github.com/user-attachments/assets/927d2b26-64bb-4185-9ec5-488a171f75a5)
+
 ### Users of the system
 #### 1. Farmers
 The system is convenient and simple to use.Farmers can access timely information on market prices, demand trends and consumer preferences , enabling them to make informed decisions about what crops to produce and when to sell therefore maximizing their profits.
@@ -198,9 +207,5 @@ The system enables government agencies to monitor market dynamics ,detect market
     2. User navigates to the "Regulatory Compliance" section.
     3. System displays compliance data.
     4. User monitors and ensures compliance with regulations.
-**Screenshots**
-* Home
-![image](https://github.com/user-attachments/assets/3f1dab6d-32c8-4d34-b09e-9b29d52eafc3)
 
-* Dashboards
-![image](https://github.com/user-attachments/assets/927d2b26-64bb-4185-9ec5-488a171f75a5)
+
