@@ -213,7 +213,7 @@ CREATE TABLE market_trends (
 
 CREATE TABLE demand_trends (
     trend_id INT PRIMARY KEY AUTO_INCREMENT,
-    crop_id INT,
+    crop_id INT UNIQUE,
     demand INT,
     date DATE NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -274,6 +274,15 @@ CREATE TABLE messages (
     sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE engagements (
+    message_id INT AUTO_INCREMENT PRIMARY KEY,
+    subject VARCHAR(255) DEFAULT 'Engagement',
+    message_text TEXT NOT NULL,
+    sender VARCHAR(50) NOT NULL,
+    receiver VARCHAR(50) NOT NULL,
+    sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 
 CREATE TABLE counties (
     county_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -331,6 +340,16 @@ INSERT INTO account_status (name) VALUES
 ('active'),
 ('suspended'),
 ('inactive');
+
+CREATE TABLE price_status (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name ENUM('effective', 'provisional', 'ineffective') NOT NULL
+);
+
+INSERT INTO price_status (name) VALUES 
+('effective'),
+('provisional'),
+('ineffective');
 
 CREATE TABLE two_factor_auth_status (
     id INT PRIMARY KEY AUTO_INCREMENT,

@@ -46,13 +46,13 @@ include('../includes/header.php');
                     <p><a class="btn btn-secondary" href="#">Read More &raquo;</a></p>
                 </div><!-- /.col-lg-4 -->
                 <div class="col-lg-4" data-aos="fade-up">
-                    <img class="bd-placeholder-img rounded-circle" src="<?php echo BASE_URL; ?>/assets/images/grocery.jpg" width="140" height="140" alt="Our Vision" />
+                    <img class="bd-placeholder-img rounded-circle" src="<?php echo BASE_URL; ?>/assets/images/farmer.png" width="140" height="140" alt="Our Vision" />
                     <h2 class="fw-normal">Our Vision</h2>
                     <p>Our vision is to create a thriving agricultural community where technology and innovation drive growth, sustainability, and prosperity. We aspire to be the global leader in agricultural market solutions, transforming the marketing, trading, and consumption of agricultural products, fostering a sustainable and equitable agricultural ecosystem that enhances food security and promotes economic development.</p>
                     <p><a class="btn btn-secondary" href="#">Read More &raquo;</a></p>
                 </div><!-- /.col-lg-4 -->
                 <div class="col-lg-4" data-aos="fade-left">
-                    <img class="bd-placeholder-img rounded-circle" src="<?php echo BASE_URL; ?>/assets/images/stock-market.jpg" width="140" height="140" alt="Our Goal" />
+                    <img class="bd-placeholder-img rounded-circle" src="<?php echo BASE_URL; ?>/assets/images/marketing.png" width="140" height="140" alt="Our Goal" />
                     <h2 class="fw-normal">Our Goal</h2>
                     <p>We uphold the highest standards of integrity, ensuring honesty and accountability in all our operations. Committed to continuous innovation, we leverage cutting-edge technologies to meet the evolving needs of the agricultural community. We believe in collaboration, building strong relationships with all stakeholders, and promoting sustainable practices that protect the environment. Our customer-centric approach ensures we deliver exceptional value and support, fostering a prosperous agricultural ecosystem.</p>
                     <p><a class="btn btn-secondary" href="#">Read More &raquo;</a></p>
@@ -95,7 +95,7 @@ include('../includes/header.php');
                     <p class="lead">Connect with farmers and buyers to provide efficient transportation services.</p>
                 </div>
                 <div class="col-md-5">
-                    <img src="http://localhost/amis-project-/assets/images/lorry.png" class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" role="img" aria-label="Placeholder: 500x500" />
+                    <img src="http://localhost/amis-project-/assets/images/transporter.png" class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" role="img" aria-label="Placeholder: 500x500" />
                 </div>
             </div>
 
@@ -119,7 +119,7 @@ include('../includes/header.php');
                     <p class="lead">Access data and insights to support agricultural policies and programs.</p>
                 </div>
                 <div class="col-md-5">
-                    <img src="http://localhost/amis-project-/assets/images/court-of-arms.png" class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto rounded-corners" width="500" height="500" role="img" aria-label="Placeholder: 500x500" />
+                    <img src="http://localhost/amis-project-/assets/images/government.png" class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto rounded-corners" width="500" height="500" role="img" aria-label="Placeholder: 500x500" />
                 </div>
             </div>
         </div>

@@ -16,6 +16,117 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         case 'logout':
             handleLogout();
             break;
+        case 'get-farmers':
+            $authorized_users = ['admin'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? getFarmers() : '';
+            display_login_request($logged, $authorized_users);
+            break;
+        case 'get-buyers':
+            $authorized_users = ['admin'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? getBuyers() : '';
+            display_login_request($logged, $authorized_users);
+            break;
+        case 'get-transporters':
+            $authorized_users = ['admin'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? getTransporters() : '';
+            display_login_request($logged, $authorized_users);
+            break;
+        case 'get-government-agencies':
+            $authorized_users = ['admin'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? getGovernmentAgencies() : '';
+            display_login_request($logged, $authorized_users);
+            break;
+        case 'get-marketing-professionals':
+            $authorized_users = ['admin'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? getMarketingProfessionals() : '';
+            display_login_request($logged, $authorized_users);
+            break;
+        case 'set-farmer-account-status':
+            $authorized_users = ['admin'];
+            $logged = isLoggedIn($authorized_users);
+            if ($logged) {
+                $farmer_id = isset($_POST['farmer_id']) ? intval($_POST['farmer_id']) : null;
+                $status = isset($_POST['status']) ? $_POST['status'] : null;
+
+                if ($farmer_id !== null && $status !== null) {
+                    setFarmerAccountStatus($farmer_id, $status);
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'Invalid farmer_id or status']);
+                }
+            } else {
+                display_login_request($logged, $authorized_users);
+            }
+            break;
+        case 'set-buyer-account-status':
+            $authorized_users = ['admin'];
+            $logged = isLoggedIn($authorized_users);
+            if ($logged) {
+                $buyer_id = isset($_POST['buyer_id']) ? intval($_POST['buyer_id']) : null;
+                $status = isset($_POST['status']) ? $_POST['status'] : null;
+
+                if ($buyer_id !== null && $status !== null) {
+                    setBuyerAccountStatus($buyer_id, $status);
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'Invalid buyer_id or status']);
+                }
+            } else {
+                display_login_request($logged, $authorized_users);
+            }
+            break;
+        case 'set-transporter-account-status':
+            $authorized_users = ['admin'];
+            $logged = isLoggedIn($authorized_users);
+            if ($logged) {
+                $transport_id = isset($_POST['transport_id']) ? intval($_POST['transport_id']) : null;
+                $status = isset($_POST['status']) ? $_POST['status'] : null;
+
+                if ($transport_id !== null && $status !== null) {
+                    setTransporterAccountStatus($transport_id, $status);
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'Invalid transport_id or status']);
+                }
+            } else {
+                display_login_request($logged, $authorized_users);
+            }
+            break;
+        case 'set-government-agency-account-status':
+            $authorized_users = ['admin'];
+            $logged = isLoggedIn($authorized_users);
+            if ($logged) {
+                $agency_id = isset($_POST['government_id']) ? intval($_POST['government_id']) : null;
+                $status = isset($_POST['status']) ? $_POST['status'] : null;
+
+                if ($agency_id !== null && $status !== null) {
+                    setGovernmentAgencyAccountStatus($agency_id, $status);
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'Invalid agency_id or status']);
+                }
+            } else {
+                display_login_request($logged, $authorized_users);
+            }
+            break;
+        case 'set-marketing-professional-account-status':
+            $authorized_users = ['admin'];
+            $logged = isLoggedIn($authorized_users);
+            if ($logged) {
+                $professional_id = isset($_POST['marketing_id']) ? intval($_POST['marketing_id']) : null;
+                $status = isset($_POST['status']) ? $_POST['status'] : null;
+
+                if ($professional_id !== null && $status !== null) {
+                    setMarketingProfessionalAccountStatus($professional_id, $status);
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'Invalid professional_id or status']);
+                }
+            } else {
+                display_login_request($logged, $authorized_users);
+            }
+            break;
+
         case 'add-crop':
             $authorized_users = ['farmer', 'admin'];
             $logged = isLoggedIn($authorized_users);
@@ -35,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             display_login_request($logged, $authorized_users);
             break;
         case 'get-crops':
-            $authorized_users = ['farmer', 'admin', 'buyer'];
+            $authorized_users = ['farmer', 'admin', 'buyer', 'government'];
             $logged = isLoggedIn($authorized_users);
             $logged  ? getCrops() : '';
             display_login_request($logged, $authorized_users);
@@ -132,21 +243,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             break;
 
         case 'get-market-prices':
-            $authorized_users = ['admin', 'farmer', 'buyer'];
+            $authorized_users = ['admin', 'farmer', 'buyer', 'government'];
             $logged = isLoggedIn($authorized_users);
             $logged  ? getMarketPrices() : '';
             display_login_request($logged, $authorized_users);
             break;
 
         case 'update-crop-market-price':
-            $authorized_users = ['admin'];
+            $authorized_users = ['admin', 'government'];
             $logged = isLoggedIn($authorized_users);
             $logged  ? updateCropMarketPrice() : '';
             display_login_request($logged, $authorized_users);
             break;
 
         case 'add-crop-market-price':
-            $authorized_users = ['admin'];
+            $authorized_users = ['admin', 'government'];
             $logged = isLoggedIn($authorized_users);
             $logged  ? addCropMarketPrice() : '';
             display_login_request($logged, $authorized_users);
@@ -254,6 +365,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             display_login_request($logged, $authorized_users);
             break;
 
+        case 'get-all-customers':
+            $authorized_users = ['admin', 'marketing'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? getAllCustomers() : '';
+            display_login_request($logged, $authorized_users);
+            break;
+
         case 'get-orders-by-crop':
             $authorized_users = ['farmer', 'admin'];
             $logged = isLoggedIn($authorized_users);
@@ -295,12 +413,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $logged  ? updateOrderStatus() : '';
             display_login_request($logged, $authorized_users);
             break;
-        case 'add-crop-demand':
-            $authorized_users = ['admin', 'buyer', 'farmer'];
-            $logged = isLoggedIn($authorized_users);
-            $logged  ? addCropDemand() : '';
-            display_login_request($logged, $authorized_users);
-            break;
+            // case 'add-crop-demand':
+            //     $authorized_users = ['admin', 'buyer', 'farmer'];
+            //     $logged = isLoggedIn($authorized_users);
+            //     $logged  ? addCropDemand() : '';
+            //     display_login_request($logged, $authorized_users);
+            //     break;
 
         case 'get-crop-demand':
             $authorized_users = ['farmer', 'admin', 'buyer', 'government', 'marketing'];
@@ -316,12 +434,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             display_login_request($logged, $authorized_users);
             break;
 
-        case 'add-crop-market-trend':
-            $authorized_users = ['admin', 'farmer'];
-            $logged = isLoggedIn($authorized_users);
-            $logged  ? addCropMarketTrend() : '';
-            display_login_request($logged, $authorized_users);
-            break;
+            // case 'add-crop-market-trend':
+            //     $authorized_users = ['admin', 'farmer'];
+            //     $logged = isLoggedIn($authorized_users);
+            //     $logged  ? addCropMarketTrend() : '';
+            //     display_login_request($logged, $authorized_users);
+            //     break;
 
         case 'get-crop-market-trend':
             $authorized_users = ['farmer', 'admin', 'buyer', 'government', 'marketing'];
@@ -350,6 +468,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $logged  ? viewMessages() : '';
             display_login_request($logged, $authorized_users);
             break;
+        case 'add-engagement':
+            $authorized_users = ['admin', 'marketing', 'buyer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? addEngagement() : '';
+            display_login_request($logged, $authorized_users);
+            break;
+
+        case 'view-engagements':
+            $authorized_users = ['admin', 'marketing', 'buyer'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? viewEngagements() : '';
+            display_login_request($logged, $authorized_users);
+            break;
 
         case 'view-my-messages':
             $authorized_users = ['farmer', 'buyer'];
@@ -376,6 +507,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo json_encode(['success' => false, 'message' => 'Undefined route']);
             break;
     }
+}else if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+ echo "Undefined route";
 }
 
 function display_login_request($logged, $user_types)
@@ -611,6 +744,221 @@ function handleLogout()
     exit();
 }
 
+//admin settings
+function getFarmers()
+{
+    global $conn;
+    $query = "SELECT * FROM farmer";
+    $stmt = $conn->prepare($query);
+
+    if ($stmt && $stmt->execute()) {
+        $result = $stmt->get_result();
+        $farmers = [];
+
+        while ($farmer = $result->fetch_assoc()) {
+            $farmers[] = $farmer;
+        }
+
+        echo json_encode(['success' => true, 'length' => $result->num_rows, 'farmers' => $farmers]);
+    } else {
+        echo json_encode(['success' => false, 'message' => $stmt->error]);
+    }
+
+    $stmt->close();
+}
+function getBuyers()
+{
+    global $conn;
+    $query = "SELECT * FROM buyer";
+    $stmt = $conn->prepare($query);
+
+    if ($stmt && $stmt->execute()) {
+        $result = $stmt->get_result();
+        $buyers = [];
+
+        while ($buyer = $result->fetch_assoc()) {
+            $buyers[] = $buyer;
+        }
+
+        echo json_encode(['success' => true, 'length' => $result->num_rows, 'buyers' => $buyers]);
+    } else {
+        echo json_encode(['success' => false, 'message' => $stmt->error]);
+    }
+
+    $stmt->close();
+}
+function getTransporters()
+{
+    global $conn;
+    $query = "SELECT * FROM transporter";
+    $stmt = $conn->prepare($query);
+
+    if ($stmt && $stmt->execute()) {
+        $result = $stmt->get_result();
+        $transporters = [];
+
+        while ($transporter = $result->fetch_assoc()) {
+            $transporters[] = $transporter;
+        }
+
+        echo json_encode(['success' => true, 'length' => $result->num_rows, 'transporters' => $transporters]);
+    } else {
+        echo json_encode(['success' => false, 'message' => $stmt->error]);
+    }
+
+    $stmt->close();
+}
+function getGovernmentAgencies()
+{
+    global $conn;
+    $query = "SELECT * FROM government";
+    $stmt = $conn->prepare($query);
+
+    if ($stmt && $stmt->execute()) {
+        $result = $stmt->get_result();
+        $agencies = [];
+
+        while ($agency = $result->fetch_assoc()) {
+            $agencies[] = $agency;
+        }
+
+        echo json_encode(['success' => true, 'length' => $result->num_rows, 'governments' => $agencies]);
+    } else {
+        echo json_encode(['success' => false, 'message' => $stmt->error]);
+    }
+
+    $stmt->close();
+}
+function getMarketingProfessionals()
+{
+    global $conn;
+    $query = "SELECT * FROM marketing";
+    $stmt = $conn->prepare($query);
+
+    if ($stmt && $stmt->execute()) {
+        $result = $stmt->get_result();
+        $professionals = [];
+
+        while ($professional = $result->fetch_assoc()) {
+            $professionals[] = $professional;
+        }
+
+        echo json_encode(['success' => true, 'length' => $result->num_rows, 'marketings' => $professionals]);
+    } else {
+        echo json_encode(['success' => false, 'message' => $stmt->error]);
+    }
+
+    $stmt->close();
+}
+function setFarmerAccountStatus($farmer_id, $status)
+{
+    global $conn;
+    $query = "UPDATE farmer SET account_status = ? WHERE farmer_id = ?";
+    $stmt = $conn->prepare($query);
+
+    if ($stmt) {
+        $stmt->bind_param("si", $status, $farmer_id);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            echo json_encode(['success' => true, 'message' => 'Farmer account status updated']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'No change in farmer account status']);
+        }
+
+        $stmt->close();
+    } else {
+        echo json_encode(['success' => false, 'message' => $conn->error]);
+    }
+}
+function setBuyerAccountStatus($buyer_id, $status)
+{
+    global $conn;
+    $query = "UPDATE buyer SET account_status = ? WHERE buyer_id = ?";
+    $stmt = $conn->prepare($query);
+
+    if ($stmt) {
+        $stmt->bind_param("si", $status, $buyer_id);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            echo json_encode(['success' => true, 'message' => 'Buyer account status updated']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'No change in buyer account status']);
+        }
+
+        $stmt->close();
+    } else {
+        echo json_encode(['success' => false, 'message' => $conn->error]);
+    }
+}
+function setTransporterAccountStatus($transport_id, $status)
+{
+    global $conn;
+    $query = "UPDATE transporter SET account_status = ? WHERE transport_id = ?";
+    $stmt = $conn->prepare($query);
+
+    if ($stmt) {
+        $stmt->bind_param("si", $status, $transport_id);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            echo json_encode(['success' => true, 'message' => 'Transporter account status updated']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'No change in transporter account status']);
+        }
+
+        $stmt->close();
+    } else {
+        echo json_encode(['success' => false, 'message' => $conn->error]);
+    }
+}
+function setGovernmentAgencyAccountStatus($agency_id, $status)
+{
+    global $conn;
+    $query = "UPDATE government SET account_status = ? WHERE agency_id = ?";
+    $stmt = $conn->prepare($query);
+
+    if ($stmt) {
+        $stmt->bind_param("si", $status, $agency_id);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            echo json_encode(['success' => true, 'message' => 'Government agency account status updated']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'No change in government agency account status']);
+        }
+
+        $stmt->close();
+    } else {
+        echo json_encode(['success' => false, 'message' => $conn->error]);
+    }
+}
+function setMarketingProfessionalAccountStatus($professional_id, $status)
+{
+    global $conn;
+    $query = "UPDATE marketing SET account_status = ? WHERE professional_id = ?";
+    $stmt = $conn->prepare($query);
+
+    if ($stmt) {
+        $stmt->bind_param("si", $status, $professional_id);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            echo json_encode(['success' => true, 'message' => 'Marketing professional account status updated']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'No change in marketing professional account status']);
+        }
+
+        $stmt->close();
+    } else {
+        echo json_encode(['success' => false, 'message' => $conn->error]);
+    }
+}
+
+
+
+//
 function addCrop()
 {
     global $conn;
@@ -641,7 +989,7 @@ function addCrop()
     }
 
     $query = "INSERT INTO crops (cropname, description, price, image_path) VALUES (?, ?, ?, ?)";
-    $stmt = $conn->prepare($query);
+    $stmt = $conn->prepare($query);$imagePath='../'.$imagePath;
     $stmt->bind_param('ssss', $cropname, $description, $price, $imagePath);
 
     if ($stmt && $stmt->execute()) {
@@ -703,7 +1051,7 @@ function updateCrop()
     $imagePath = null;
 
     if (isset($_FILES['crop_image']) && $_FILES['crop_image']['error'] == 0) {
-        $targetDir = "../uploads/";
+        $targetDir = "../uploads/images/crops/";
         $targetFile = $targetDir . basename($_FILES['crop_image']['name']);
         $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
 
@@ -737,7 +1085,7 @@ function updateCrop()
 
             // Prepare the UPDATE query
             $query = "UPDATE crops SET description = ?, price = ?, image_path = ? WHERE crop_id = ?";
-            $stmt = $conn->prepare($query);
+            $stmt = $conn->prepare($query);$imagePath='../'.$imagePath;
             $stmt->bind_param('ssss', $description, $price, $imagePath, $crop_id);
 
             if ($stmt && $stmt->execute()) {
@@ -1342,8 +1690,6 @@ function updateCropMarketPrice()
 
     $selectStmt->close();
 }
-
-
 function addCropMarketPrice()
 {
     global $conn;
@@ -1386,8 +1732,6 @@ function addCropMarketPrice()
 
     $selectStmt->close();
 }
-
-
 function getComplianceCertificates()
 {
     global $conn;
@@ -1592,7 +1936,7 @@ function getAllAdverts()
 
     $query = "
                 SELECT a.advert_id, a.price, a.quantity, a.unit, a.date, a.status, 
-                    f.username as 'farmer_username', c.cropname, c.description, c.image_path 
+                    f.username as 'farmer_username', f.location, c.cropname, c.description, c.image_path 
                     FROM adverts as a 
                     join farmer as f on a.farmer_id=f.farmer_id 
                     join crops as c on a.crop_id=c.crop_id
@@ -1735,6 +2079,26 @@ function deleteAdvert()
         echo json_encode(['success' => false, 'message' => 'Error deleting advert']);
     }
 }
+
+
+// Function to get all customers
+function getAllCustomers()
+{
+    global $conn;
+
+    $query = "SELECT o.order_id, o.date, o.farmer_id, o.buyer_id, f.username as farmer_name, 
+    b.username as buyer_name FROM orders o 
+    JOIN farmer f ON o.farmer_id=f.farmer_id
+    JOIN buyer b ON o.buyer_id=b.buyer_id";
+    $result = $conn->query($query);
+
+    if ($result) {
+        $customers = $result->fetch_all(MYSQLI_ASSOC);
+        echo json_encode(['success' => true, 'length' => $result->num_rows, 'customers' => $customers]);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Error fetching customers: ' . $conn->error]);
+    }
+}
 // Function to get all orders
 function getAllOrders()
 {
@@ -1849,9 +2213,10 @@ function getOrdersByBuyer()
 }
 
 // Function to add a new order
-function addOrder() {
+function addOrder()
+{
     global $conn;
-    
+
     $advert_id = $_POST['advert_id'];
     $buyer_id = $_SESSION['user_id'];
     $quantity = $_POST['quantity'];
@@ -1859,34 +2224,42 @@ function addOrder() {
     $today = date('Y-m-d');
     $status = 'pending'; // Default status
 
-    // Check if the farmer's email exists
-    $checkEmailQuery = "SELECT farmer_id, crop_id, price FROM adverts WHERE advert_id = ? LIMIT 1";
-    $checkEmailStmt = $conn->prepare($checkEmailQuery);
-    $checkEmailStmt->bind_param('i', $advert_id);
-    $checkEmailStmt->execute();
-    $result = $checkEmailStmt->get_result();
+    // Check if the advert exists
+    $checkAdvertQuery = "SELECT farmer_id, crop_id, price FROM adverts WHERE advert_id = ? LIMIT 1";
+    $checkAdvertStmt = $conn->prepare($checkAdvertQuery);
+    $checkAdvertStmt->bind_param('i', $advert_id);
+    $checkAdvertStmt->execute();
+    $result = $checkAdvertStmt->get_result();
 
     if ($result->num_rows == 1) {
         $advert = $result->fetch_assoc();
-        
+
         // Calculate total cost
         $total_cost = $quantity * $advert['price'];
 
         // Proceed to insert the order
-        $query = "INSERT INTO orders (farmer_id, buyer_id, crop_id, quantity, unit, total_cost, date, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $query = "INSERT INTO orders (advert_id, farmer_id, buyer_id, crop_id, quantity, unit, total_cost, date, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($query);
-        $stmt->bind_param('iiissdss', $advert['farmer_id'], $buyer_id, $advert['crop_id'], $quantity, $unit, $total_cost, $today, $status);
+        $stmt->bind_param('iiiissdss', $advert_id, $advert['farmer_id'], $buyer_id, $advert['crop_id'], $quantity, $unit, $total_cost, $today, $status);
 
         if ($stmt->execute()) {
+
+            // Add demand for the crop
+            addCropDemand($advert['crop_id']);
+
+            // Add market trend for the crop
+            // addCropMarketTrend($advert['crop_id'], $advert['price']); // transfered to ==confirmed
+            // Order added successfully
+
             echo json_encode(['success' => true, 'message' => 'Order added successfully']);
         } else {
             echo json_encode(['success' => false, 'message' => 'Error adding order: ' . $stmt->error]);
         }
         $stmt->close();
     } else {
-        echo json_encode(['success' => false, 'message' => 'Error: Farmer email does not exist']);
+        echo json_encode(['success' => false, 'message' => 'Error: Advert does not exist']);
     }
-    $checkEmailStmt->close();
+    $checkAdvertStmt->close();
 }
 
 // Function to update an existing order
@@ -1919,11 +2292,40 @@ function updateOrderStatus()
     $order_id = $_POST['order_id'];
     $status = $_POST['status'];
 
-    $query = "UPDATE orders SET status = ? WHERE order_id = ?";
-    $stmt = $conn->prepare($query);
+    // Update the order status
+    $updateQuery = "UPDATE orders SET status = ? WHERE order_id = ?";
+    $stmt = $conn->prepare($updateQuery);
     $stmt->bind_param('si', $status, $order_id);
 
     if ($stmt->execute()) {
+        // If status updated successfully, check if it's 'confirmed'
+        if ($status === 'confirmed') {
+            // Fetch the crop_id and price from the adverts table
+            $selectQuery = "SELECT crop_id, price FROM adverts WHERE advert_id = (
+                SELECT advert_id FROM orders WHERE order_id = ? LIMIT 1
+            )";
+            $selectStmt = $conn->prepare($selectQuery);
+            $selectStmt->bind_param('i', $order_id);
+
+            if ($selectStmt->execute()) {
+                $result = $selectStmt->get_result();
+
+                if ($result->num_rows == 1) {
+                    $advert = $result->fetch_assoc();
+                    $crop_id = $advert['crop_id'];
+                    $price = $advert['price'];
+
+                    // Call addCropMarketTrend function
+                    addCropMarketTrend($crop_id, $price);
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'Advert not found for the order']);
+                }
+                $selectStmt->close();
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Error fetching advert details: ' . $selectStmt->error]);
+            }
+        }
+
         echo json_encode(['success' => true, 'message' => 'Order status updated successfully']);
     } else {
         echo json_encode(['success' => false, 'message' => 'Error updating order status: ' . $stmt->error]);
@@ -1932,14 +2334,13 @@ function updateOrderStatus()
     $stmt->close();
 }
 
-function addCropDemand()
+function addCropDemand($crop_id)
 {
     global $conn;
 
-    $crop_id = $_POST['crop_id'];
     $date = date('Y-m-d');
 
-    // First, retrieve the current demand value for the crop
+    // Retrieve the current demand value for the crop
     $selectQuery = "SELECT demand FROM demand_trends WHERE crop_id = ? ORDER BY date DESC LIMIT 1";
     $selectStmt = $conn->prepare($selectQuery);
     $selectStmt->bind_param('i', $crop_id);
@@ -1964,7 +2365,7 @@ function addCropDemand()
         $insertStmt->bind_param('iisi', $crop_id, $newDemand, $date, $newDemand);
 
         if ($insertStmt->execute()) {
-            echo json_encode(['success' => true, 'message' => 'Crop demand incremented successfully']);
+            // Demand incremented successfully
         } else {
             echo json_encode(['success' => false, 'message' => 'Error incrementing crop demand: ' . $insertStmt->error]);
         }
@@ -2007,7 +2408,17 @@ function getDemandTrends()
 {
     global $conn;
 
-    $query = "SELECT * FROM demand_trends";
+    $query = "SELECT 
+    c.cropname, 
+    SUM(d.demand) AS total_demand
+        FROM 
+            demand_trends d 
+        JOIN 
+            crops c 
+        ON 
+            d.crop_id = c.crop_id 
+        GROUP BY 
+            c.cropname;";
     $result = $conn->query($query);
 
     if ($result) {
@@ -2023,49 +2434,25 @@ function getDemandTrends()
     }
 }
 
-function addCropMarketTrend()
+function addCropMarketTrend($crop_id, $price)
 {
     global $conn;
 
-    $cropname = $_POST['cropname'];
-    $price = $_POST['price'];
     $date = date('Y-m-d');
 
-    // Fetch the crop_id based on cropname
-    $selectQuery = "SELECT crop_id FROM crops WHERE cropname = ?";
-    $selectStmt = $conn->prepare($selectQuery);
-    $selectStmt->bind_param('s', $cropname);
+    // Insert or update the market trend for the crop
+    $insertQuery = "INSERT INTO market_trends (crop_id, price, date) VALUES (?, ?, ?)
+                    ON DUPLICATE KEY UPDATE price = ?";
+    $insertStmt = $conn->prepare($insertQuery);
+    $insertStmt->bind_param('idsd', $crop_id, $price, $date, $price);
 
-    if ($selectStmt->execute()) {
-        $result = $selectStmt->get_result();
-
-        if ($result->num_rows == 1) {
-            $crop = $result->fetch_assoc();
-            $crop_id = $crop['crop_id'];
-
-            // Insert or update the market trend for the crop
-            $insertQuery = "INSERT INTO market_trends (crop_id, price, date) VALUES (?, ?, ?)
-                            ON DUPLICATE KEY UPDATE price = ?";
-            $insertStmt = $conn->prepare($insertQuery);
-            $insertStmt->bind_param('idsd', $crop_id, $price, $date, $price);
-
-            if ($insertStmt->execute()) {
-                echo json_encode(['success' => true, 'message' => 'Crop market trend updated successfully']);
-            } else {
-                echo json_encode(['success' => false, 'message' => 'Error updating crop market trend: ' . $insertStmt->error]);
-            }
-
-            $insertStmt->close();
-        } else if ($result->num_rows == 0) {
-            echo json_encode(['success' => false, 'message' => 'Crop not found']);
-        } else {
-            echo json_encode(['success' => false, 'message' => 'Multiple crops found with the same name']);
-        }
+    if ($insertStmt->execute()) {
+        // Market trend updated successfully
     } else {
-        echo json_encode(['success' => false, 'message' => 'Error fetching crop id: ' . $selectStmt->error]);
+        echo json_encode(['success' => false, 'message' => 'Error updating crop market trend: ' . $insertStmt->error]);
     }
 
-    $selectStmt->close();
+    $insertStmt->close();
 }
 
 
@@ -2131,7 +2518,10 @@ function getMarketTrends()
     global $conn;
 
     // Retrieve all market trends
-    $query = "SELECT * FROM market_trends";
+    $query = "SELECT m.trend_id,c.cropname, m.price, m.date
+        FROM market_trends m
+        JOIN crops c ON m.crop_id = c.crop_id
+        WHERE 1=1;";
     $stmt = $conn->prepare($query);
 
     if ($stmt->execute()) {
@@ -2148,6 +2538,40 @@ function getMarketTrends()
     }
 
     $stmt->close();
+}
+
+function addEngagement()
+{
+    global $conn;
+    $message_text = $_POST['message_text'];
+    $sender = $_POST['sender'];
+    $receiver = $_POST['receiver'];
+
+    $query = "INSERT INTO engagements (message_text, sender, receiver) VALUES (?, ?, ?)";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param('sss', $message_text, $sender, $receiver);
+
+    if ($stmt->execute()) {
+        echo json_encode(['success' => true, 'message' => 'Message sent successfully']);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Error adding message to db: ' . $stmt->error]);
+    }
+
+    $stmt->close();
+}
+
+function viewEngagements()
+{
+    global $conn;
+    $query = "SELECT * FROM engagements ORDER BY sent_at DESC";
+    $result = $conn->query($query);
+
+    if ($result) {
+        $messages = $result->fetch_all(MYSQLI_ASSOC);
+        echo json_encode(['success' => true, 'length' => $result->num_rows, 'engagements' => $messages]);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Error fetching messages: ' . $conn->error]);
+    }
 }
 
 function addMessage()

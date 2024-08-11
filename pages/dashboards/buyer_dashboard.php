@@ -18,7 +18,7 @@ include_once('../../includes/header.php');
                 <hr>
                 <ul class="nav nav-pills flex-column mb-auto">
                     <li class="nav-item">
-                        <a href="#" class="nav-link active" id="dashboard" onclick="loadDashboard(this)">
+                        <a href="#" class="nav-link link-dark" id="dashboard" onclick="loadDashboard(this)">
                             Dashboard
                         </a>
                     </li>
@@ -35,6 +35,11 @@ include_once('../../includes/header.php');
                     <li>
                         <a onclick="loadOrders(this)" class="nav-link link-dark">
                             Manage Orders
+                        </a>
+                    </li>
+                    <li>
+                        <a onclick="loadEngagements(this)" class="nav-link link-dark">
+                            Engagement Marketers
                         </a>
                     </li>
                 </ul>
@@ -75,31 +80,31 @@ include_once('../../includes/header.php');
         <div class="modal fade" id="orderCropModal" tabindex="-1" aria-labelledby="orderCropModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="orderCropModalLabel">Order Crop</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="orderCropForm">
-                    <input type="hidden" id="order_advert_id">
-                    <div class="mb-3">
-                        <label for="order_quantity" class="form-label">Quantity</label>
-                        <input type="number" class="form-control" id="order_quantity" name="quantity" min="1" required>
-                        <div class="form-text">Must be less than the available quantity.</div>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="orderCropModalLabel">Order Crop</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="mb-3">
-                        <!-- <label for="order_unit" class="form-label">Unit</label> -->
-                        <!-- <input type="text" class="form-control" id="order_unit" name="unit" readonly> -->
-                        <label for="add_unit" class="form-label fw-bold">Unit</label>
-                        <select class="form-select" id="add_unit" name="add_unit" required></select>
+                    <div class="modal-body">
+                        <form id="orderCropForm">
+                            <input type="hidden" id="order_advert_id">
+                            <div class="mb-3">
+                                <label for="order_quantity" class="form-label">Quantity</label>
+                                <input type="number" class="form-control" id="order_quantity" name="quantity" min="1" required>
+                                <div class="form-text">Must be less than the available quantity.</div>
+                            </div>
+                            <div class="mb-3">
+                                <!-- <label for="order_unit" class="form-label">Unit</label> -->
+                                <!-- <input type="text" class="form-control" id="order_unit" name="unit" readonly> -->
+                                <label for="add_unit" class="form-label fw-bold">Unit</label>
+                                <select class="form-select" id="add_unit" name="add_unit" required></select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="estimated_cost" class="form-label">Estimated Cost</label>
+                                <input type="text" class="form-control" id="estimated_cost" readonly>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Place Order</button>
+                        </form>
                     </div>
-                    <div class="mb-3">
-                        <label for="estimated_cost" class="form-label">Estimated Cost</label>
-                        <input type="text" class="form-control" id="estimated_cost" readonly>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Place Order</button>
-                    </form>
-                </div>
                 </div>
             </div>
         </div>
@@ -124,68 +129,76 @@ include_once('../../includes/header.php');
 </div>
 <style>
     /* Sidebar Styles */
-.sidebar {
-    background-color: #003366; /* Dark Blue */
-    color: white;
-}
+    .sidebar {
+        background-color: #003366;
+        /* Dark Blue */
+        color: white;
+    }
 
-.sidebar .nav-link {
-    color: white;
-    padding: 10px 15px;
-    border-radius: 5px;
-    margin-bottom: 5px;
-}
+    .sidebar .nav-link {
+        color: white;
+        padding: 10px 15px;
+        border-radius: 5px;
+        margin-bottom: 5px;
+    }
 
-.sidebar .nav-link.active, 
-.sidebar .nav-link:hover {
-    background-color: #004080; /* Lighter Blue */
-    color: white !important;
-}
+    .sidebar .nav-link.active,
+    .sidebar .nav-link:hover {
+        background-color: #004080;
+        /* Lighter Blue */
+        color: white !important;
+    }
 
-.sidebar .nav-link:hover {
-    background-color: #00264d; /* Slightly darker blue */
-}
+    .sidebar .nav-link:hover {
+        background-color: #00264d;
+        /* Slightly darker blue */
+    }
 
-.sidebar .dropdown-toggle {
-    color: white;
-}
+    .sidebar .dropdown-toggle {
+        color: white;
+    }
 
-.sidebar .dropdown-menu {
-    background-color: #003366; /* Dark Blue */
-}
+    .sidebar .dropdown-menu {
+        background-color: #003366;
+        /* Dark Blue */
+    }
 
-.sidebar .dropdown-menu .dropdown-item {
-    color: white;
-}
+    .sidebar .dropdown-menu .dropdown-item {
+        color: white;
+    }
 
-.sidebar .dropdown-menu .dropdown-item:hover {
-    background-color: #004080; /* Lighter Blue */
-}
+    .sidebar .dropdown-menu .dropdown-item:hover {
+        background-color: #004080;
+        /* Lighter Blue */
+    }
 
-/* Modal Header */
-.modal-header {
-    background-color: #003366 !important; /* Dark Blue */
-    color: white;
-}
+    /* Modal Header */
+    .modal-header {
+        background-color: #003366 !important;
+        /* Dark Blue */
+        color: white;
+    }
 
-/* Modal Footer Buttons */
-.modal-footer .btn-secondary {
-    background-color: #00264d; /* Slightly darker blue */
-    border-color: #00264d;
-}
+    /* Modal Footer Buttons */
+    .modal-footer .btn-secondary {
+        background-color: #00264d;
+        /* Slightly darker blue */
+        border-color: #00264d;
+    }
 
-.modal-footer .btn-danger {
-    background-color: #cc0000; /* Red */
-    border-color: #cc0000;
-}
+    .modal-footer .btn-danger {
+        background-color: #cc0000;
+        /* Red */
+        border-color: #cc0000;
+    }
 
-/* Primary Button */
-.btn-primary {
-    background-color: #004080; /* Lighter Blue */
-    border-color: #004080;
-}
-
-    </style>
+    /* Primary Button */
+    .btn-primary {
+        background-color: #004080;
+        /* Lighter Blue */
+        border-color: #004080;
+    }
+</style>
 <script>
     loadDashboard(document.getElementById('dashboard'));
 
@@ -204,7 +217,7 @@ include_once('../../includes/header.php');
                         <div class="card-body">
                             <h5 class="card-title">Search Crops</h5>
                             <p class="card-text">Find the crops you need.</p>
-                            <a href="/amis-project-/pages/search_crops.php" class="btn btn-primary">Search Crops</a>
+                            <a href="#" class="btn btn-primary">Search Crops</a>
                         </div>
                     </div>
                 </div>
@@ -456,6 +469,7 @@ include_once('../../includes/header.php');
         document.getElementById('edit-order-form').addEventListener('submit', updateOrder);
         loadMeasurementUnitOptions(unit);
     }
+
     function loadMeasurementUnitOptions(initialValue) {
         $.ajax({
             url: 'http://localhost/amis-project-/pages/routes.php',
@@ -482,23 +496,26 @@ include_once('../../includes/header.php');
             }
         });
     }
+
     function hideOrderForm() {
         $("#add-order-main").show();
         document.getElementById('order-form-container').innerHTML = '';
     }
 
     // Load and display all adverts
-function orderCrops(element) {
-    setActiveLink(element);
-    $.ajax({
-        url: 'http://localhost/amis-project-/pages/routes.php',
-        type: 'POST',
-        data: { action: 'get-all-adverts' },
-        success: function(response) {
-            var responseData = JSON.parse(response);
-            if (responseData.success) {
-                var advertsContent = responseData.adverts.map(function(advert) {
-                    return `
+    function orderCrops(element) {
+        setActiveLink(element);
+        $.ajax({
+            url: 'http://localhost/amis-project-/pages/routes.php',
+            type: 'POST',
+            data: {
+                action: 'get-all-adverts'
+            },
+            success: function(response) {
+                var responseData = JSON.parse(response);
+                if (responseData.success) {
+                    var advertsContent = responseData.adverts.map(function(advert) {
+                        return `
                     <div class="card mb-3" style="max-width: 540px;">
                       <div class="row g-0">
                         <div class="col-md-4">
@@ -509,6 +526,7 @@ function orderCrops(element) {
                             <h5 class="card-title">${advert.cropname}</h5>
                             <p class="card-text">${advert.description}</p>
                             <p class="card-text"><small class="text-muted">Price: $${advert.price} per ${advert.unit}</small></p>
+                            <p class="card-text"><small class="text-muted">Location: ${advert.location}</small></p>
                             <p class="card-text"><small class="text-muted">Available Quantity: ${advert.quantity} ${advert.unit}</small></p>
                             <button class="btn btn-primary" onclick="showOrderModal(${advert.advert_id}, ${advert.price}, ${advert.quantity}, '${advert.unit}')">Order</button>
                           </div>
@@ -516,86 +534,86 @@ function orderCrops(element) {
                       </div>
                     </div>
                     `;
-                }).join('');
-                document.getElementById('main-content').innerHTML = advertsContent;
-            } else {
-                document.getElementById('main-content').innerHTML = `<div class="alert alert-danger">Error: ${responseData.message}</div>`;
+                    }).join('');
+                    document.getElementById('main-content').innerHTML = advertsContent;
+                } else {
+                    document.getElementById('main-content').innerHTML = `<div class="alert alert-danger">Error: ${responseData.message}</div>`;
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error: ' + error);
             }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error: ' + error);
-        }
-    });
-}
+        });
+    }
 
-// Show the order modal and prefill the fields
-function showOrderModal(advertId, price, availableQuantity, unit) {
-    var orderModal = new bootstrap.Modal(document.getElementById('orderCropModal'));
-    document.getElementById('order_advert_id').value = advertId;
-    var quantityInput = document.getElementById('order_quantity');
-    var unitInput = document.getElementById('add_unit');
-    var estimatedCostInput = document.getElementById('estimated_cost');
-    quantityInput.max = availableQuantity;
-    quantityInput.value = availableQuantity;
-    loadMeasurementUnitOptions(unit);
-    estimatedCostInput.value = (price * availableQuantity).toFixed(2);
-    
-    quantityInput.oninput = function() {
-        var quantity = parseInt(quantityInput.value);
-        if (quantity > availableQuantity) {
-            quantityInput.value = availableQuantity;
-            quantity = availableQuantity;
-        }
-        estimatedCostInput.value = (price * quantity).toFixed(2);
-    };
+    // Show the order modal and prefill the fields
+    function showOrderModal(advertId, price, availableQuantity, unit) {
+        var orderModal = new bootstrap.Modal(document.getElementById('orderCropModal'));
+        document.getElementById('order_advert_id').value = advertId;
+        var quantityInput = document.getElementById('order_quantity');
+        var unitInput = document.getElementById('add_unit');
+        var estimatedCostInput = document.getElementById('estimated_cost');
+        quantityInput.max = availableQuantity;
+        quantityInput.value = availableQuantity;
+        loadMeasurementUnitOptions(unit);
+        estimatedCostInput.value = (price * availableQuantity).toFixed(2);
 
-    orderModal.show();
-}
-
-// Handle the order form submission
-document.getElementById('orderCropForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    var advertId = document.getElementById('order_advert_id').value;
-    var quantity = document.getElementById('order_quantity').value;
-    var unit = document.getElementById('add_unit').value;
-    addOrder(advertId, quantity, unit);
-});
-
-// Add order function
-function addOrder(advertId, quantity, unit) {
-    var orderModal = bootstrap.Modal.getInstance(document.getElementById('orderCropModal'));
-    $.ajax({
-        url: 'http://localhost/amis-project-/pages/routes.php',
-        type: 'POST',
-        data: {
-            action: 'add-order',
-            advert_id: advertId,
-            quantity: quantity,
-            unit: unit
-        },
-        success: function(response) {
-            var responseData = JSON.parse(response);
-            if (responseData.success) {
-                console.log(responseData);
-                orderModal.hide();
-                showAlert('Order placed successfully!');
-            } else {
-                showAlert('Error: ' + responseData.message);
+        quantityInput.oninput = function() {
+            var quantity = parseInt(quantityInput.value);
+            if (quantity > availableQuantity) {
+                quantityInput.value = availableQuantity;
+                quantity = availableQuantity;
             }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error: ' + error);
-            showAlert('An error occurred while placing the order. Please try again later.');
-        }
-    });
-}
+            estimatedCostInput.value = (price * quantity).toFixed(2);
+        };
 
-// Show alert function
-function showAlert(message) {
-    document.getElementById('alertModalBody').textContent = message;
-    var alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
-    alertModal.show();
-}
+        orderModal.show();
+    }
+
+    // Handle the order form submission
+    document.getElementById('orderCropForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        var advertId = document.getElementById('order_advert_id').value;
+        var quantity = document.getElementById('order_quantity').value;
+        var unit = document.getElementById('add_unit').value;
+        addOrder(advertId, quantity, unit);
+    });
+
+    // Add order function
+    function addOrder(advertId, quantity, unit) {
+        var orderModal = bootstrap.Modal.getInstance(document.getElementById('orderCropModal'));
+        $.ajax({
+            url: 'http://localhost/amis-project-/pages/routes.php',
+            type: 'POST',
+            data: {
+                action: 'add-order',
+                advert_id: advertId,
+                quantity: quantity,
+                unit: unit
+            },
+            success: function(response) {
+                var responseData = JSON.parse(response);
+                if (responseData.success) {
+                    console.log(responseData);
+                    orderModal.hide();
+                    showAlert('Order placed successfully!');
+                } else {
+                    showAlert('Error: ' + responseData.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error: ' + error);
+                showAlert('An error occurred while placing the order. Please try again later.');
+            }
+        });
+    }
+
+    // Show alert function
+    function showAlert(message) {
+        document.getElementById('alertModalBody').textContent = message;
+        var alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
+        alertModal.show();
+    }
 
     function updateOrder(event) {
         event.preventDefault();
@@ -650,6 +668,117 @@ function showAlert(message) {
                 }
             });
         }
+    }
+
+    // Load Chat Engagements for the Buyer
+    function loadEngagements(element) {
+        setActiveLink(element);
+        document.getElementById('main-content').innerHTML = '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>';
+
+        // Display chat UI
+        document.getElementById('main-content').innerHTML = `
+    <div class="card" style="width: 100%; max-width: 800px; margin: 0 auto;">
+        <div class="card-header d-flex justify-content-between">
+            <span>Chat with Marketer</span>
+            <button class="btn btn-sm btn-secondary" onclick="loadEngagements()">Refresh</button>
+        </div>
+        <div class="card-body" style="height: 400px; overflow-y: auto;">
+            <div id="message-list" class="mb-3">
+                <!-- Messages will be loaded here -->
+            </div>
+            <div>
+                <textarea id="message-text" class="form-control" placeholder="Type your message here"></textarea>
+                <button class="btn btn-success mt-2" onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+    `;
+
+        // Fetch and display engagements/messages
+        fetchEngagements();
+
+        // Auto-refresh chat every 15 seconds
+        setInterval(fetchEngagements, 15000);
+    }
+
+    // Fetch engagements/messages for the buyer
+    function fetchEngagements() {
+        $.ajax({
+            url: 'http://localhost/amis-project-/pages/routes.php',
+            type: 'POST',
+            data: {
+                action: 'view-engagements'
+            },
+            success: function(response) {
+                var data = JSON.parse(response);
+                if (data.success) {
+                    let engagements = data.engagements.filter(engagement =>
+                        engagement.sender === '<?php echo $_SESSION['username'] ?>' || engagement.receiver === '<?php echo $_SESSION['username'] ?>'
+                    );
+
+                    engagements.sort((a, b) => new Date(a.sent_at) - new Date(b.sent_at));
+
+                    let messagesHtml = '';
+                    engagements.forEach((engagement) => {
+                        let isSender = engagement.sender === '<?php echo $_SESSION['username'] ?>';
+                        messagesHtml += `
+                    <div style="text-align: ${isSender ? 'right' : 'left'};">
+                        <div class="p-2" style="display: inline-block; max-width: 60%; background-color: ${isSender ? '#d1e7dd' : '#f8d7da'}; border-radius: 10px;">
+                            <strong>${engagement.sender}:</strong>
+                            <p>${engagement.message_text}</p>
+                            <small class="text-muted">${engagement.sent_at}</small>
+                        </div>
+                    </div>
+                    <div style="clear: both;"></div>
+                    <hr>
+                `;
+                    });
+
+                    document.getElementById('message-list').innerHTML = messagesHtml;
+
+                } else {
+                    document.getElementById('message-list').innerHTML = `<div class="alert alert-danger">Error: ${data.message}</div>`;
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                document.getElementById('message-list').innerHTML = '<div class="alert alert-danger">An error occurred while fetching messages. Please try again later.</div>';
+            }
+        });
+    }
+
+    // Send message from the buyer
+    function sendMessage() {
+        let messageText = document.getElementById('message-text').value;
+        if (!messageText.trim()) {
+            alert('Please enter a message.');
+            return;
+        }
+
+        $.ajax({
+            url: 'http://localhost/amis-project-/pages/routes.php',
+            type: 'POST',
+            data: {
+                action: 'add-engagement',
+                message_text: messageText,
+                sender: '<?php echo $_SESSION['username'] ?>',
+                receiver: 'Marketing Analyst' // Assuming "Marketer" is a general term; replace with actual logic if needed
+            },
+            success: function(response) {
+                var data = JSON.parse(response);
+                if (data.success) {
+                    // Refresh chat
+                    fetchEngagements();
+                    document.getElementById('message-text').value = ''; // Clear input field
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                alert('An error occurred while sending the message. Please try again later.');
+            }
+        });
     }
 </script>
 
