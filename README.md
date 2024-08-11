@@ -4,8 +4,9 @@ The following is the progress::
 - [x] Database design
 - [x] Backend development
 - [x] Frontend development
-- [ ] Integration and testing
-- [ ] Release
+- [x] Integration and testing
+- [x] Release
+- [ ] Payments
 ## Installation
 Run on cmd 
 ```` bat
