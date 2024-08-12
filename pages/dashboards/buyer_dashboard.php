@@ -69,7 +69,16 @@ include_once('../../includes/header.php');
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2">Dashboard</h1>
+                <div class="d-flex align-items-center">
+                    <span class="me-2">Market Updates</span>
+                    <label class="form-switch small-switch">
+                        <input type="checkbox" id="subscriptionSwitch" onclick="toggleSubscription()">
+                        <i></i>
+                    </label>
+                    <span id="subscriptionStatus" class="ms-2 fs-6 text-muted">Subscribe</span>
+                </div>
             </div>
+
 
             <div id="main-content">
                 <!-- Initial dashboard content -->
@@ -128,6 +137,55 @@ include_once('../../includes/header.php');
     </div>
 </div>
 <style>
+    .form-switch {
+        position: relative;
+        display: inline-block;
+        width: 40px;
+        height: 20px;
+        margin-bottom: 0;
+    }
+
+    .form-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .form-switch i {
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        right: 3px;
+        bottom: 3px;
+        background-color: #ccc;
+        border-radius: 20px;
+        transition: 0.4s;
+    }
+
+    .form-switch i:before {
+        position: absolute;
+        content: "";
+        height: 14px;
+        width: 14px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        border-radius: 50%;
+        transition: 0.4s;
+    }
+
+    .form-switch input:checked+i {
+        background-color: #28a745;
+    }
+
+    .form-switch input:checked+i:before {
+        transform: translateX(20px);
+    }
+
+    #subscriptionStatus {
+        font-size: 0.9rem;
+    }
+
     /* Sidebar Styles */
     .sidebar {
         background-color: #003366;
@@ -207,6 +265,71 @@ include_once('../../includes/header.php');
         links.forEach(link => link.classList.remove('active'));
         element.classList.add('active');
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const email = '<?php echo $_SESSION['email'] ?>'; // This should be dynamically fetched
+        const apiUrl = '/amis-project-/pages/routes.php';
+
+        $.ajax({
+            url: apiUrl,
+            type: 'POST',
+            data: {
+                action: 'get-subscription-status',
+                email: email
+            },
+            success: function(response) {
+                const responseData = JSON.parse(response);
+                const switchElement = document.getElementById('subscriptionSwitch');
+                const subscriptionStatus = document.getElementById('subscriptionStatus');
+
+                if (responseData.success) {
+                    const isSubscribed = responseData.subscription === 'subscribed';
+                    switchElement.checked = isSubscribed;
+                    subscriptionStatus.textContent = isSubscribed ? 'Subscribed' : 'Subscribe';
+                } else {
+                    alert('Error: ' + responseData.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                alert('An error occurred: ' + error);
+            }
+        });
+    });
+
+    function toggleSubscription() {
+        const switchElement = document.getElementById('subscriptionSwitch');
+        const subscriptionStatus = document.getElementById('subscriptionStatus');
+        const email = '<?php echo $_SESSION['email'] ?>'; // This should be dynamic based on the logged-in user
+
+        const action = switchElement.checked ? 'subscribe' : 'unsubscribe';
+        const statusText = switchElement.checked ? 'Subscribed' : 'Subscribe';
+        const apiUrl = '/amis-project-/pages/routes.php';
+
+        $.ajax({
+            url: apiUrl,
+            type: 'POST',
+            data: {
+                action: action,
+                email: email
+            },
+            success: function(response) {
+                const responseData = JSON.parse(response);
+                if (responseData.success) {
+                    subscriptionStatus.textContent = statusText;
+                    alert(responseData.message);
+                } else {
+                    alert('Error: ' + responseData.message);
+                    // Revert the switch in case of error
+                    switchElement.checked = !switchElement.checked;
+                }
+            },
+            error: function(xhr, status, error) {
+                alert('An error occurred: ' + error);
+                switchElement.checked = !switchElement.checked;
+            }
+        });
+    }
+
 
     function loadDashboard(element) {
         setActiveLink(element);

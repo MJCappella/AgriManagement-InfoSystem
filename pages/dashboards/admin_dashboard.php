@@ -37,6 +37,11 @@ include_once('../../includes/header.php');
                             View Reports
                         </a>
                     </li>
+                    <li>
+                        <a href="#" class="nav-link link-dark" onclick="loadSubscribersMessaging(this)">
+                            Message Subscribers
+                        </a>
+                    </li>
                 </ul>
                 <hr>
                 <div class="dropdown">
@@ -166,6 +171,25 @@ include_once('../../includes/header.php');
     </div>
 </div>
 <style>
+    /* Custom styles for the spinner */
+    .spinner-border {
+        border-width: 0.25em;
+    }
+
+    /* Custom styles for message titles */
+    .bg-primary {
+        background-color: #007377 !important;
+    }
+
+    .text-white {
+        color: #ffffff !important;
+    }
+
+    /* Optional: For better visibility of loading text */
+    #loadingSpinner p {
+        color: #007377;
+    }
+
     /* Add custom styles for the user type containers */
     .user-type-container {
         margin-bottom: 30px;
@@ -299,7 +323,7 @@ include_once('../../includes/header.php');
     }
 
     .sidebar .dropdown-menu {
-        background-color: #003366;
+        background-color: #007377;
         /* Dark Blue */
     }
 
@@ -308,7 +332,7 @@ include_once('../../includes/header.php');
     }
 
     .sidebar .dropdown-menu .dropdown-item:hover {
-        background-color: #f67019;
+        background-color: #007377;
         /* Lighter Blue */
     }
 
@@ -332,15 +356,11 @@ include_once('../../includes/header.php');
         border-color: #cc0000;
     }
 
-    .btn-close{
+    .btn-close {
         background-color: #e0e0e0;
     }
-
-    /* Primary Button */
-    .btn-primary {
+    .visually-hidden {
         background-color: #007377;
-        /* Lighter Blue */
-        /* border-color: #f67019; */
     }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -420,7 +440,7 @@ include_once('../../includes/header.php');
                 </td>
             </tr>
         `).join('');
-        console.log(userType.slice(0, -1));
+                console.log(userType.slice(0, -1));
                 content += `
         <div id="${userType}-table-container" class="user-type-container">
             <h3 class="user-type-title">
@@ -1045,6 +1065,127 @@ include_once('../../includes/header.php');
             update(); // Initial call to ensure immediate update
         }
 
+    }
+
+    //messages
+    function loadSubscribersMessaging(element) {
+        setActiveLink(element);
+        document.getElementById('main-content').innerHTML = '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>';
+
+        // Fetch previous messages
+        $.ajax({
+            url: 'http://localhost/amis-project-/pages/routes.php',
+            type: 'POST',
+            data: {
+                action: 'view-messages'
+            },
+            success: function(response) {
+                let data = JSON.parse(response);
+                if (data.success) {
+                    console.log(data.messages);
+                    displayMessageFormAndHistory(data.messages);
+                } else {
+                    alert('Error loading messages: ' + data.message);
+                }
+            },
+            error: function() {
+                alert('Failed to fetch messages. Please try again later.');
+            }
+        });
+    }
+
+    function displayMessageFormAndHistory(messages) {
+        let mainContent = `
+    <div class="container py-4">
+        <h3 class="mb-2 bg-primary text-white text-center p-1 rounded">Message Subscribers</h3>
+        <form id="messageForm" class="mb-4">
+            <div class="mb-3">
+                <label for="subject" class="form-label">Subject</label>
+                <input type="text" class="form-control" value="Exciting New Products Just Arrived!" id="subject" name="subject" required>
+            </div>
+            <div class="mb-3">
+                <label for="message_text" class="form-label">Message</label>
+                <textarea class="form-control" id="message_text" name="message_text" rows="5" required>
+Dear Subscriber,
+We are thrilled to announce the arrival of our latest products in the market! Our new collection features innovative designs and top-notch quality that you will absolutely love.
+Visit our website to explore the new arrivals and take advantage of exclusive offers available only to our subscribers.
+Thank you for being a valued member of our community!
+Best regards,
+                </textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Send Message</button>
+        </form>
+        <h3 class="mb-2 bg-primary text-white text-center p-1 rounded">Previous Messages</h3>
+        <div class="list-group overflow-auto" style="max-height: 400px;">`;
+
+        if (messages.length > 0) {
+            messages.forEach(msg => {
+                mainContent += `
+            <a href="#" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">${msg.subject}</h5>
+                    <small class="text-muted">${new Date(msg.sent_at).toLocaleString()}</small>
+                </div>
+                <p class="mb-1 text-secondary">${msg.message_text}</p>
+            </a>`;
+            });
+        } else {
+            mainContent += `
+        <div class="alert alert-info" role="alert">
+            No previous messages found.
+        </div>`;
+        }
+
+        mainContent += `</div></div>`;
+
+        document.getElementById('main-content').innerHTML = mainContent;
+
+        // Handle form submission
+        $('#messageForm').on('submit', function(e) {
+            e.preventDefault();
+            sendMessageToSubscribers();
+        });
+    }
+
+    function sendMessageToSubscribers() {
+        let subject = $('#subject').val();
+        let message_text = $('#message_text').val();
+
+        // Disable the form and show the loading spinner
+        $('#messageForm button').prop('disabled', true);
+        $('#messageForm').append(`
+        <div id="loadingSpinner" class="text-center mt-3">
+            <div class="spinner-border" role="status" style="border-color: #007377 transparent transparent transparent;">
+                <span class="visually-hidden">Sending...</span>
+            </div>
+            <p class="mt-2">Sending your message, please wait...</p>
+        </div>
+    `);
+
+        $.ajax({
+            url: 'http://localhost/amis-project-/pages/routes.php',
+            type: 'POST',
+            data: {
+                action: 'message-subscribers',
+                subject: subject,
+                message_text: message_text
+            },
+            success: function(response) {
+                let data = JSON.parse(response);
+                $('#messageForm button').prop('disabled', false);
+                $('#loadingSpinner').remove();
+                if (data.success) {
+                    alert('Message sent successfully!');
+                } else {
+                    alert('Error sending message: ' + data.message);
+                }
+            },
+            error: function() {
+                alert('Failed to send message. Please try again later.');
+            },complete: function () {
+                loadSubscribersMessaging(); // Reload the page to show the new message in history
+            }
+        });
     }
 </script>
 <?php include('../../includes/footer.php') ?>

@@ -455,6 +455,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             display_login_request($logged, $authorized_users);
             break;
 
+        case 'message-subscribers':
+            $authorized_users = ['admin'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? messageSubscribers() : '';
+            display_login_request($logged, $authorized_users);
+            break;
+
         case 'add-message':
             $authorized_users = ['admin'];
             $logged = isLoggedIn($authorized_users);
@@ -498,17 +505,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             display_login_request($logged, $authorized_users);
             break;
         case 'unsubscribe':
-            $authorized_users = ['buyer'];
+            $authorized_users = ['buyer', 'admin'];
             $logged = isLoggedIn($authorized_users);
             $logged ? unsubscribe() : '';
+            display_login_request($logged, $authorized_users);
+            break;
+        case 'get-subscription-status':
+            $authorized_users = ['buyer', 'admin'];
+            $logged = isLoggedIn($authorized_users);
+            $logged ? getSubscriptionStatus() : '';
             display_login_request($logged, $authorized_users);
             break;
         default:
             echo json_encode(['success' => false, 'message' => 'Undefined route']);
             break;
     }
-}else if ($_SERVER['REQUEST_METHOD'] === 'GET') {
- echo "Undefined route";
+} else if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    echo "Undefined route";
 }
 
 function display_login_request($logged, $user_types)
@@ -989,7 +1002,8 @@ function addCrop()
     }
 
     $query = "INSERT INTO crops (cropname, description, price, image_path) VALUES (?, ?, ?, ?)";
-    $stmt = $conn->prepare($query);$imagePath='../'.$imagePath;
+    $stmt = $conn->prepare($query);
+    $imagePath = '../' . $imagePath;
     $stmt->bind_param('ssss', $cropname, $description, $price, $imagePath);
 
     if ($stmt && $stmt->execute()) {
@@ -1085,7 +1099,8 @@ function updateCrop()
 
             // Prepare the UPDATE query
             $query = "UPDATE crops SET description = ?, price = ?, image_path = ? WHERE crop_id = ?";
-            $stmt = $conn->prepare($query);$imagePath='../'.$imagePath;
+            $stmt = $conn->prepare($query);
+            $imagePath = '../' . $imagePath;
             $stmt->bind_param('ssss', $description, $price, $imagePath, $crop_id);
 
             if ($stmt && $stmt->execute()) {
@@ -2574,6 +2589,79 @@ function viewEngagements()
     }
 }
 
+function messageSubscribers()
+{
+    global $conn;
+
+    $subject = $_POST['subject'];
+    $message_text = $_POST['message_text'];
+
+    // Query to get all subscribed buyers
+    $query = "SELECT email FROM buyer WHERE subscription = 'subscribed'";
+    $result = $conn->query($query);
+
+    if ($result && $result->num_rows > 0) {
+        $emails = [];
+        //save mail to db
+
+        $query = "INSERT INTO messages (subject, message_text, receiver_email) VALUES (?, ?, ?)";
+        $stmt = $conn->prepare($query);
+        $receiver_email = 'all' . $result->num_rows . 'subscribers@amis.com';
+        $stmt->bind_param('sss', $subject, $message_text, $receiver_email);
+
+        if ($stmt->execute()) {
+            //saved to db
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Error adding message to db: ' . $stmt->error]);
+            exit(1);
+        }
+
+        $stmt->close();
+        
+        //actual sending
+        while ($row = $result->fetch_assoc()) {
+            $emails[] = $row['email'];
+        }
+
+        // Email template with modern, professional styling
+        $email_template = '
+        <div style="background-color: #f7f7f7; padding: 20px; font-family: Arial, sans-serif;">
+            <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+                <div style="background-color: #007377; padding: 20px; color: #ffffff; text-align: center;">
+                    <h1 style="margin: 0; font-size: 24px;">Market Updates</h1>
+                </div>
+                <div style="padding: 30px;">
+                    <p style="font-size: 18px; color: #333333; line-height: 1.6;">
+                        ' . nl2br($message_text) . '
+                    </p>
+                </div>
+                <div style="padding: 20px; background-color: #f1f1f1; text-align: center;">
+                    <p style="font-size: 14px; color: #555555;">Thank you for staying connected with us.</p>
+                    <p style="font-size: 14px; color: #555555;">If you wish to unsubscribe from these emails, please <a href="http://localhost/amis-project-/pages/dashboards/buyer_dashboard.php" style="color: #007377;">click here</a>.</p>
+                </div>
+                <div style="background-color: #007377; padding: 10px; color: #ffffff; text-align: center; font-size: 12px;">
+                    <p style="margin: 0;">&copy; ' . date('Y') . ' AMIS. All Rights Reserved.</p>
+                </div>
+            </div>
+        </div>
+        ';
+
+        // Send message to all subscribed buyers
+        $sent = sendMessage($emails, $subject, $email_template);
+
+        if ($sent['sent']) {
+            echo json_encode(['success' => true, 'message' => 'Message sent successfully to all subscribers']);
+        } else {
+            echo json_encode(['success' => false, 'message' => $sent['message']]);
+        }
+    } else {
+        echo json_encode(['success' => false, 'message' => 'No subscribed buyers found or error in query']);
+    }
+
+    $result->close();
+}
+
+
 function addMessage()
 {
     global $conn;
@@ -2786,6 +2874,28 @@ function unsubscribe()
         echo json_encode(['success' => true, 'message' => 'Subscription status updated to unsubscribed']);
     } else {
         echo json_encode(['success' => false, 'message' => 'Error updating subscription status: ' . $stmt->error]);
+    }
+
+    $stmt->close();
+}
+
+function getSubscriptionStatus()
+{
+    global $conn;
+
+    $email = $_POST['email'];
+
+    $query = "SELECT subscription FROM buyer WHERE email = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param('s', $email);
+    $stmt->execute();
+    $stmt->bind_result($subscription);
+    $stmt->fetch();
+
+    if ($subscription !== null) {
+        echo json_encode(['success' => true, 'subscription' => $subscription]);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Error fetching subscription status']);
     }
 
     $stmt->close();
