@@ -136,8 +136,11 @@ $pageTitle = isset($pageTitle) ? $pageTitle : 'AMIS Project';
         margin-bottom: 15px;
     }
     .sidebar .nav-link.active, .nav-link:hover {
-        color: white !important; /* Ensures the color stays white */
-    }
+    color: #ffffff !important; /* White color for better contrast */
+    background-color: #023047; /* Light blue background for active and hover states */
+    border-radius: 5px; /* Rounded corners for a modern look */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
     </style>
 </head>
 
