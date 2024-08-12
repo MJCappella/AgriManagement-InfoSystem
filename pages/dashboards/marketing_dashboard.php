@@ -13,6 +13,7 @@ include_once('../../includes/header.php');
             <!-- sidebar -->
             <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 250px;">
                 <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+                    <img src="http://localhost/amis-project-/assets/images/marketing.png" class="rounded-circle me-2" width="50" height="50" alt="Marketing Logo" class="me-2">
                     <span class="fs-4">Marketing Dashboard</span>
                 </a>
                 <hr>
@@ -143,6 +144,77 @@ include_once('../../includes/header.php');
         color: #555;
         display: block;
         margin-bottom: 5px;
+    }
+
+    /* Sidebar Styles */
+    .sidebar {
+        background-color: #022b3a;
+        /* Theme Color */
+        color: white;
+    }
+
+    .sidebar .nav-link {
+        color: white;
+        padding: 10px 15px;
+        border-radius: 5px;
+        margin-bottom: 5px;
+    }
+
+    .sidebar .nav-link.active,
+    .sidebar .nav-link:hover {
+        background-color: #386fa4;
+        /* Lighter Blue */
+        color: white !important;
+    }
+
+    .sidebar .nav-link:hover {
+        background-color: #386fa4;
+        /* Slightly darker blue */
+    }
+
+    .sidebar .dropdown-toggle {
+        color: white;
+    }
+
+    .sidebar .dropdown-menu {
+        background-color: #022b3a;
+        /* Dark Blue */
+    }
+
+    .sidebar .dropdown-menu .dropdown-item {
+        color: white;
+    }
+
+    .sidebar .dropdown-menu .dropdown-item:hover {
+        background-color: #386fa4;
+        /* Lighter Blue */
+    }
+
+    /* Modal Header */
+    .modal-header {
+        background-color: #022b3a !important;
+        /* Dark Blue */
+        color: white;
+    }
+
+    /* Modal Footer Buttons */
+    .modal-footer .btn-secondary {
+        background-color: #386fa4;
+        /* Slightly darker blue */
+        border-color: #386fa4;
+    }
+
+    .modal-footer .btn-danger {
+        background-color: #cc0000;
+        /* Red */
+        border-color: #cc0000;
+    }
+
+    /* Primary Button */
+    .btn-primary {
+        background-color: #386fa4;
+        /* Lighter Blue */
+        border-color: #386fa4;
     }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

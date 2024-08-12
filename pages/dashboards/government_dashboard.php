@@ -13,6 +13,7 @@ include_once('../../includes/header.php');
             <!-- sidebar -->
             <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 250px;">
                 <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+                    <img src="http://localhost/amis-project-/assets/images/government.png" width="50" height="50" alt="Government Logo" class="me-2">
                     <span class="fs-4">Government Dashboard</span>
                 </a>
                 <hr>
@@ -141,6 +142,7 @@ include_once('../../includes/header.php');
         display: block;
         margin-bottom: 5px;
     }
+
     .sidebar {
         background-color: #003366;
         /* Dark Blue */
