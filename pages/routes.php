@@ -521,7 +521,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             break;
     }
 } else if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    echo "Undefined route";
+    header('Location: ' . BASE_URL . '/public/error.php');
 }
 
 function display_login_request($logged, $user_types)
