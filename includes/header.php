@@ -172,7 +172,7 @@ $pageTitle = isset($pageTitle) ? $pageTitle : 'AMIS Project';
                                         <input type="hidden" name="action" value="logout">
                                         <button type="submit" class="nav-link"><i class="fa fa-sign-out"></i>&nbsp; Logout</button>
                                         </form>'
-                                    : '<a class="nav-link" href="login.php"><i class="fa fa-unlock"></i>&nbsp; Login</a>' ?>
+                                    : '<a class="nav-link" href="../pages/login.php"><i class="fa fa-unlock"></i>&nbsp; Login</a>' ?>
                             </li>
 
                             <?php echo isset($logoutButton) ? '' : '<li class="nav-item"><a class="nav-link" href="register.php">Sign Up</a></li>' ?>

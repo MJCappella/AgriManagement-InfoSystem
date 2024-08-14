@@ -1,5 +1,10 @@
 <?php
-include_once('../config/config.php');
+include_once("../config/config.php");
+if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
+  //header("HTTP/1.0 403 Forbidden");
+  //exit;
+  header('Location: ' . BASE_URL . '/public/index.php?route=home');
+}
 $pageTitle = 'Home';
 include('../includes/header.php');
 ?>

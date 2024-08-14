@@ -413,6 +413,75 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $logged  ? updateOrderStatus() : '';
             display_login_request($logged, $authorized_users);
             break;
+
+        case 'add-transport-schedule':
+            $authorized_users = ['farmer', 'buyer', 'transporter', 'admin'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? addTransportSchedule() : '';
+            display_login_request($logged, $authorized_users);
+            break;
+
+        case 'get-transport-schedules-transporter':
+            $authorized_users = ['farmer', 'buyer', 'transporter', 'admin'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? getMyTransportSchedules() : '';
+            display_login_request($logged, $authorized_users);
+            break;
+
+        case 'get-transport-schedules-farmer':
+            $authorized_users = ['farmer', 'buyer', 'transporter', 'admin'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? getFarmerTransportSchedules() : '';
+            display_login_request($logged, $authorized_users);
+            break;
+
+        case 'update-transport-status':
+            $authorized_users = ['farmer', 'buyer', 'transporter', 'admin'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? updateTransportStatus() : '';
+            display_login_request($logged, $authorized_users);
+            break;
+        case 'reschedule-transport':
+            $authorized_users = ['farmer', 'buyer', 'transporter', 'admin'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? updateTransportSchedule() : '';
+            display_login_request($logged, $authorized_users);
+            break;
+
+        case 'get-shipments':
+            $authorized_users = ['farmer', 'buyer', 'transporter', 'admin'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? getShipments() : '';
+            display_login_request($logged, $authorized_users);
+            break;
+        case 'find-transporter':
+            $authorized_users = ['farmer', 'buyer', 'admin'];
+            $logged = isLoggedIn($authorized_users);
+            $logged ? findTransporter() : '';
+            display_login_request($logged, $authorized_users);
+            break;
+
+        case 'book-transporter':
+            $authorized_users = ['farmer', 'admin'];
+            $logged = isLoggedIn($authorized_users);
+            $logged ? bookTransporter() : '';
+            display_login_request($logged, $authorized_users);
+            break;
+
+        case 'view-transport-schedules':
+            $authorized_users = ['farmer', 'transporter', 'admin'];
+            $logged = isLoggedIn($authorized_users);
+            $logged ? viewSchedulesTransport() : '';
+            display_login_request($logged, $authorized_users);
+            break;
+
+            // case 'update-transport-status':
+            //     $authorized_users = ['farmer', 'transporter', 'admin'];
+            //     $logged = isLoggedIn($authorized_users);
+            //     $logged ? updateTransportStatus() : '';
+            //     display_login_request($logged, $authorized_users);
+            //     break;
+
             // case 'add-crop-demand':
             //     $authorized_users = ['admin', 'buyer', 'farmer'];
             //     $logged = isLoggedIn($authorized_users);
@@ -521,7 +590,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             break;
     }
 } else if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    echo "Undefined route";
+    header('Location: ' . BASE_URL . '/public/error.php');
 }
 
 function display_login_request($logged, $user_types)
@@ -2348,6 +2417,298 @@ function updateOrderStatus()
 
     $stmt->close();
 }
+//transport
+function getMyTransportSchedules()
+{
+    global $conn;
+
+    $email = $_SESSION['email'];
+
+    $query = "SELECT 
+                ts.schedule_id,
+                t.email, 
+                f.username as farmer,
+                b.username as buyer,
+                ts.schedule_date, 
+                ts.status AS schedule_status
+              FROM transport_schedules ts
+              JOIN transporter t ON ts.transporter_id=t.transporter_id
+              JOIN farmer f ON ts.farmer_id = f.farmer_id
+              JOIN buyer b ON ts.buyer_id = b.buyer_id
+              WHERE t.email=? AND ts.schedule_date > CURDATE()";
+
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param('s', $email);
+
+    if ($stmt->execute()) {
+        $result = $stmt->get_result();
+        $shipments = $result->fetch_all(MYSQLI_ASSOC);
+        echo json_encode(['success' => true, 'length' => $result->num_rows, 'shipments' => $shipments]);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Error fetching shipments: ' . $stmt->error]);
+    }
+
+    $stmt->close();
+}
+function getFarmerTransportSchedules()
+{
+    global $conn;
+
+    $farmer_email = $_SESSION['email'];
+    // First, get the farmer_id from the farmer table using the farmer_email
+    $query = "SELECT farmer_id FROM farmer WHERE email = ? LIMIT 1";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param('s', $farmer_email);
+
+    if ($stmt->execute()) {
+        $stmt->bind_result($farmer_id);
+        $stmt->fetch();
+        $stmt->close();
+
+        if ($farmer_id) {
+            $query = "SELECT 
+                ts.schedule_id,
+                t.email, 
+                f.username as farmer,
+                b.username as buyer,
+                ts.schedule_date, 
+                ts.status AS schedule_status
+              FROM transport_schedules ts
+              JOIN transporter t ON ts.transporter_id=t.transporter_id
+              JOIN farmer f ON ts.farmer_id = f.farmer_id
+              JOIN buyer b ON ts.buyer_id = b.buyer_id
+              WHERE t.farmer_id=? AND ts.schedule_date > CURDATE()";
+
+            $secondStmt = $conn->prepare($query);
+            $secondStmt->bind_param('i', $farmer_id);
+
+            if ($secondStmt->execute()) {
+                $result = $secondStmt->get_result();
+                $shipments = $result->fetch_all(MYSQLI_ASSOC);
+                echo json_encode(['success' => true, 'length' => $result->num_rows, 'shipments' => $shipments]);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Error fetching shipments: ' . $secondStmt->error]);
+            }
+
+            $secondStmt->close();
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Farmer not found']);
+        }
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Error fetching farmer ID: ' . $stmt->error]);
+    }
+}
+function addTransportSchedule()
+{
+    global $conn;
+
+    $farmer_email = $_SESSION['email']; // Assuming the farmer is logged in and adding the schedule
+    $transporter_id = $_POST['transporter_id'];
+    $buyer_id = $_POST['buyer_id'];
+    $schedule_date = $_POST['schedule_date'];
+
+    // First, get the farmer_id from the farmer table using the farmer_email
+    $query = "SELECT farmer_id FROM farmer WHERE email = ? LIMIT 1";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param('s', $farmer_email);
+
+    if ($stmt->execute()) {
+        $stmt->bind_result($farmer_id);
+        $stmt->fetch();
+        $stmt->close();
+
+        if ($farmer_id) {
+            // Insert the new transport schedule
+            $query = "
+                INSERT INTO transport_schedules (farmer_id, buyer_id, transporter_id, schedule_date, status) 
+                VALUES (?, ?, ?, ?, 'pending')
+            ";
+
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param('iiis', $farmer_id, $buyer_id, $transporter_id, $schedule_date);
+
+            if ($stmt->execute()) {
+                echo json_encode(['success' => true, 'message' => 'Transport schedule added successfully']);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Error adding transport schedule: ' . $stmt->error]);
+            }
+
+            $stmt->close();
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Farmer not found']);
+        }
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Error fetching farmer ID: ' . $stmt->error]);
+    }
+}
+
+function getShipments()
+{
+    global $conn;
+
+    $email = $_SESSION['email'];
+
+    $query = "SELECT 
+                ts.schedule_id,
+                t.email, 
+                f.username as farmer,
+                b.username as buyer,
+                ts.schedule_date, 
+                ts.status AS schedule_status
+              FROM transport_schedules ts
+              JOIN transporter t ON ts.transporter_id=t.transporter_id
+               JOIN farmer f ON ts.farmer_id = f.farmer_id
+              JOIN buyer b ON ts.buyer_id = b.buyer_id
+              WHERE t.email=?";
+
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param('s', $email);
+
+    if ($stmt->execute()) {
+        $result = $stmt->get_result();
+        $shipments = $result->fetch_all(MYSQLI_ASSOC);
+        echo json_encode(['success' => true, 'length' => $result->num_rows, 'shipments' => $shipments]);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Error fetching shipments: ' . $stmt->error]);
+    }
+
+    $stmt->close();
+}
+
+function updateTransportStatus()
+{
+    global $conn;
+
+    $schedule_id = $_POST['schedule_id'];
+    $status = $_POST['status'];
+
+    // Update the schedule status
+    $updateQuery = "UPDATE transport_schedules SET status = ? WHERE schedule_id = ?";
+    $stmt = $conn->prepare($updateQuery);
+    $stmt->bind_param('si', $status, $schedule_id);
+
+    if ($stmt->execute()) {
+        echo json_encode(['success' => true, 'message' => 'Transport status updated successfully']);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Error updating transport status: ' . $stmt->error]);
+    }
+
+    $stmt->close();
+}
+
+function updateTransportSchedule()
+{
+    global $conn;
+
+    $schedule_id = $_POST['schedule_id'];
+    $schedule_date = $_POST['schedule_date'];
+
+    // Update the schedule schedule_date
+    $updateQuery = "UPDATE transport_schedules SET schedule_date = ? WHERE schedule_id = ?";
+    $stmt = $conn->prepare($updateQuery);
+    $stmt->bind_param('si', $schedule_date, $schedule_id);
+
+    if ($stmt->execute()) {
+        echo json_encode(['success' => true, 'message' => 'Transport schedule_date updated successfully']);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Error updating transport schedule_date: ' . $stmt->error]);
+    }
+
+    $stmt->close();
+}
+function viewSchedulesTransport()
+{
+    global $conn;
+
+    $user_id = $_SESSION['user_id']; // Assuming farmer or transporter is logged in
+    $user_role = $_SESSION['role']; // Assuming role is stored in session (either 'farmer' or 'transporter')
+
+    $query = "
+        SELECT 
+            ts.schedule_id,
+            ts.schedule_date,
+            ts.status,
+            f.username AS farmer_username,
+            f.phone AS farmer_phone,
+            t.username AS transporter_username,
+            t.phone AS transporter_phone
+        FROM 
+            transport_schedules ts
+        JOIN 
+            farmer f ON ts.farmer_id = f.farmer_id
+        JOIN 
+            transporter t ON ts.transporter_id = t.transporter_id
+        WHERE 
+            " . ($user_role == 'farmer' ? "ts.farmer_id = ?" : "ts.transporter_id = ?") . "
+    ";
+
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param('i', $user_id);
+
+    if ($stmt->execute()) {
+        $result = $stmt->get_result();
+        $schedules = $result->fetch_all(MYSQLI_ASSOC);
+        echo json_encode(['success' => true, 'length' => $result->num_rows, 'schedules' => $schedules]);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Error fetching transport schedules: ' . $stmt->error]);
+    }
+
+    $stmt->close();
+}
+function bookTransporter()
+{
+    global $conn;
+
+    $farmer_id = $_SESSION['user_id']; // Assuming farmer is logged in
+    $transporter_id = $_POST['transporter_id'];
+    $schedule_date = $_POST['schedule_date'];
+
+    // Insert the booking into transport_schedules
+    $query = "
+        INSERT INTO transport_schedules (farmer_id, transporter_id, schedule_date, status) 
+        VALUES (?, ?, ?, 'pending')
+    ";
+
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param('iis', $farmer_id, $transporter_id, $schedule_date);
+
+    if ($stmt->execute()) {
+        echo json_encode(['success' => true, 'message' => 'Transporter booked successfully']);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Error booking transporter: ' . $stmt->error]);
+    }
+
+    $stmt->close();
+}
+function findTransporter()
+{
+    global $conn;
+
+    // Query to find available transporters
+    $query = "
+        SELECT 
+            transporter_id, 
+            username, 
+            phone, 
+            description, 
+            price 
+        FROM 
+            transporter 
+        WHERE 
+            availability = 'available' 
+            AND account_status = 'active'
+    ";
+
+    $result = $conn->query($query);
+
+    if ($result->num_rows > 0) {
+        $transporters = $result->fetch_all(MYSQLI_ASSOC);
+        echo json_encode(['success' => true, 'length' => $result->num_rows, 'transporters' => $transporters]);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'No available transporters found']);
+    }
+}
+
 
 function addCropDemand($crop_id)
 {
@@ -2617,7 +2978,7 @@ function messageSubscribers()
         }
 
         $stmt->close();
-        
+
         //actual sending
         while ($row = $result->fetch_assoc()) {
             $emails[] = $row['email'];
