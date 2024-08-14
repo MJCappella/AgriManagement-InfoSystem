@@ -34,6 +34,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $logged  ? getTransporters() : '';
             display_login_request($logged, $authorized_users);
             break;
+        case 'get-available-transporters':
+            $authorized_users = ['farmer','admin'];
+            $logged = isLoggedIn($authorized_users);
+            $logged  ? getAvailableTransporters() : '';
+            display_login_request($logged, $authorized_users);
+            break;
         case 'get-government-agencies':
             $authorized_users = ['admin'];
             $logged = isLoggedIn($authorized_users);
@@ -890,6 +896,28 @@ function getTransporters()
 
     $stmt->close();
 }
+function getAvailableTransporters()
+{
+    global $conn;
+    $query = "SELECT * FROM transporter WHERE availability='available'";
+    $stmt = $conn->prepare($query);
+
+    if ($stmt && $stmt->execute()) {
+        $result = $stmt->get_result();
+        $transporters = [];
+
+        while ($transporter = $result->fetch_assoc()) {
+            $transporters[] = $transporter;
+        }
+
+        echo json_encode(['success' => true, 'length' => $result->num_rows, 'transporters' => $transporters]);
+    } else {
+        echo json_encode(['success' => false, 'message' => $stmt->error]);
+    }
+
+    $stmt->close();
+}
+
 function getGovernmentAgencies()
 {
     global $conn;

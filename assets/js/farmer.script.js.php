@@ -35,7 +35,7 @@
                         <div class="card-body">
                             <h5 class="card-title">Transportation</h5>
                             <p class="card-text">Access transportation information for your crops.</p>
-                            <a href="#" class="btn btn-primary" onclick="loadTransportInfo()">View Transportation</a>
+                            <a href="#" class="btn btn-primary" onclick="loadTransporters()">View Transportation</a>
                         </div>
                     </div>
                 </div>
@@ -776,7 +776,7 @@
     }
 
     // Transporters
-function loadTransporters(element) {
+    function loadTransporters(element) {
     setActiveLink(element);
     document.getElementById('main-content').innerHTML = '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>';
 
@@ -784,76 +784,32 @@ function loadTransporters(element) {
         url: 'http://localhost/amis-project-/pages/routes.php',
         type: 'POST',
         data: {
-            action: 'get-transporters'
+            action: 'get-available-transporters'
         },
         success: function(response) {
             var responseData = JSON.parse(response);
             if (responseData.success) {
-                var transportersOptions = responseData.transporters.map(function(transporter) {
-                    return `<option value="${transporter.transporter_id}">${transporter.username} (${transporter.availability})</option>`;
-                }).join('');
-
-                var tableContent = responseData.schedules.map(function(schedule) {
+                var transportersList = responseData.transporters.map(function(transporter) {
                     return `
-                        <tr data-schedule-id="${schedule.schedule_id}">
-                            <td>${schedule.schedule_date}</td>
-                            <td>${schedule.transporter_username}</td>
-                            <td>${schedule.buyer_username}</td>
-                            <td>
-                                <select class="form-select" onchange="updateTransportStatus(${schedule.schedule_id}, this.value)">
-                                    <option value="pending" ${schedule.status === 'pending' ? 'selected' : ''}>Pending</option>
-                                    <option value="confirmed" ${schedule.status === 'confirmed' ? 'selected' : ''}>Confirmed</option>
-                                    <option value="cancelled" ${schedule.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
-                                    <option value="delivered" ${schedule.status === 'delivered' ? 'selected' : ''}>Delivered</option>
-                                </select>
-                            </td>
-                            <td><button class="btn btn-warning" onclick="rescheduleTransport(${schedule.schedule_id})">Reschedule</button></td>
-                        </tr>
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">${transporter.username}</h5>
+                                <p class="card-text">Phone: ${transporter.phone}</p>
+                                <p class="card-text">Description: ${transporter.description}</p>
+                                <p class="card-text">Price: $${transporter.price}</p>
+                                <p class="card-text">Availability: ${transporter.availability}</p>
+                                <button class="btn btn-primary" onclick="bookTransporter(${transporter.transporter_id})">Book Now</button>
+                            </div>
+                        </div>
                     `;
                 }).join('');
 
                 document.getElementById('main-content').innerHTML = `
-                    <div id="transporter-form-container">
-                        <h3>Book a Transporter</h3>
-                        <form id="add-transporter-form" onsubmit="return addTransporter();">
-                            <div class="form-group">
-                                <label for="transporter_id">Select Transporter:</label>
-                                <select id="transporter_id" name="transporter_id" class="form-select">
-                                    ${transportersOptions}
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="schedule_date">Schedule Date:</label>
-                                <input type="date" id="schedule_date" name="schedule_date" class="form-control" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Book Transporter</button>
-                        </form>
-                    </div>
-                    <div id="transport-schedules-table-container">
-                        <h3>Transport Schedules</h3>
-                        <div class="table-responsive">
-                            <table id="transport-schedules-table" class="table table-bordered table-hover">
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th>Schedule Date</th>
-                                        <th>Transporter</th>
-                                        <th>Buyer</th>
-                                        <th>Status</th>
-                                        <th>Reschedule</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    ${tableContent}
-                                </tbody>
-                            </table>
-                        </div>
+                    <div id="transporters-list">
+                        <h3>Available Transporters</h3>
+                        ${transportersList}
                     </div>
                 `;
-                $('#transport-schedules-table').DataTable({
-                    "ordering": true,
-                    "searching": true,
-                    "paging": true
-                });
             } else {
                 document.getElementById('main-content').innerHTML = `<div class="alert alert-danger">Error: ${responseData.message}</div>`;
             }
@@ -863,6 +819,99 @@ function loadTransporters(element) {
         }
     });
 }
+
+function bookTransporter(transporterId) {
+    // Function to book the transporter, implementation depends on your specific requirements
+    alert('Booking transporter with ID: ' + transporterId);
+}
+
+// function loadTransporters(element) {
+//     setActiveLink(element);
+//     document.getElementById('main-content').innerHTML = '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>';
+
+//     $.ajax({
+//         url: 'http://localhost/amis-project-/pages/routes.php',
+//         type: 'POST',
+//         data: {
+//             action: 'get-transporters'
+//         },
+//         success: function(response) {
+//             var responseData = JSON.parse(response);
+//             if (responseData.success) {
+//                 var transportersOptions = responseData.transporters.map(function(transporter) {
+//                     return `<option value="${transporter.transporter_id}">${transporter.username} (${transporter.availability})</option>`;
+//                 }).join('');
+
+//                 var tableContent = responseData.schedules.map(function(schedule) {
+//                     return `
+//                         <tr data-schedule-id="${schedule.schedule_id}">
+//                             <td>${schedule.schedule_date}</td>
+//                             <td>${schedule.transporter_username}</td>
+//                             <td>${schedule.buyer_username}</td>
+//                             <td>
+//                                 <select class="form-select" onchange="updateTransportStatus(${schedule.schedule_id}, this.value)">
+//                                     <option value="pending" ${schedule.status === 'pending' ? 'selected' : ''}>Pending</option>
+//                                     <option value="confirmed" ${schedule.status === 'confirmed' ? 'selected' : ''}>Confirmed</option>
+//                                     <option value="cancelled" ${schedule.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+//                                     <option value="delivered" ${schedule.status === 'delivered' ? 'selected' : ''}>Delivered</option>
+//                                 </select>
+//                             </td>
+//                             <td><button class="btn btn-warning" onclick="rescheduleTransport(${schedule.schedule_id})">Reschedule</button></td>
+//                         </tr>
+//                     `;
+//                 }).join('');
+
+//                 document.getElementById('main-content').innerHTML = `
+//                     <div id="transporter-form-container">
+//                         <h3>Book a Transporter</h3>
+//                         <form id="add-transporter-form" onsubmit="return addTransporter();">
+//                             <div class="form-group">
+//                                 <label for="transporter_id">Select Transporter:</label>
+//                                 <select id="transporter_id" name="transporter_id" class="form-select">
+//                                     ${transportersOptions}
+//                                 </select>
+//                             </div>
+//                             <div class="form-group">
+//                                 <label for="schedule_date">Schedule Date:</label>
+//                                 <input type="date" id="schedule_date" name="schedule_date" class="form-control" required>
+//                             </div>
+//                             <button type="submit" class="btn btn-primary">Book Transporter</button>
+//                         </form>
+//                     </div>
+//                     <div id="transport-schedules-table-container">
+//                         <h3>Transport Schedules</h3>
+//                         <div class="table-responsive">
+//                             <table id="transport-schedules-table" class="table table-bordered table-hover">
+//                                 <thead class="thead-dark">
+//                                     <tr>
+//                                         <th>Schedule Date</th>
+//                                         <th>Transporter</th>
+//                                         <th>Buyer</th>
+//                                         <th>Status</th>
+//                                         <th>Reschedule</th>
+//                                     </tr>
+//                                 </thead>
+//                                 <tbody>
+//                                     ${tableContent}
+//                                 </tbody>
+//                             </table>
+//                         </div>
+//                     </div>
+//                 `;
+//                 $('#transport-schedules-table').DataTable({
+//                     "ordering": true,
+//                     "searching": true,
+//                     "paging": true
+//                 });
+//             } else {
+//                 document.getElementById('main-content').innerHTML = `<div class="alert alert-danger">Error: ${responseData.message}</div>`;
+//             }
+//         },
+//         error: function(xhr, status, error) {
+//             console.error('Error: ' + error);
+//         }
+//     });
+// }
 
 function addTransporter() {
     $.ajax({
