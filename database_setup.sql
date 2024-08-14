@@ -66,7 +66,7 @@ CREATE TABLE buyer (
 );
 
 CREATE TABLE transporter (
-    transport_id INT PRIMARY KEY AUTO_INCREMENT,
+    transporter_id INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(100),
     email VARCHAR(100) UNIQUE,
     password VARCHAR(255),
@@ -142,6 +142,23 @@ CREATE TABLE orders (
     FOREIGN KEY (crop_id) REFERENCES crops(crop_id),
     FOREIGN KEY (advert_id) REFERENCES adverts(advert_id)
 );
+
+CREATE TABLE transport_schedules (
+    schedule_id INT AUTO_INCREMENT PRIMARY KEY,
+    farmer_id INT,
+    buyer_id INT,
+    transporter_id INT,
+    -- crop_id INT,
+    -- quantity DECIMAL(10, 2),
+    -- unit VARCHAR(50),
+    schedule_date DATE,
+    status ENUM('pending', 'confirmed', 'cancelled', 'delivered') NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (farmer_id) REFERENCES farmer(farmer_id),
+    FOREIGN KEY (buyer_id) REFERENCES buyer(buyer_id),
+    FOREIGN KEY (transporter_id) REFERENCES transporter(transporter_id)
+);
+
 
 CREATE TABLE adverts (
     advert_id INT PRIMARY KEY AUTO_INCREMENT,

@@ -12,7 +12,7 @@ include_once('../../includes/header.php');
         <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
             <!-- sidebar -->
             <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 250px;">
-                <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+                <a href="#" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
                     <span class="fs-4">Buyer Dashboard</span>
                 </a>
                 <hr>
@@ -49,8 +49,8 @@ include_once('../../includes/header.php');
                         <strong><?php echo $_SESSION['username'] ?></strong>
                     </a>
                     <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
-                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <!-- <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><a class="dropdown-item" href="#">Settings</a></li> -->
                         <li>
                             <hr class="dropdown-divider">
                         </li>

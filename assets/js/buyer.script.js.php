@@ -81,16 +81,20 @@ function loadDashboard(element) {
                         <div class="card-body">
                             <h5 class="card-title">Search Crops</h5>
                             <p class="card-text">Find the crops you need.</p>
-                            <a href="#" class="btn btn-primary">Search Crops</a>
+                             <a href="#" class="btn btn-primary" onclick="orderCrops(this)">
+                            Order Crops
+                        </a>
                         </div>
                     </div>
                 </div>
                 <div class="col-12 col-md-6 col-lg-4 mb-4">
                     <div class="card shadow-sm">
                         <div class="card-body">
-                            <h5 class="card-title">Market Trends</h5>
-                            <p class="card-text">Analyze current market trends.</p>
-                            <a onclick="loadMarketPrices()" class="btn btn-primary">View Trends</a>
+                            <h5 class="card-title">Market Prices</h5>
+                            <p class="card-text">Analyze current market prices.</p>
+                            <a onclick="loadMarketPrices(this)" class="btn btn-primary">
+                            Market Prices
+                        </a>
                         </div>
                     </div>
                 </div>
@@ -99,7 +103,8 @@ function loadDashboard(element) {
                         <div class="card-body">
                             <h5 class="card-title">Manage Orders</h5>
                             <p class="card-text">Track and manage your orders.</p>
-                            <a href="/amis-project-/pages/manage_orders.php" class="btn btn-primary">Manage Orders</a>
+                            <a onclick="loadOrders(this)" class="btn btn-primary">
+                            Manage Orders</a>
                         </div>
                     </div>
                 </div>

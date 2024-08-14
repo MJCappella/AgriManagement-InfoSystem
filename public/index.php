@@ -9,6 +9,11 @@ $routes = [
     'contact' => './error.php',
     'login' => '../pages/login.php',
     'register' => '../pages/register.php',
+    'farmer' => '../pages/dashboards/farmer_dashboard.php',
+    'buyer' => '../pages/dashboards/buyer_dashboard.php',
+    'government' => '../pages/dashboards/government_dashboard.php',
+    'marketing' => '../pages/dashboards/marketing_dashboard.php',
+    'transporter' => '../pages/dashboards/transporter_dashboard.php',
     // Add more routes here
 ];
 

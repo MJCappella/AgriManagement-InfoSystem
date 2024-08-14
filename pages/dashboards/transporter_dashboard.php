@@ -12,30 +12,25 @@ include_once('../../includes/header.php');
         <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
             <!-- sidebar -->
             <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 250px;">
-            <a href="#" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+                <a href="#" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
                     <img src="http://localhost/amis-project-/assets/images/transporter.png" width="50" height="50" alt="Transporter Logo" class="me-2">
                     <span class="fs-4">Transporter Dashboard</span>
                 </a>
                 <hr>
                 <ul class="nav nav-pills flex-column mb-auto">
                     <li class="nav-item">
-                    <a href="#" class="nav-link link-dark" id="dashboard" onclick="loadDashboard(this)">
+                        <a href="#" class="nav-link link-dark" id="dashboard" onclick="loadDashboard(this)">
                             Dashboard
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="nav-link link-dark">
+                        <a href="#" class="nav-link link-dark" onclick="loadSchedules(this)">
                             Transport Schedule
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="nav-link link-dark">
-                            Track Shipments
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link link-dark">
-                            Available Routes
+                        <a href="#" class="nav-link link-dark" onclick="loadShipments(this)">
+                            View Shipments
                         </a>
                     </li>
                 </ul>
@@ -68,34 +63,8 @@ include_once('../../includes/header.php');
             </div>
 
             <!-- Main content here -->
-            <div class="row">
-                <div class="col-12 col-md-6 col-lg-4 mb-4">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title">Transport Schedule</h5>
-                            <p class="card-text">View and manage your transport schedule.</p>
-                            <a href="#" class="btn btn-primary">View Schedule</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-md-6 col-lg-4 mb-4">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title">Track Shipments</h5>
-                            <p class="card-text">Track your current shipments.</p>
-                            <a href="#" class="btn btn-primary">Track Shipments</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-md-6 col-lg-4 mb-4">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title">Available Routes</h5>
-                            <p class="card-text">Explore available transport routes.</p>
-                            <a href="#" class="btn btn-primary">View Routes</a>
-                        </div>
-                    </div>
-                </div>
+            <div id="main-content">
+                <!-- Initial dashboard content -->
             </div>
         </main>
     </div>
@@ -138,7 +107,7 @@ include_once('../../includes/header.php');
     .card .progress-bar .fill {
         height: 100%;
         width: 0;
-        background-color: #76c7c0;
+        background-color: #2ec4b6;
         transition: width 2s ease-in-out;
     }
 
@@ -236,7 +205,8 @@ include_once('../../includes/header.php');
     } from './utils.js';
     window.Utils = Utils;
 </script>
-<?php include("../../assets/js/government.script.js.php") ?>
+<?php include("../../assets/js/transporter.script.js.php") ?>
 <?php include('../../includes/footer.php') ?>
 </body>
+
 </html>

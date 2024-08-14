@@ -132,7 +132,7 @@ include_once('../includes/header.php');
         if (loginSuccessful) {
           alertPlaceholder.html('<div class="alert alert-success" role="alert">Login successful! Redirecting...</div>');
           setTimeout(() => {
-            window.location.href = 'dashboards/' + $('#user_type option:selected').text().trim().toLocaleLowerCase() + '_dashboard.php';
+            window.location.href = '../pages/dashboards/' + $('#user_type option:selected').text().trim().toLowerCase() + '_dashboard.php';
           }, 1200);
         } else {
           alertPlaceholder.html('<div class="alert alert-danger" role="alert">' + data.message + '</div>');
