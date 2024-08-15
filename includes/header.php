@@ -159,10 +159,10 @@ $pageTitle = isset($pageTitle) ? $pageTitle : 'AMIS Project';
                                 <a class="nav-link active" aria-current="page" href="<?php echo BASE_URL; ?>/public">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Services</a>
+                                <a class="nav-link" href="../public/services.php">Services</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">About</a>
+                                <a class="nav-link" href="../public/about.php">About</a>
                             </li>
                         </ul>
                         <ul class="navbar-nav">
