@@ -30,18 +30,36 @@ $conn->close();
   <title>Login</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js" integrity="sha512-u3fPA7V8qQmhBPNT5quvaXVa1mnnLSXUep5PS1qo5NRzHwG19aHmNJnj1Q8hpA/nBWZtZD4r4AX6YOt5ynLN2g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/bootstrap.min.css">
+  <script src=https://code.jquery.com/jquery-3.7.1.js></script>
   <script src="<?php echo BASE_URL; ?>/assets/js/scripts.js" defer></script>
   <script src="<?php echo BASE_URL; ?>/assets/js/popper.min.js" defer></script>
   <script src="<?php echo BASE_URL; ?>/assets/js/bootstrap.min.js" integrity="sha512-ykZ1QQr0Jy/4ZkvKuqWn4iF3lqPZyij9iRv6sGqLRdTPkY69YX6+7wvVGmsdBbiIfN/8OdsI7HABjvEok6ZopQ==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+
   <style>
     body {
-      background-color: rgb(251, 249, 244);
+      margin: 0;
+      height: 100vh;
       display: flex;
+      overflow: hidden;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      margin: 0;
-      overflow: hidden;
+      background: linear-gradient(45deg, #ff0066, #004080, #66ff66, #003366);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+    }
+
+    @keyframes gradientBG {
+      0% {
+        background-position: 0% 0%;
+      }
+
+      50% {
+        background-position: 100% 100%;
+      }
+
+      100% {
+        background-position: 0% 0%;
+      }
     }
 
     .centered-form {
@@ -115,10 +133,18 @@ $conn->close();
         transform: rotate(360deg);
       }
     }
+
+    #particles-js {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
   </style>
 </head>
 
 <body>
+  <div id="particles-js"></div>
   <div class="container centered-form">
     <div class="form-container">
       <div class="logo">
@@ -169,7 +195,37 @@ $conn->close();
       </form>
     </div>
   </div>
-
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script>
+    particlesJS('particles-js', {
+      "particles": {
+        "number": {
+          "value": 80, // Reduced number of particles
+          "density": {
+            "enable": true,
+            "value_area": 600
+          }
+        },
+        "color": {
+          "value": "#ffffff" // White particles
+        },
+        "size": {
+          "value": 3
+        },
+        "opacity": {
+          "value": 0.5
+        }
+      },
+      "interactivity": {
+        "events": {
+          "onhover": {
+            "enable": true,
+            "mode": "repulse"
+          }
+        }
+      }
+    });
+  </script>
   <?php include("../assets/js/login.script.js.php") ?>
   <script>
     function togglePwd() {
