@@ -48,8 +48,9 @@
                         alertPlaceholder.html('<div class="alert alert-success" role="alert">' + data.message + '</div>');
                     } else {
                         alertPlaceholder.html('<div class="alert alert-success" role="alert">' + data.message + ' Redirecting...</div>');
+                        var path='<?php echo BASE_URL; ?>/public/index.php?route=login';
                         setTimeout(() => {
-                            window.location.href = 'login.php';
+                            window.location.href = path;
                         }, 1000);
                     }
                 } else {
@@ -86,9 +87,10 @@
                 console.log(data);
                 if (verificationSuccessful) {
                     alertPlaceholder.html('<div class="alert alert-success" role="alert">' + data.message + ' Redirecting...</div>');
-                    setTimeout(() => {
-                        window.location.href = 'login.php';
-                    }, 1000);
+                    var path='<?php echo BASE_URL; ?>/public/index.php?route=login';
+                        setTimeout(() => {
+                            window.location.href = path;
+                        }, 1000);
                 } else {
                     alertPlaceholder.html('<div class="alert alert-danger" role="alert">' + data.message + '</div>');
                 }

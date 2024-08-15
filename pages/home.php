@@ -14,7 +14,7 @@ include('../includes/header.php');
     <div class="hero-content">
         <h1 class="display-4">Welcome to the Agriculture Marketing Information System</h1>
         <p class="lead">Connecting Farmers, Buyers, and Market Professionals</p>
-        <a href="register.php" class="btn btn-info btn-lg">Get Started</a>
+        <a href="<?php echo BASE_URL; ?>/public/index.php?route=register" class="btn btn-info btn-lg">Get Started</a>
     </div>
 </div>
 
@@ -68,7 +68,7 @@ include('../includes/header.php');
     .lead {
         font-size: 1.25rem;
         font-weight: 300;
-        color: #868686;
+        color: #ccc;
     }
 
     .featurette {
