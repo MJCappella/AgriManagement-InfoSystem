@@ -25,7 +25,7 @@ $pageTitle = 'Register';
             margin: 0;
             height: 100vh;
             display: flex;
-            overflow: hidden;
+            overflow: scroll;
             justify-content: center;
             align-items: center;
             background: linear-gradient(45deg, #ff0066, #004080, #66ff66, #003366);

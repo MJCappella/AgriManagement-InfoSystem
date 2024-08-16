@@ -160,11 +160,11 @@
                     </div>
                     <div class="form-group mb-2">
                         <label for="description">Description:</label>
-                        <textarea id="description" name="description" class="form-control" required></textarea>
+                        <textarea id="description" name="description" class="form-control" required> I have a medium size lorry that can carry up to 2 tons of load. Please hire me></textarea>
                         <div class="invalid-feedback">Please enter a description.</div>
                     </div>
                     <div class="form-group mb-2">
-                        <label for="price">Price:</label>
+                        <label for="price">Price per hour:</label>
                         <input type="number" step="0.01" id="price" name="price" class="form-control" required>
                         <div class="invalid-feedback">Please enter a price.</div>
                     </div>

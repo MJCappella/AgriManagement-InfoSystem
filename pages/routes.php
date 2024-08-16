@@ -818,7 +818,7 @@ function handleRegister()
         if (!$enable_2fa)
             echo json_encode(['success' => true, 'message' => 'Registration successful!']);
     } else {
-        echo json_encode(['success' => false, 'message' => $stmt->error]);
+        echo json_encode(['success' => false, 'message' => 'Registration error: '.$stmt->error]);
     }
 
     $stmt->close();
