@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             display_login_request($logged, $authorized_users);
             break;
         case 'get-available-transporters':
-            $authorized_users = ['farmer','admin'];
+            $authorized_users = ['farmer', 'admin'];
             $logged = isLoggedIn($authorized_users);
             $logged  ? getAvailableTransporters() : '';
             display_login_request($logged, $authorized_users);
@@ -815,13 +815,106 @@ function handleRegister()
 
     // Execute the user insert query
     if ($stmt && $stmt->execute()) {
-        if (!$enable_2fa)
+        if (!$enable_2fa) {
             echo json_encode(['success' => true, 'message' => 'Registration successful!']);
+            sendWelcomeMessage($email,$user_type,$username);
+        }
     } else {
-        echo json_encode(['success' => false, 'message' => 'Registration error: '.$stmt->error]);
+        echo json_encode(['success' => false, 'message' => 'Registration error: ' . $stmt->error]);
     }
 
     $stmt->close();
+}
+
+// Sample welcome message
+function sendWelcomeMessage($email, $user_type, $username)
+{
+    $features = '';
+
+    // Customize the message based on the user type
+    switch ($user_type) {
+        case 'farmer':
+            $features = '
+                <li>View and manage your crop yields</li>
+                <li>Track market prices and demand trends</li>
+                <li>Access transportation information</li>
+            ';
+            break;
+        case 'buyer':
+            $features = '
+                <li>Search and buy available crops</li>
+                <li>View and analyze market trends</li>
+                <li>Manage your orders and negotiate contracts</li>
+            ';
+            break;
+        case 'government':
+            $features = '
+                <li>Monitor market activities and trends</li>
+                <li>Collect and analyze agricultural data</li>
+                <li>Ensure regulatory compliance by setting prices</li>
+            ';
+            break;
+        case 'transporter':
+            $features = '
+                <li>Access transportation requests and opportunities</li>
+                <li>Manage and track deliveries</li>
+                <li>Coordinate with farmers and buyers</li>
+            ';
+            break;
+        case 'market':
+            $features = '
+                <li>Analyze market trends and buyer behavior</li>
+                <li>Manage sales and customer engagement</li>
+                <li>Ensure regulatory compliance</li>
+            ';
+            break;
+        default:
+            $features = '
+                <li>Explore our platform and discover available features</li>
+            ';
+            break;
+    }
+    if ($user_type === 'government' || $user_type === 'marketing') {
+        $user_type .= ' agent';
+    }
+
+    // HTML for the welcome message
+    $message = '
+    <div style="background-color: #f4f4f4; padding: 20px; font-family: Arial, sans-serif; color: #333;">
+        <div style="max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+            <div style="background-color: #007377; padding: 20px; text-align: center;">
+                <h1 style="color: #ffffff; margin: 0; font-size: 24px;">Welcome to AMIS, ' . htmlspecialchars($username) . '!</h1>
+            </div>
+            <div style="padding: 30px;">
+                <p style="font-size: 16px; line-height: 1.6;">
+                    Hi ' . htmlspecialchars($username) . ',
+                </p>
+                <p style="font-size: 16px; line-height: 1.6;">
+                    We\'re excited to have you on board as a valued ' . ucfirst($user_type) . ' on our platform. Here are some of the features you can now access:
+                </p>
+                <ul style="font-size: 16px; line-height: 1.6;">
+                    ' . $features . '
+                </ul>
+                <p style="font-size: 16px; line-height: 1.6;">
+                    We hope you find these tools helpful in achieving your goals. If you have any questions, feel free to reach out to our support team.
+                </p>
+                <div style="text-align: center; margin: 20px 0;">
+                    <a href="http://localhost/amis-project-/public/index.php" style="background-color: #007377; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-size: 16px;">Get Started</a>
+                </div>
+                <p style="font-size: 16px; line-height: 1.6;">
+                    Best regards,<br>
+                    The AMIS Team
+                </p>
+            </div>
+            <div style="background-color: #f4f4f4; padding: 10px; text-align: center;">
+                <p style="font-size: 14px; color: #888;">&copy; 2024 AMIS. All rights reserved.</p>
+            </div>
+        </div>
+    </div>';
+
+    // Call to send email
+    $sent = sendMessage([$email], 'Welcome to AMIS!', $message);
+    return $sent;
 }
 
 
@@ -3129,6 +3222,7 @@ function verifyTwoFactorAuth()
     global $conn;
 
     $email = $_POST['email'];
+    $username = $_POST['username'];
     $user_type = $_POST['user_type'];
     $user_type_id = getUserTypeId($user_type);
     $code = $_POST['verification_code'];
@@ -3186,6 +3280,7 @@ function verifyTwoFactorAuth()
 
                         if ($stmt->execute()) {
                             echo json_encode(['success' => true, 'message' => 'Two-factor code verified successfully']);
+                            sendWelcomeMessage($email,$user_type,$username);
                         } else {
                             echo json_encode(['success' => false, 'message' => 'Error verifying code: ' . $stmt->error]);
                         }
@@ -3203,16 +3298,25 @@ function verifyTwoFactorAuth()
 
                     if ($rejectStmt->execute()) {
                         $query = `DELETE FROM $user_type WHERE email = ?`;
+                        $query1 = `DELETE FROM two_factor_auth WHERE user_email = ?`;
                         $stmt = $conn->prepare($query);
+                        $stmt1 = $conn->prepare($query1);
                         $stmt->bind_param('s', $email);
+                        $stmt1->bind_param('s', $email);
 
                         if ($stmt->execute()) {
                             //echo json_encode(['success' => true, 'message' => 'Verication code successful']);
                         } else {
                             echo json_encode(['success' => false, 'message' => 'Error cleaning up user: ' . $stmt->error]);
                         }
+                        if ($stmt1->execute()) {
+                            //echo json_encode(['success' => true, 'message' => 'Verication code successful']);
+                        } else {
+                            echo json_encode(['success' => false, 'message' => 'Error cleaning up user: ' . $stmt1->error]);
+                        }
                         echo json_encode(['success' => false, 'message' => 'Invalid authentication code']);
                         $stmt->close();
+                        $stmt1->close();
                     } else {
                         echo json_encode(['success' => false, 'message' => 'Error rejecting authentication code: ' . $rejectStmt->error]);
                     }

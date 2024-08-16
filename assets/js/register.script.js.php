@@ -24,6 +24,7 @@
         $('#v_action').val('verify-code');
         $('#v_user_type').val($('#user_type').val());
         $('#v_email').val($('#email').val());
+        $('#v_username').val($('#username').val());
         var formData = $(myForm).serialize();
         if ($('#enable_2fa').prop('checked')) {
             formData = formData.substring(0, formData.lastIndexOf('&'));

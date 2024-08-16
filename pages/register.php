@@ -242,6 +242,7 @@ $pageTitle = 'Register';
                     <input type="hidden" id="v_action" name="action" value="verify-code">
                     <input type="hidden" id="v_user_type" name="user_type" value="farmer">
                     <input type="hidden" id="v_email" name="email" value="example@email.com">
+                    <input type="hidden" id="v_username" name="username" value="exampleuser">
                     <div class="form-group mb-3">
                         <label for="verification_code">Verification Code:</label>
                         <input type="text" id="verification_code" name="verification_code" class="form-control" required>
